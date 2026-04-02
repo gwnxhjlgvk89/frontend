@@ -5,7 +5,7 @@
       <view class="mini-card__top-left">
         <view class="status-dot" :class="statusDotClass" />
         <view v-if="club.has_major_limit" class="badge badge--limit">
-          <text class="badge__text">专业限</text>
+          <text class="badge__text">专业限制</text>
         </view>
       </view>
       <view class="fav-btn" @click.stop="onToggleFav">
@@ -169,7 +169,7 @@ const onSelectClub = async () => {
     ]);
     showToast({ title: "选社成功 🎉", icon: "success" });
   } catch (e) {
-    showToast({ title: e?.message ?? "选社失败，请重试", icon: "none" });
+    showToast({ title: e?.message ?? "选社失败，请重试", icon: "error" });
   } finally {
     isSelecting.value = false;
   }
@@ -274,10 +274,12 @@ const handleCardClick = () => {
 
 /* ── 专业限制 badge ── */
 .badge--limit {
+  display: flex;
+  align-items: center;
   background: rgba(99, 102, 241, 0.3);
   border: 1rpx solid rgba(139, 92, 246, 0.5);
   border-radius: 50rpx;
-  padding: 2rpx 10rpx;
+  padding: 0 10rpx;
 }
 .badge__text {
   font-size: 16rpx;

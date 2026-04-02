@@ -1,5 +1,5 @@
 <template>
-  <view class="card" @click="$emit('click', club)">
+  <view class="card" @click="handleCardClick">
     <!-- 顶部渐变封面区 -->
     <view class="card__cover" :style="coverStyle">
       <view class="card__cover-mask" />
@@ -240,6 +240,27 @@ const onSelectClub = async () => {
   } finally {
     isSelecting.value = false;
   }
+};
+
+// ── ✨ 跳转到详情页 ──
+const handleCardClick = () => {
+  // 使用本地存储传递数据（推荐方案）
+  uni.setStorageSync("clubData", props.club);
+  uni.setStorageSync("profileData", props.profile);
+
+  uni.navigateTo({
+    url: "/pages/club/club",
+    success: () => {
+      console.log("导航成功");
+    },
+    fail: (err) => {
+      console.error("导航失败:", err);
+      uni.showToast({
+        title: "页面跳转失败",
+        icon: "error",
+      });
+    },
+  });
 };
 </script>
 

@@ -1,5 +1,5 @@
 <template>
-  <view class="row-card" @click="$emit('click', club)">
+  <view class="row-card" @click="handleCardClick">
     <!-- 左侧色条：selecting 时换色 -->
     <view class="row-card__accent" :class="accentClass" />
 
@@ -16,7 +16,7 @@
           <text class="badge__text">剩 {{ club.remaining_quota }}</text>
         </view>
         <view v-if="club.has_major_limit" class="badge badge--limit">
-          <text class="badge__text">专业限</text>
+          <text class="badge__text">专业限制</text>
         </view>
       </view>
 
@@ -189,6 +189,27 @@ const onSelectClub = async () => {
     isSelecting.value = false;
   }
 };
+
+// ── ✨ 跳转到详情页 ──
+const handleCardClick = () => {
+  // 使用本地存储传递数据（推荐方案）
+  uni.setStorageSync("clubData", props.club);
+  uni.setStorageSync("profileData", props.profile);
+
+  uni.navigateTo({
+    url: "/pages/club/club",
+    success: () => {
+      console.log("导航成功");
+    },
+    fail: (err) => {
+      console.error("导航失败:", err);
+      uni.showToast({
+        title: "页面跳转失败",
+        icon: "error",
+      });
+    },
+  });
+};
 </script>
 
 <style scoped>
@@ -281,6 +302,8 @@ const onSelectClub = async () => {
   font-weight: 600;
 }
 .badge--urgent {
+  display: flex;
+  align-items: center;
   background: rgba(251, 191, 36, 0.2);
   border: 1rpx solid rgba(251, 191, 36, 0.5);
 }
@@ -290,6 +313,8 @@ const onSelectClub = async () => {
   font-weight: 600;
 }
 .badge--limit {
+  display: flex;
+  align-items: center;
   background: rgba(99, 102, 241, 0.25);
   border: 1rpx solid rgba(139, 92, 246, 0.5);
 }

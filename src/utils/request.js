@@ -33,7 +33,7 @@ export function request(options) {
 
         if (statusCode === 401) {
           clearToken();
-          const msg = res.data?.detail || "账号或密码错误";
+          const msg = res.data?.message || "账号或密码错误";
           showToast({ title: msg, icon: "error" });
           setTimeout(() => {
             uni.reLaunch({ url: "/pages/login/login" });
@@ -42,15 +42,15 @@ export function request(options) {
         }
 
         if (statusCode === 403) {
-          const msg = res.data?.detail || "权限不足";
+          const msg = res.data?.message || "权限不足";
           showToast({ title: msg, icon: "error", duration: 2000 });
-          return reject(new Error("权限不足"));
+          return reject(new Error(msg));
         }
 
         if (statusCode === 404) {
-          const msg = res.data?.detail || "资源不存在";
+          const msg = res.data?.message || "资源不存在";
           showToast({ title: msg, icon: "error" });
-          return reject(new Error("资源不存在"));
+          return reject(new Error(msg));
         }
 
         if (statusCode === 405) {
