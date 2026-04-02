@@ -1,0 +1,878 @@
+// ============ 主题颜色配置Map ============
+$color-maps: (
+  // ════════════════════════════════════════════════════════════
+  // 深色紫色系主题
+  // ════════════════════════════════════════════════════════════
+  dark: (
+      palette: (
+        neutral-950: #08101f,
+        neutral-900: #0f172a,
+        neutral-850: #151d35,
+        neutral-800: #1a1f3a,
+        neutral-750: #252d4a,
+        neutral-700: #2d3550,
+        neutral-600: #475569,
+        neutral-500: #64748b,
+        neutral-400: #94a3b8,
+        neutral-300: #cbd5e1,
+        neutral-200: #e2e8f0,
+        neutral-100: #f1f5f9,
+        neutral-50: #f8fafc,
+        primary-900: #4c1d95,
+        primary-800: #6d28d9,
+        primary-700: #7c3aed,
+        primary-600: #a855f7,
+        primary-500: #c084fc,
+        primary-400: #d8b4fe,
+        secondary-600: #4f46e5,
+        secondary-500: #6366f1,
+        secondary-400: #818cf8,
+        success-600: #059669,
+        success-500: #10b981,
+        success-400: #34d399,
+        success-300: #6ee7b7,
+        error-600: #dc2626,
+        error-500: #ef4444,
+        error-400: #f87171,
+        error-300: #fca5a5,
+        warning-600: #b45309,
+        warning-500: #f59e0b,
+        warning-400: #fbbf24,
+        warning-300: #fde68a,
+      ),
+      semantic: (
+        // 背景三层结构
+        bg-base: #08101f,
+        bg-canvas: #0f172a,
+        bg-raised: #1a1f3a,
+        bg-elevated: #252d4a,
+        bg-surface: #2d3550,
+        // 交互背景
+        bg-interactive: rgba(124, 58, 237, 0.08),
+        bg-interactive-hover: rgba(124, 58, 237, 0.12),
+        bg-interactive-active: rgba(124, 58, 237, 0.18),
+        bg-interactive-pressed: rgba(124, 58, 237, 0.25),
+        // 特殊背景
+        bg-overlay: rgba(8, 16, 31, 0.85),
+        bg-scrim: rgba(0, 0, 0, 0.5),
+        // 前景色（文字）
+        fg-primary: #f1f5f9,
+        fg-secondary: #cbd5e1,
+        fg-tertiary: #94a3b8,
+        fg-muted: #64748b,
+        fg-subtle: #475569,
+        // 反向色
+        fg-inverse-primary: #08101f,
+        fg-inverse-secondary: #1a1f3a,
+        // 边框色
+        border-default: rgba(255, 255, 255, 0.08),
+        border-subtle: rgba(255, 255, 255, 0.06),
+        border-light: rgba(255, 255, 255, 0.12),
+        border-strong: rgba(255, 255, 255, 0.18),
+        border-accent: rgba(124, 58, 237, 0.4),
+        // 阴影系统 (统一命名)
+        shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.05),
+        shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.12),
+        shadow-md: 0 4px 12px rgba(0, 0, 0, 0.15),
+        shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.2),
+        shadow-xl: 0 16px 48px rgba(0, 0, 0, 0.25),
+        shadow-brand: 0 8px 24px rgba(124, 58, 237, 0.18),
+      ),
+      component: (
+        nav-bg: #0f172a,
+        nav-border: rgba(255, 255, 255, 0.08),
+        nav-tab-inactive: #94a3b8,
+        nav-tab-active: #7c3aed,
+        nav-tab-icon-opacity-inactive: 0.5,
+        nav-tab-icon-opacity-active: 1,
+        header-bg: #0f172a,
+        header-text: #f1f5f9,
+        header-subtitle: #cbd5e1,
+        header-accent: #7c3aed,
+        card-bg: #1a1f3a,
+        card-border: rgba(255, 255, 255, 0.08),
+        card-shadow: 0 4px 12px rgba(0, 0, 0, 0.15),
+        card-shadow-hover: 0 8px 24px rgba(0, 0, 0, 0.2),
+        card-shadow-elevated: 0 8px 24px rgba(124, 58, 237, 0.1),
+        club-bg: #1a1f3a,
+        club-cover-gradient: linear-gradient(
+            135deg,
+            #7c3aed 0%,
+            #a855f7 50%,
+            #d8b4fe 100%
+          ),
+        club-shadow: 0 8px 24px rgba(124, 58, 237, 0.2),
+        club-text-primary: #ffffff,
+        club-text-secondary: rgba(255, 255, 255, 0.85),
+        club-text-tertiary: rgba(255, 255, 255, 0.7),
+        club-meta-bg: rgba(255, 255, 255, 0.12),
+        club-meta-border: rgba(255, 255, 255, 0.18),
+        modal-bg: #1a1f3a,
+        modal-border: rgba(255, 255, 255, 0.12),
+        modal-shadow: 0 16px 48px rgba(0, 0, 0, 0.25),
+        modal-title: #f1f5f9,
+        modal-backdrop: rgba(8, 16, 31, 0.85),
+        field-label: #cbd5e1,
+        field-required: #ef4444,
+        field-input-bg: rgba(255, 255, 255, 0.08),
+        field-input-border: rgba(255, 255, 255, 0.12),
+        field-input-text: #f1f5f9,
+        field-input-focus-border: #7c3aed,
+        field-input-placeholder: #94a3b8,
+        toast-bg: rgba(15, 23, 42, 0.95),
+        toast-border: rgba(255, 255, 255, 0.15),
+        toast-shadow: 0 8px 24px rgba(0, 0, 0, 0.25),
+        toast-text: #f1f5f9,
+        toast-text-secondary: #cbd5e1,
+      ),
+      state: (
+        success-bg: rgba(16, 185, 129, 0.15),
+        success-bg-subtle: rgba(16, 185, 129, 0.08),
+        success-border: rgba(52, 211, 153, 0.5),
+        success-text: #34d399,
+        success-glow: rgba(16, 185, 129, 0.2),
+        error-bg: rgba(239, 68, 68, 0.15),
+        error-bg-subtle: rgba(239, 68, 68, 0.08),
+        error-border: rgba(248, 113, 113, 0.5),
+        error-text: #f87171,
+        error-glow: rgba(239, 68, 68, 0.2),
+        warning-bg: rgba(245, 158, 11, 0.15),
+        warning-bg-subtle: rgba(245, 158, 11, 0.08),
+        warning-border: rgba(251, 191, 36, 0.5),
+        warning-text: #fbbf24,
+        warning-glow: rgba(245, 158, 11, 0.2),
+        info-bg: rgba(124, 58, 237, 0.15),
+        info-bg-subtle: rgba(124, 58, 237, 0.08),
+        info-border: rgba(168, 85, 247, 0.5),
+        info-text: #d8b4fe,
+        info-glow: rgba(124, 58, 237, 0.2),
+        disabled-bg: rgba(100, 116, 139, 0.12),
+        disabled-border: rgba(100, 116, 139, 0.25),
+        disabled-text: #94a3b8,
+        disabled-opacity: 0.5,
+      ),
+      effect: (
+        gradient-primary: linear-gradient(135deg, #7c3aed 0%, #a855f7 100%),
+        gradient-primary-extended: linear-gradient(
+            135deg,
+            #7c3aed 0%,
+            #a855f7 50%,
+            #d8b4fe 100%
+          ),
+        gradient-hero: linear-gradient(
+            145deg,
+            #6d28d9 0%,
+            #7c3aed 55%,
+            #a855f7 100%
+          ),
+        gradient-dark: linear-gradient(135deg, #4c1d95 0%, #6d28d9 100%),
+        progress-normal: linear-gradient(90deg, #7c3aed, #a855f7),
+        progress-urgent: linear-gradient(90deg, #f59e0b, #fbbf24),
+        progress-full: linear-gradient(90deg, #ef4444, #f87171),
+        progress-success: linear-gradient(90deg, #10b981, #34d399),
+        btn-active-shadow: rgba(124, 58, 237, 0.5),
+        btn-pulse-shadow: rgba(124, 58, 237, 0.75),
+        btn-hover-overlay: rgba(124, 58, 237, 0.12),
+        glow-gradient: linear-gradient(
+            90deg,
+            transparent 0%,
+            rgba(124, 58, 237, 0.25) 50%,
+            transparent 100%
+          ),
+        glow-primary: rgba(124, 58, 237, 0.4),
+        glow-secondary: rgba(168, 85, 247, 0.3),
+        glow-strong: rgba(124, 58, 237, 0.6),
+      ),
+      scheme: (
+        badge-open: (
+          bg: rgba(16, 185, 129, 0.15),
+          border: rgba(52, 211, 153, 0.6),
+          text: #34d399,
+        ),
+        badge-full: (
+          bg: rgba(239, 68, 68, 0.15),
+          border: rgba(248, 113, 113, 0.6),
+          text: #f87171,
+        ),
+        badge-urgent: (
+          bg: rgba(245, 158, 11, 0.15),
+          border: rgba(251, 191, 36, 0.6),
+          text: #fbbf24,
+        ),
+        badge-reserved: (
+          bg: rgba(168, 85, 247, 0.15),
+          border: rgba(196, 181, 253, 0.5),
+          text: #d8b4fe,
+        ),
+        btn-select-active: (
+          gradient: linear-gradient(
+              135deg,
+              #7c3aed 0%,
+              #a855f7 60%,
+              #d8b4fe 100%
+            ),
+          shadow: rgba(124, 58, 237, 0.5),
+          inset: rgba(255, 255, 255, 0.2),
+        ),
+        btn-select-hover: (
+          gradient: linear-gradient(
+              135deg,
+              #6d28d9 0%,
+              #7c3aed 60%,
+              #a855f7 100%
+            ),
+          shadow: rgba(124, 58, 237, 0.6),
+        ),
+        btn-select-full: (
+          bg: rgba(239, 68, 68, 0.12),
+          border: rgba(248, 113, 113, 0.4),
+          text: #f87171,
+        ),
+        btn-select-ended: (
+          bg: rgba(100, 116, 139, 0.12),
+          border: rgba(100, 116, 139, 0.25),
+          text: #94a3b8,
+        ),
+        toast-success: (
+          icon-bg: rgba(16, 185, 129, 0.2),
+          icon-border: rgba(52, 211, 153, 0.6),
+          icon-color: #34d399,
+          glow: rgba(16, 185, 129, 0.25),
+        ),
+        toast-error: (
+          icon-bg: rgba(239, 68, 68, 0.2),
+          icon-border: rgba(248, 113, 113, 0.6),
+          icon-color: #f87171,
+          glow: rgba(239, 68, 68, 0.25),
+        ),
+        toast-warning: (
+          icon-bg: rgba(245, 158, 11, 0.2),
+          icon-border: rgba(251, 191, 36, 0.6),
+          icon-color: #fbbf24,
+          glow: rgba(245, 158, 11, 0.25),
+        ),
+        toast-loading: (
+          icon-bg: rgba(124, 58, 237, 0.2),
+          icon-border: rgba(168, 85, 247, 0.6),
+          spinner-bg: rgba(124, 58, 237, 0.2),
+          spinner-top: #d8b4fe,
+          glow: rgba(124, 58, 237, 0.25),
+        ),
+      ),
+    ),
+
+  // ════════════════════════════════════════════════════════════
+  // 浅色系主题
+  // ════════════════════════════════════════════════════════════
+  light: (
+      palette: (
+        neutral-950: #fafafa,
+        neutral-900: #ffffff,
+        neutral-850: #f8f9fa,
+        neutral-800: #f3f4f6,
+        neutral-750: #e5e7eb,
+        neutral-700: #d1d5db,
+        neutral-600: #9ca3af,
+        neutral-500: #6b7280,
+        neutral-400: #4b5563,
+        neutral-300: #374151,
+        neutral-200: #1f2937,
+        neutral-100: #111827,
+        neutral-50: #000000,
+        primary-900: #c8a2c8,
+        primary-800: #b78cc7,
+        primary-700: #a667d8,
+        primary-600: #9d56d4,
+        primary-500: #8d3dd1,
+        primary-400: #7d2cc9,
+        secondary-600: #4f46e5,
+        secondary-500: #6366f1,
+        secondary-400: #818cf8,
+        success-600: #059669,
+        success-500: #10b981,
+        success-400: #34d399,
+        success-300: #6ee7b7,
+        error-600: #dc2626,
+        error-500: #ef4444,
+        error-400: #f87171,
+        error-300: #fca5a5,
+        warning-600: #b45309,
+        warning-500: #f59e0b,
+        warning-400: #fbbf24,
+        warning-300: #fde68a,
+      ),
+      semantic: (
+        bg-base: #ffffff,
+        bg-canvas: #ffffff,
+        bg-raised: #f8f9fa,
+        bg-elevated: #f3f4f6,
+        bg-surface: #e5e7eb,
+        bg-interactive: rgba(166, 103, 216, 0.08),
+        bg-interactive-hover: rgba(166, 103, 216, 0.12),
+        bg-interactive-active: rgba(166, 103, 216, 0.18),
+        bg-interactive-pressed: rgba(166, 103, 216, 0.25),
+        bg-overlay: rgba(255, 255, 255, 0.8),
+        bg-scrim: rgba(0, 0, 0, 0.2),
+        fg-primary: #111827,
+        fg-secondary: #374151,
+        fg-tertiary: #6b7280,
+        fg-muted: #9ca3af,
+        fg-subtle: #d1d5db,
+        fg-inverse-primary: #ffffff,
+        fg-inverse-secondary: #f8f9fa,
+        border-default: rgba(0, 0, 0, 0.08),
+        border-subtle: rgba(0, 0, 0, 0.05),
+        border-light: rgba(0, 0, 0, 0.12),
+        border-strong: rgba(0, 0, 0, 0.18),
+        border-accent: rgba(166, 103, 216, 0.35),
+        shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.04),
+        shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08),
+        shadow-md: 0 4px 12px rgba(0, 0, 0, 0.1),
+        shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.12),
+        shadow-xl: 0 16px 48px rgba(0, 0, 0, 0.15),
+        shadow-brand: 0 8px 24px rgba(166, 103, 216, 0.12),
+      ),
+      component: (
+        nav-bg: #ffffff,
+        nav-border: rgba(0, 0, 0, 0.08),
+        nav-tab-inactive: #6b7280,
+        nav-tab-active: #a667d8,
+        nav-tab-icon-opacity-inactive: 0.5,
+        nav-tab-icon-opacity-active: 1,
+        header-bg: #ffffff,
+        header-text: #111827,
+        header-subtitle: #374151,
+        header-accent: #a667d8,
+        card-bg: #f8f9fa,
+        card-border: rgba(0, 0, 0, 0.08),
+        card-shadow: 0 4px 12px rgba(0, 0, 0, 0.1),
+        card-shadow-hover: 0 8px 24px rgba(0, 0, 0, 0.12),
+        card-shadow-elevated: 0 8px 24px rgba(166, 103, 216, 0.08),
+        club-bg: #f8f9fa,
+        club-cover-gradient: linear-gradient(
+            135deg,
+            #a667d8 0%,
+            #9d56d4 50%,
+            #8d3dd1 100%
+          ),
+        club-shadow: 0 8px 24px rgba(166, 103, 216, 0.12),
+        club-text-primary: #111827,
+        club-text-secondary: rgba(17, 24, 39, 0.85),
+        club-text-tertiary: rgba(17, 24, 39, 0.7),
+        club-meta-bg: rgba(0, 0, 0, 0.06),
+        club-meta-border: rgba(0, 0, 0, 0.12),
+        modal-bg: #ffffff,
+        modal-border: rgba(0, 0, 0, 0.12),
+        modal-shadow: 0 16px 48px rgba(0, 0, 0, 0.15),
+        modal-title: #111827,
+        modal-backdrop: rgba(0, 0, 0, 0.4),
+        field-label: #374151,
+        field-required: #dc2626,
+        field-input-bg: #ffffff,
+        field-input-border: rgba(0, 0, 0, 0.12),
+        field-input-text: #111827,
+        field-input-focus-border: #a667d8,
+        field-input-placeholder: #9ca3af,
+        toast-bg: rgba(255, 255, 255, 0.95),
+        toast-border: rgba(0, 0, 0, 0.12),
+        toast-shadow: 0 8px 24px rgba(0, 0, 0, 0.15),
+        toast-text: #111827,
+        toast-text-secondary: #374151,
+      ),
+      state: (
+        success-bg: rgba(16, 185, 129, 0.1),
+        success-bg-subtle: rgba(16, 185, 129, 0.05),
+        success-border: rgba(16, 185, 129, 0.4),
+        success-text: #059669,
+        success-glow: rgba(16, 185, 129, 0.15),
+        error-bg: rgba(239, 68, 68, 0.1),
+        error-bg-subtle: rgba(239, 68, 68, 0.05),
+        error-border: rgba(239, 68, 68, 0.4),
+        error-text: #dc2626,
+        error-glow: rgba(239, 68, 68, 0.15),
+        warning-bg: rgba(245, 158, 11, 0.1),
+        warning-bg-subtle: rgba(245, 158, 11, 0.05),
+        warning-border: rgba(245, 158, 11, 0.4),
+        warning-text: #b45309,
+        warning-glow: rgba(245, 158, 11, 0.15),
+        info-bg: rgba(166, 103, 216, 0.1),
+        info-bg-subtle: rgba(166, 103, 216, 0.05),
+        info-border: rgba(166, 103, 216, 0.4),
+        info-text: #7d2cc9,
+        info-glow: rgba(166, 103, 216, 0.15),
+        disabled-bg: rgba(107, 114, 128, 0.08),
+        disabled-border: rgba(107, 114, 128, 0.2),
+        disabled-text: #9ca3af,
+        disabled-opacity: 0.5,
+      ),
+      effect: (
+        gradient-primary: linear-gradient(135deg, #a667d8 0%, #9d56d4 100%),
+        gradient-primary-extended: linear-gradient(
+            135deg,
+            #a667d8 0%,
+            #9d56d4 50%,
+            #8d3dd1 100%
+          ),
+        gradient-hero: linear-gradient(
+            145deg,
+            #b78cc7 0%,
+            #a667d8 55%,
+            #9d56d4 100%
+          ),
+        gradient-dark: linear-gradient(135deg, #a667d8 0%, #8d3dd1 100%),
+        progress-normal: linear-gradient(90deg, #a667d8, #9d56d4),
+        progress-urgent: linear-gradient(90deg, #b45309, #f59e0b),
+        progress-full: linear-gradient(90deg, #dc2626, #ef4444),
+        progress-success: linear-gradient(90deg, #059669, #10b981),
+        btn-active-shadow: rgba(166, 103, 216, 0.4),
+        btn-pulse-shadow: rgba(166, 103, 216, 0.6),
+        btn-hover-overlay: rgba(166, 103, 216, 0.1),
+        glow-gradient: linear-gradient(
+            90deg,
+            transparent 0%,
+            rgba(166, 103, 216, 0.2) 50%,
+            transparent 100%
+          ),
+        glow-primary: rgba(166, 103, 216, 0.3),
+        glow-secondary: rgba(157, 86, 212, 0.25),
+        glow-strong: rgba(166, 103, 216, 0.5),
+      ),
+      scheme: (
+        badge-open: (
+          bg: rgba(16, 185, 129, 0.1),
+          border: rgba(16, 185, 129, 0.4),
+          text: #059669,
+        ),
+        badge-full: (
+          bg: rgba(239, 68, 68, 0.1),
+          border: rgba(239, 68, 68, 0.4),
+          text: #dc2626,
+        ),
+        badge-urgent: (
+          bg: rgba(245, 158, 11, 0.1),
+          border: rgba(245, 158, 11, 0.4),
+          text: #b45309,
+        ),
+        badge-reserved: (
+          bg: rgba(166, 103, 216, 0.1),
+          border: rgba(166, 103, 216, 0.4),
+          text: #a667d8,
+        ),
+        btn-select-active: (
+          gradient: linear-gradient(
+              135deg,
+              #a667d8 0%,
+              #9d56d4 60%,
+              #8d3dd1 100%
+            ),
+          shadow: rgba(166, 103, 216, 0.4),
+          inset: rgba(0, 0, 0, 0.05),
+        ),
+        btn-select-hover: (
+          gradient: linear-gradient(
+              135deg,
+              #9d56d4 0%,
+              #a667d8 60%,
+              #9d56d4 100%
+            ),
+          shadow: rgba(166, 103, 216, 0.45),
+        ),
+        btn-select-full: (
+          bg: rgba(239, 68, 68, 0.1),
+          border: rgba(239, 68, 68, 0.3),
+          text: #dc2626,
+        ),
+        btn-select-ended: (
+          bg: rgba(107, 114, 128, 0.08),
+          border: rgba(107, 114, 128, 0.2),
+          text: #9ca3af,
+        ),
+        toast-success: (
+          icon-bg: rgba(16, 185, 129, 0.15),
+          icon-border: rgba(16, 185, 129, 0.4),
+          icon-color: #059669,
+          glow: rgba(16, 185, 129, 0.15),
+        ),
+        toast-error: (
+          icon-bg: rgba(239, 68, 68, 0.15),
+          icon-border: rgba(239, 68, 68, 0.4),
+          icon-color: #dc2626,
+          glow: rgba(239, 68, 68, 0.15),
+        ),
+        toast-warning: (
+          icon-bg: rgba(245, 158, 11, 0.15),
+          icon-border: rgba(245, 158, 11, 0.4),
+          icon-color: #b45309,
+          glow: rgba(245, 158, 11, 0.15),
+        ),
+        toast-loading: (
+          icon-bg: rgba(166, 103, 216, 0.15),
+          icon-border: rgba(166, 103, 216, 0.4),
+          spinner-bg: rgba(166, 103, 216, 0.15),
+          spinner-top: #7d2cc9,
+          glow: rgba(166, 103, 216, 0.15),
+        ),
+      ),
+    ),
+
+  // ════════════════════════════════════════════════════════════
+  // 粉色系主题 (甜蜜、温暖、女性向)
+  // ════════════════════════════════════════════════════════════
+  pink: (
+      palette: (
+        // 基础中性色 - 温暖粉色系（更有深度）
+        neutral-950: #faf4f1,
+        // L0: 极浅暖粉
+        neutral-900: #fef9f6,
+        // L1: 主背景层（暖白粉）
+        neutral-850: #fdf5f1,
+        // L2: 卡片基础（浅暖粉）
+        neutral-800: #f9ebe5,
+        // L3: 卡片互动层（浅粉米）
+        neutral-750: #f4dcd0,
+        // L4: 悬停/提升层（粉米）
+        neutral-700: #ead0c0,
+        // L5: 强互动层（暖粉）
+        neutral-600: #d8a894,
+        // 边框基础（中粉棕）
+        neutral-500: #c4866c,
+        // 文字灰化（粉棕）
+        neutral-400: #a8634d,
+        // 文字次要（深粉棕）
+        neutral-300: #854632,
+        // 文字辅助（很深棕）
+        neutral-200: #5c3128,
+        // 文字淡出（极深棕）
+        neutral-100: #3a1e1a,
+        // 文字主体（近黑）
+        neutral-50: #1a0f0d,
+
+        // 极深文字
+        // 主品牌色 - 粉色系（HappyHues 灵感 - 温暖、饱和、高级）
+        primary-900: #f5c4b8,
+        // 淡珊瑚粉
+        primary-800: #f0a996,
+        // 珊瑚粉
+        primary-700: #e8906f,
+        // 主粉色 ✨ 暖粉
+        primary-600: #df7a54,
+        // 亮粉
+        primary-500: #d6643a,
+        // 深粉
+        primary-400: #cc4f23,
+
+        // 更深粉
+        // 辅助颜色系 - 暖色调
+        secondary-600: #c9977d,
+        // 暖棕粉
+        secondary-500: #b07e62,
+        // 深棕粉
+        secondary-400: #964a47,
+
+        // 更深棕粉
+        // 功能色（保持一致）
+        success-600: #059669,
+        success-500: #10b981,
+        success-400: #34d399,
+        success-300: #6ee7b7,
+        error-600: #dc2626,
+        error-500: #ef4444,
+        error-400: #f87171,
+        error-300: #fca5a5,
+        warning-600: #b45309,
+        warning-500: #f59e0b,
+        warning-400: #fbbf24,
+        warning-300: #fde68a,
+      ),
+      semantic: (
+        // ─ 背景三层结构（温暖、有深度）
+        bg-base: #fef9f6,
+        // L0: 主背景（暖白粉）
+        bg-canvas: #fef9f6,
+        // L1: 画布背景（暖白粉）
+        bg-raised: #fdf5f1,
+        // L2: 卡片基础（浅暖粉）
+        bg-elevated: #f9ebe5,
+        // L3: 悬停/模态（浅粉米）
+        bg-surface: #f4dcd0,
+
+        // L4: 强交互（粉米）
+        // ─ 交互背景（粉色交互 - 暖色调）
+        bg-interactive: rgba(232, 144, 111, 0.08),
+        bg-interactive-hover: rgba(232, 144, 111, 0.12),
+        bg-interactive-active: rgba(232, 144, 111, 0.18),
+        bg-interactive-pressed: rgba(232, 144, 111, 0.25),
+        // ─ 特殊背景
+        bg-overlay: rgba(254, 249, 246, 0.92),
+        bg-scrim: rgba(0, 0, 0, 0.1),
+        // ─ 前景色（文字）- 深棕色系
+        fg-primary: #3a1e1a,
+        fg-secondary: #854632,
+        fg-tertiary: #c4866c,
+        fg-muted: #d8a894,
+        fg-subtle: #f4dcd0,
+
+        // ─ 反向色
+        fg-inverse-primary: #fef9f6,
+        fg-inverse-secondary: #fdf5f1,
+
+        // ─ 边框色 - 粉棕系边框（更自然）
+        border-default: rgba(216, 168, 148, 0.15),
+        border-subtle: rgba(216, 168, 148, 0.08),
+        border-light: rgba(216, 168, 148, 0.2),
+        border-strong: rgba(216, 168, 148, 0.28),
+        border-accent: rgba(232, 144, 111, 0.4),
+        // ─ 阴影系统（统一命名 - 暖粉发光）
+        shadow-xs: 0 1px 2px rgba(232, 144, 111, 0.05),
+        shadow-sm: 0 1px 3px rgba(232, 144, 111, 0.08),
+        shadow-md: 0 4px 12px rgba(232, 144, 111, 0.1),
+        shadow-lg: 0 8px 24px rgba(232, 144, 111, 0.12),
+        shadow-xl: 0 16px 48px rgba(232, 144, 111, 0.15),
+        shadow-brand: 0 8px 24px rgba(232, 144, 111, 0.18),
+      ),
+      component: (
+        // ─ 导航栏
+        nav-bg: #fef9f6,
+        nav-border: rgba(216, 168, 148, 0.15),
+        nav-tab-inactive: #c4866c,
+        nav-tab-active: #e8906f,
+        nav-tab-icon-opacity-inactive: 0.6,
+        nav-tab-icon-opacity-active: 1,
+
+        // ─ 头部
+        header-bg: #fef9f6,
+        header-text: #3a1e1a,
+        header-subtitle: #854632,
+        header-accent: #e8906f,
+
+        // ─ 卡片组件
+        card-bg: #fdf5f1,
+        card-border: rgba(216, 168, 148, 0.15),
+        card-shadow: 0 4px 12px rgba(232, 144, 111, 0.08),
+        card-shadow-hover: 0 8px 24px rgba(232, 144, 111, 0.12),
+        card-shadow-elevated: 0 8px 24px rgba(232, 144, 111, 0.1),
+        // ─ 社团卡片
+        club-bg: #fdf5f1,
+        club-cover-gradient: linear-gradient(
+            135deg,
+            #e8906f 0%,
+            #df7a54 50%,
+            #d6643a 100%
+          ),
+        club-shadow: 0 8px 24px rgba(232, 144, 111, 0.18),
+        club-text-primary: #3a1e1a,
+        club-text-secondary: rgba(58, 30, 26, 0.85),
+        club-text-tertiary: rgba(58, 30, 26, 0.7),
+        club-meta-bg: rgba(232, 144, 111, 0.08),
+        club-meta-border: rgba(232, 144, 111, 0.18),
+        // ─ 弹窗/模态框
+        modal-bg: #fef9f6,
+        modal-border: rgba(216, 168, 148, 0.18),
+        modal-shadow: 0 16px 48px rgba(232, 144, 111, 0.15),
+        modal-title: #3a1e1a,
+        modal-backdrop: rgba(0, 0, 0, 0.2),
+        // ─ 表单
+        field-label: #854632,
+        field-required: #dc2626,
+        field-input-bg: #fef9f6,
+        field-input-border: rgba(216, 168, 148, 0.18),
+        field-input-text: #3a1e1a,
+        field-input-focus-border: #e8906f,
+        field-input-placeholder: #c4866c,
+
+        // ─ Toast 通知
+        toast-bg: rgba(254, 249, 246, 0.98),
+        toast-border: rgba(216, 168, 148, 0.18),
+        toast-shadow: 0 8px 24px rgba(232, 144, 111, 0.12),
+        toast-text: #3a1e1a,
+        toast-text-secondary: #854632,
+      ),
+      state: (
+        // ─ 成功状态
+        success-bg: rgba(16, 185, 129, 0.1),
+        success-bg-subtle: rgba(16, 185, 129, 0.05),
+        success-border: rgba(16, 185, 129, 0.4),
+        success-text: #059669,
+        success-glow: rgba(16, 185, 129, 0.15),
+        // ─ 错误状态
+        error-bg: rgba(239, 68, 68, 0.1),
+        error-bg-subtle: rgba(239, 68, 68, 0.05),
+        error-border: rgba(239, 68, 68, 0.4),
+        error-text: #dc2626,
+        error-glow: rgba(239, 68, 68, 0.15),
+        // ─ 警告状态
+        warning-bg: rgba(245, 158, 11, 0.1),
+        warning-bg-subtle: rgba(245, 158, 11, 0.05),
+        warning-border: rgba(245, 158, 11, 0.4),
+        warning-text: #b45309,
+        warning-glow: rgba(245, 158, 11, 0.15),
+        // ─ 信息状态（粉色强调）
+        info-bg: rgba(232, 144, 111, 0.1),
+        info-bg-subtle: rgba(232, 144, 111, 0.05),
+        info-border: rgba(232, 144, 111, 0.4),
+        info-text: #e8906f,
+        info-glow: rgba(232, 144, 111, 0.15),
+        // ─ 禁用/已结束
+        disabled-bg: rgba(196, 134, 108, 0.08),
+        disabled-border: rgba(196, 134, 108, 0.2),
+        disabled-text: #d8a894,
+        disabled-opacity: 0.5,
+      ),
+      effect: (
+        // ─ 主渐变（粉色 - 暖色调）
+        gradient-primary: linear-gradient(135deg, #e8906f 0%, #df7a54 100%),
+        gradient-primary-extended: linear-gradient(
+            135deg,
+            #e8906f 0%,
+            #df7a54 50%,
+            #d6643a 100%
+          ),
+        // ─ 英雄渐变（粉色版本 - 温暖、柔和）
+        gradient-hero: linear-gradient(
+            145deg,
+            #f0a996 0%,
+            #e8906f 55%,
+            #df7a54 100%
+          ),
+        // ─ 暗渐变
+        gradient-dark: linear-gradient(135deg, #e8906f 0%, #d6643a 100%),
+        // ─ 进度条渐变
+        progress-normal: linear-gradient(90deg, #e8906f, #df7a54),
+        progress-urgent: linear-gradient(90deg, #b45309, #f59e0b),
+        progress-full: linear-gradient(90deg, #dc2626, #ef4444),
+        progress-success: linear-gradient(90deg, #059669, #10b981),
+        // ─ 按钮状态效果
+        btn-active-shadow: rgba(232, 144, 111, 0.4),
+        btn-pulse-shadow: rgba(232, 144, 111, 0.6),
+        btn-hover-overlay: rgba(232, 144, 111, 0.1),
+        // ─ 发光效果（统一命名 - 暖粉发光）
+        glow-gradient: linear-gradient(
+            90deg,
+            transparent 0%,
+            rgba(232, 144, 111, 0.2) 50%,
+            transparent 100%
+          ),
+        glow-primary: rgba(232, 144, 111, 0.35),
+        glow-secondary: rgba(223, 122, 84, 0.25),
+        glow-strong: rgba(232, 144, 111, 0.5),
+      ),
+      scheme: (
+        badge-open: (
+          bg: rgba(16, 185, 129, 0.1),
+          border: rgba(16, 185, 129, 0.4),
+          text: #059669,
+        ),
+        badge-full: (
+          bg: rgba(239, 68, 68, 0.1),
+          border: rgba(239, 68, 68, 0.4),
+          text: #dc2626,
+        ),
+        badge-urgent: (
+          bg: rgba(245, 158, 11, 0.1),
+          border: rgba(245, 158, 11, 0.4),
+          text: #b45309,
+        ),
+        badge-reserved: (
+          bg: rgba(232, 144, 111, 0.1),
+          border: rgba(232, 144, 111, 0.4),
+          text: #e8906f,
+        ),
+        btn-select-active: (
+          gradient: linear-gradient(
+              135deg,
+              #e8906f 0%,
+              #df7a54 60%,
+              #d6643a 100%
+            ),
+          shadow: rgba(232, 144, 111, 0.4),
+          inset: rgba(0, 0, 0, 0.02),
+        ),
+        btn-select-hover: (
+          gradient: linear-gradient(
+              135deg,
+              #f0a996 0%,
+              #e8906f 60%,
+              #df7a54 100%
+            ),
+          shadow: rgba(232, 144, 111, 0.45),
+        ),
+        btn-select-full: (
+          bg: rgba(239, 68, 68, 0.1),
+          border: rgba(239, 68, 68, 0.3),
+          text: #dc2626,
+        ),
+        btn-select-ended: (
+          bg: rgba(196, 134, 108, 0.08),
+          border: rgba(196, 134, 108, 0.2),
+          text: #d8a894,
+        ),
+        toast-success: (
+          icon-bg: rgba(16, 185, 129, 0.15),
+          icon-border: rgba(16, 185, 129, 0.4),
+          icon-color: #059669,
+          glow: rgba(16, 185, 129, 0.15),
+        ),
+        toast-error: (
+          icon-bg: rgba(239, 68, 68, 0.15),
+          icon-border: rgba(239, 68, 68, 0.4),
+          icon-color: #dc2626,
+          glow: rgba(239, 68, 68, 0.15),
+        ),
+        toast-warning: (
+          icon-bg: rgba(245, 158, 11, 0.15),
+          icon-border: rgba(245, 158, 11, 0.4),
+          icon-color: #b45309,
+          glow: rgba(245, 158, 11, 0.15),
+        ),
+        toast-loading: (
+          icon-bg: rgba(232, 144, 111, 0.15),
+          icon-border: rgba(232, 144, 111, 0.4),
+          spinner-bg: rgba(232, 144, 111, 0.15),
+          spinner-top: #e8906f,
+          glow: rgba(232, 144, 111, 0.15),
+        ),
+      ),
+    )
+);
+
+// ============ 获取颜色函数 ============
+@function get-color($theme, $keys...) {
+  $map: map-get($color-maps, $theme);
+
+  @each $key in $keys {
+    $map: map-get($map, $key);
+    @if $map == null {
+      @warn "❌ 颜色路径不存在: #{$theme} > #{$keys}";
+      @return #ff00ff;
+    }
+  }
+
+  @return $map;
+}
+
+// ============ Mixin：主题感知样式生成 ============
+@mixin theme-aware($property, $keys...) {
+  // 深色主题（默认）
+  #{$property}: get-color(dark, $keys...);
+
+  // 浅色主题
+  .theme-light & {
+    #{$property}: get-color(light, $keys...);
+  }
+
+  // 粉色主题
+  .theme-dark & {
+    #{$property}: get-color(dark, $keys...);
+  }
+}
+
+// ============ 辅助 Mixin ============
+@mixin theme-card($bgKey, $textKey) {
+  @include theme-aware(background-color, semantic, $bgKey);
+  @include theme-aware(color, semantic, $textKey);
+}
+
+@mixin theme-card-depth($borderKey, $shadowKey) {
+  @include theme-aware(border-color, semantic, $borderKey);
+  @include theme-aware(box-shadow, semantic, $shadowKey);
+}
