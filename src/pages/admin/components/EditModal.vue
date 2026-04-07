@@ -44,6 +44,30 @@
               <text class="module-title">基本信息</text>
             </view>
             <view class="module-content">
+              <!-- 所属大社 -->
+              <view class="form-group">
+                <view class="form-label-wrapper">
+                  <text class="form-label">所属大社</text>
+                  <text class="form-required">*</text>
+                </view>
+                <view class="select-wrapper">
+                  <picker
+                    mode="selector"
+                    :range="superClubOptions"
+                    :value="superClubIndex"
+                    @change="handleSuperClubChange"
+                  >
+                    <view
+                      class="picker-value"
+                      :class="{ 'picker-value--empty': !formData.super_club }"
+                    >
+                      <text class="picker-icon">🏆</text>
+                      <text>{{ formData.super_club || "请选择所属大社" }}</text>
+                    </view>
+                  </picker>
+                </view>
+              </view>
+
               <!-- 社团名称 -->
               <view class="form-group">
                 <view class="form-label-wrapper">
@@ -145,14 +169,13 @@
                     @change="handleStatusChange"
                   >
                     <view class="picker-value">
-                      <text class="picker-icon">{{ getStatusIcon }}</text>
                       <text>{{ statusOptions[statusIndex] }}</text>
                     </view>
                   </picker>
                 </view>
               </view>
 
-              <!-- 总名额和剩余名额 -->
+              <!-- 总名额、预留名额和剩余名额 -->
               <view class="form-group-row">
                 <view class="form-group form-group--half">
                   <view class="form-label-wrapper">
@@ -165,7 +188,7 @@
                       class="form-input"
                       type="number"
                       placeholder="0"
-                      :value="formData.total_quota"
+                      v-model.number="formData.total_quota"
                       @input="handleInput('total_quota', $event)"
                     />
                   </view>
@@ -173,19 +196,35 @@
 
                 <view class="form-group form-group--half">
                   <view class="form-label-wrapper">
-                    <text class="form-label">剩余名额</text>
-                    <text class="form-required">*</text>
+                    <text class="form-label">预留名额</text>
                   </view>
                   <view class="form-input-wrapper">
-                    <text class="input-icon">📌</text>
+                    <text class="input-icon">🏷️</text>
                     <input
                       class="form-input"
                       type="number"
                       placeholder="0"
-                      :value="formData.remaining_quota"
-                      @input="handleInput('remaining_quota', $event)"
+                      v-model.number="formData.reserved_quota"
+                      @input="handleInput('reserved_quota', $event)"
                     />
                   </view>
+                </view>
+              </view>
+
+              <!-- 剩余名额 -->
+              <view class="form-group">
+                <view class="form-label-wrapper">
+                  <text class="form-label">剩余名额</text>
+                  <text class="form-required">*</text>
+                </view>
+                <view class="form-input-wrapper">
+                  <text class="input-icon">📌</text>
+                  <input
+                    class="form-input"
+                    type="number"
+                    v-model.number="formData.remaining_quota"
+                    disabled
+                  />
                 </view>
               </view>
 
@@ -351,8 +390,8 @@
                     class="form-input"
                     type="text"
                     placeholder="请输入专业"
-                    :value="formData.major"
-                    @input="handleInput('major', $event)"
+                    :value="formData.major_name"
+                    @input="handleInput('major_name', $event)"
                   />
                 </view>
               </view>
@@ -444,8 +483,36 @@
                 </view>
                 <switch
                   :checked="formData.has_selected"
-                  @change="handleToggle('has_selected', $event)"
+                  @change="handleStatusToggle('has_selected', $event)"
                 />
+              </view>
+
+              <!-- 已选社时显示社团选择 -->
+              <view v-if="formData.has_selected" class="form-group">
+                <view class="form-label-wrapper">
+                  <text class="form-label">选择的社团</text>
+                  <text class="form-required">*</text>
+                </view>
+                <view class="select-wrapper">
+                  <picker
+                    mode="selector"
+                    :range="clubOptions"
+                    :value="selectedClubIndex"
+                    @change="handleClubChange"
+                  >
+                    <view
+                      class="picker-value"
+                      :class="{
+                        'picker-value--empty': !formData.selected_club,
+                      }"
+                    >
+                      <text class="picker-icon">🏢</text>
+                      <text>{{
+                        formData.selected_club_name || "请选择社团"
+                      }}</text>
+                    </view>
+                  </picker>
+                </view>
               </view>
 
               <!-- 已预留 -->
@@ -461,8 +528,45 @@
                 </view>
                 <switch
                   :checked="formData.is_reserved"
-                  @change="handleToggle('is_reserved', $event)"
+                  @change="handleStatusToggle('is_reserved', $event)"
                 />
+              </view>
+
+              <!-- 已预留时显示社团选择 -->
+              <view v-if="formData.is_reserved" class="form-group">
+                <view class="form-label-wrapper">
+                  <text class="form-label">预留的社团</text>
+                  <text class="form-required">*</text>
+                </view>
+                <view class="select-wrapper">
+                  <picker
+                    mode="selector"
+                    :range="clubOptions"
+                    :value="reservedClubIndex"
+                    @change="handleReservedClubChange"
+                  >
+                    <view
+                      class="picker-value"
+                      :class="{
+                        'picker-value--empty': !formData.reserved_club,
+                      }"
+                    >
+                      <text class="picker-icon">🏢</text>
+                      <text>{{
+                        formData.reserved_club_name || "请选择社团"
+                      }}</text>
+                    </view>
+                  </picker>
+                </view>
+              </view>
+
+              <!-- 互斥提示 -->
+              <view
+                v-if="formData.has_selected && formData.is_reserved"
+                class="form-warning"
+              >
+                <text class="warning-icon">⚠️</text>
+                <text class="warning-text">不能同时选择"已选社"和"已预留"</text>
               </view>
             </view>
           </view>
@@ -488,6 +592,7 @@
 
 <script setup>
 import { ref, computed, watch } from "vue";
+import { showToast } from "@/utils/toast.js";
 
 const props = defineProps({
   type: {
@@ -499,6 +604,11 @@ const props = defineProps({
     type: Object,
     required: true,
   },
+  // ✅ 新增：传入可用的社团列表
+  clubList: {
+    type: Array,
+    default: () => [],
+  },
 });
 
 const emit = defineEmits(["save", "close"]);
@@ -506,13 +616,27 @@ const emit = defineEmits(["save", "close"]);
 // 表单数据
 const formData = ref({});
 
+// 所属大社选项
+const superClubOptions = [
+  "新零售品牌创意工作室",
+  '"三IN"财务人成长社',
+  '"小先生"兴趣社',
+  '"小先生"宣讲社',
+  "跨境电商新零售人才培养社",
+];
+
+// ✅ 社团列表（从 props 传入）
+const clubOptions = computed(() => {
+  return props.clubList.map((club) => club.club_name);
+});
+
 // 选项
 const statusOptions = ["🔒 未开放", "🔓 招募中", "✅ 已满员", "🏁 已结束"];
 const gradeOptions = ["大一", "大二", "大三", "大四"];
 
 // 计算属性
 const isNew = computed(() => {
-  return props.type === "club" ? !props.data.club_id : !props.data.student_id;
+  return props.type === "club" ? !props.data.club_name : !props.data.student_id;
 });
 
 const modalTitle = computed(() => (props.type === "club" ? "社团" : "学生"));
@@ -521,12 +645,7 @@ const modalIcon = computed(() => (props.type === "club" ? "🏢" : "👤"));
 
 const statusIndex = computed(() => {
   const statusMap = { 0: 0, 1: 1, 2: 2, 3: 3 };
-  return statusMap[formData.value.club_status] || 1;
-});
-
-const getStatusIcon = computed(() => {
-  const map = { 0: "🔒", 1: "🔓", 2: "✅", 3: "🏁" };
-  return map[formData.value.club_status] || "❓";
+  return statusMap[formData.value.club_status] || 0;
 });
 
 const gradeIndex = computed(() => {
@@ -557,6 +676,60 @@ watch(
   { immediate: true, deep: true },
 );
 
+watch(
+  () => [formData.value.total_quota, formData.value.reserved_quota],
+  () => {
+    const total = parseInt(formData.value.total_quota) || 0;
+    const reserved = parseInt(formData.value.reserved_quota) || 0;
+    formData.value.remaining_quota = Math.max(0, total - reserved);
+    formData.value.total_quota = Math.max(0, total);
+    formData.value.reserved_quota = Math.max(0, reserved);
+  },
+);
+
+// ✅ 已选社团的索引
+const selectedClubIndex = computed(() => {
+  if (!formData.value.selected_club) return 0;
+  return clubOptions.value.indexOf(formData.value.selected_club);
+});
+
+// ✅ 已预留社团的索引
+const reservedClubIndex = computed(() => {
+  if (!formData.value.reserved_club) return 0;
+  return clubOptions.value.indexOf(formData.value.reserved_club);
+});
+
+// ✅ 处理状态切换（已选社/已预留 互斥）
+const handleStatusToggle = (field, event) => {
+  const value = event.detail.value;
+
+  if (field === "has_selected") {
+    formData.value.has_selected = value;
+    // 如果选中"已选社"，需要清除"已预留"
+    if (value && formData.value.is_reserved) {
+      formData.value.is_reserved = false;
+      formData.value.reserved_club = "";
+    }
+  } else if (field === "is_reserved") {
+    formData.value.is_reserved = value;
+    // 如果选中"已预留"，需要清除"已选社"
+    if (value && formData.value.has_selected) {
+      formData.value.has_selected = false;
+      formData.value.selected_club = "";
+    }
+  }
+};
+
+// ✅ 处理已选社团
+const handleClubChange = (event) => {
+  formData.value.selected_club = clubOptions.value[event.detail.value];
+};
+
+// ✅ 处理已预留社团
+const handleReservedClubChange = (event) => {
+  formData.value.reserved_club = clubOptions.value[event.detail.value];
+};
+
 // 处理输入
 const handleInput = (field, event) => {
   formData.value[field] = event.detail.value;
@@ -565,6 +738,14 @@ const handleInput = (field, event) => {
 // 处理切换开关
 const handleToggle = (field, event) => {
   formData.value[field] = event.detail.value;
+};
+
+// 处理大社选择
+const handleSuperClubChange = (event) => {
+  formData.value.super_club = superClubOptions[event.detail.value];
+  if (errors.value.super_club) {
+    delete errors.value.super_club;
+  }
 };
 
 // 处理状态选择
@@ -587,24 +768,63 @@ const handleBackdropClick = () => {
 const validateForm = () => {
   if (props.type === "club") {
     if (!formData.value.club_name?.trim()) {
-      uni.showToast({ title: "请输入社团名称", icon: "error" });
+      showToast({ title: "请输入社团名称", icon: "error" });
+      return false;
+    }
+    // 验证所属大社
+    if (!formData.value.super_club?.trim()) {
+      showToast({ title: "请选择所属大社", icon: "error" });
       return false;
     }
     if (!formData.value.total_quota || formData.value.total_quota <= 0) {
-      uni.showToast({ title: "总名额必须大于0", icon: "error" });
+      showToast({ title: "总名额必须大于0", icon: "error" });
       return false;
     }
     if (formData.value.remaining_quota > formData.value.total_quota) {
-      uni.showToast({ title: "剩余名额不能超过总名额", icon: "error" });
+      showToast({ title: "剩余名额不能超过总名额", icon: "error" });
+      return false;
+    }
+    if (
+      formData.value.reserved_quota + formData.value.remaining_quota !=
+      formData.value.total_quota
+    ) {
+      console.log(
+        formData.value.remaining_quota,
+        formData.value.reserved_quota,
+        formData.value.total_quota,
+      );
+      showToast({
+        title: "预留名额和剩余名额之和不等于总名额",
+        icon: "error",
+      });
       return false;
     }
   } else {
+    // ✅ 学生表单验证
     if (!formData.value.name?.trim()) {
-      uni.showToast({ title: "请输入学生名字", icon: "error" });
+      showToast({ title: "请输入学生名字", icon: "error" });
       return false;
     }
     if (!formData.value.student_id?.trim()) {
-      uni.showToast({ title: "请输入学号", icon: "error" });
+      showToast({ title: "请输入学号", icon: "error" });
+      return false;
+    }
+
+    // ✅ 验证已选社和已预留不能同时勾选
+    if (formData.value.has_selected && formData.value.is_reserved) {
+      showToast({ title: "不能同时选择'已选社'和'已预留'", icon: "error" });
+      return false;
+    }
+
+    // ✅ 验证已选社必须选择社团
+    if (formData.value.has_selected && !formData.value.selected_club?.trim()) {
+      showToast({ title: "已选社必须选择对应的社团", icon: "error" });
+      return false;
+    }
+
+    // ✅ 验证已预留必须选择社团
+    if (formData.value.is_reserved && !formData.value.reserved_club?.trim()) {
+      showToast({ title: "已预留必须选择对应的社团", icon: "error" });
       return false;
     }
   }
@@ -1306,6 +1526,35 @@ switch {
   }
 }
 
+/* ════════════════════════════════════════
+   新增：警告提示样式
+════════════════════════════════════════ */
+.form-warning {
+  display: flex;
+  align-items: center;
+  gap: 8rpx;
+  padding: 12rpx 14rpx;
+  background: rgba(239, 68, 68, 0.1);
+  border: 1rpx solid rgba(239, 68, 68, 0.3);
+  border-radius: 8rpx;
+  margin-top: 8rpx;
+}
+
+.warning-icon {
+  font-size: 16rpx;
+  flex-shrink: 0;
+}
+
+.warning-text {
+  font-size: 13rpx;
+  color: #fca5a5;
+  font-weight: 500;
+}
+
+/* 已有样式下方新增 picker-value--empty 样式 */
+.picker-value--empty {
+  color: rgba(255, 255, 255, 0.3);
+}
 /* ════════════════════════════════════════
    打印样式
 ════════════════════════════════════════ */

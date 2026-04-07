@@ -56,7 +56,7 @@
         <!-- 添加数据按钮 -->
         <view class="add-button" @click="$emit('add')">
           <text class="add-icon">➕</text>
-          <text class="add-text">添加数据</text>
+          <text class="add-text">添加社团</text>
         </view>
 
         <!-- 筛选按钮 -->
@@ -81,6 +81,7 @@
       v-if="filterExpanded"
       :type="activeTab"
       :filters="filters"
+      :majors="majors"
       @change="handleFilterChange"
       @close="filterExpanded = false"
     />
@@ -103,6 +104,10 @@ const props = defineProps({
   filters: {
     type: Object,
     required: true,
+  },
+  majors: {
+    type: Array,
+    default: () => [],
   },
 });
 

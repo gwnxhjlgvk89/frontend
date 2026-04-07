@@ -227,6 +227,10 @@ const props = defineProps({
     type: Object,
     required: true,
   },
+  majors: {
+    type: Array,
+    default: () => [],
+  },
 });
 
 const emit = defineEmits(["change", "close"]);
@@ -280,19 +284,19 @@ const selectedStatusOptions = [
 
 const gradeOptions = [
   { value: "all", label: "全部", icon: "📊" },
-  { value: "大一", label: "大一", icon: "1️⃣" },
-  { value: "大二", label: "大二", icon: "2️⃣" },
-  { value: "大三", label: "大三", icon: "3️⃣" },
-  { value: "大四", label: "大四", icon: "4️⃣" },
+  { value: "1", label: "大一", icon: "1️⃣" },
+  { value: "2", label: "大二", icon: "2️⃣" },
+  { value: "3", label: "大三", icon: "3️⃣" },
+  { value: "4", label: "大四", icon: "4️⃣" },
 ];
 
 const majorOptions = [
   { value: "all", label: "全部", icon: "📊" },
-  { value: "计算机科学与技术", label: "计算机科学与技术", icon: "💻" },
-  { value: "软件工程", label: "软件工程", icon: "⚙️" },
-  { value: "数据科学与大数据技术", label: "数据科学与大数据技术", icon: "📈" },
-  { value: "信息安全", label: "信息安全", icon: "🔐" },
-  { value: "其他", label: "其他", icon: "➕" },
+  ...props.majors.map((major) => ({
+    value: major.major_name,
+    label: major.major_name,
+    icon: "🎓",
+  })),
 ];
 
 // ════════════════════════════════════════
@@ -303,7 +307,7 @@ const sortOptions = [
   { value: "default", label: "默认排序", icon: "↕️" },
   { value: "name", label: "按名称", icon: "🔤" },
   { value: "newest", label: "最新优先", icon: "⏰" },
-  { value: "popular", label: "人气优先", icon: "👥" },
+  { value: "popular", label: "剩余优先", icon: "👥" },
 ];
 
 // ════════════════════════════════════════

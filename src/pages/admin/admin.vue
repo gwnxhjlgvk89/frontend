@@ -1,79 +1,90 @@
 <template>
-  <view class="admin-container">
-    <!-- 顶部头部 -->
-    <view class="admin-header">
-      <AdminHeader
-        :active-tab="activeTab"
-        :search-query="searchQuery"
-        :filters="currentFilters"
-        @tab-change="activeTab = $event"
-        @search="searchQuery = $event"
-        @filter-change="handleFilterChange"
-        @add="handleAdd"
+  <view>
+    <ToastProvider />
+    <view class="admin-container">
+      <!-- 顶部头部 -->
+      <view class="admin-header">
+        <AdminHeader
+          :active-tab="activeTab"
+          :search-query="searchQuery"
+          :filters="currentFilters"
+          :majors="majors"
+          @tab-change="activeTab = $event"
+          @search="searchQuery = $event"
+          @filter-change="handleFilterChange"
+          @add="handleAdd"
+        />
+      </view>
+
+      <!-- 中间内容区 -->
+      <view class="admin-body">
+        <AdminBody
+          :tab="activeTab"
+          :clubs="filteredClubs"
+          :students="filteredStudents"
+          :loading="loading"
+          @edit="handleEdit"
+          @delete="handleDelete"
+        />
+      </view>
+
+      <!-- 底部导航 -->
+      <view class="admin-footer">
+        <AdminFooter
+          :active-tab="activeTab"
+          :club-count="clubs.length"
+          :student-count="students.length"
+          :club-stats="clubStats"
+          :student-stats="studentStats"
+          @tab-change="activeTab = $event"
+        />
+      </view>
+
+      <!-- 编辑模态框 -->
+      <EditModal
+        v-if="showEditModal"
+        :type="editType"
+        :data="editData"
+        :clubList="clubs"
+        :majorList="majors"
+        @save="handleSave"
+        @close="showEditModal = false"
+      />
+
+      <!-- 删除确认框 -->
+      <ConfirmDialog
+        v-if="showDeleteConfirm"
+        :title="deleteTitle"
+        :message="deleteMessage"
+        @confirm="handleDeleteConfirm"
+        @cancel="showDeleteConfirm = false"
       />
     </view>
-
-    <!-- 中间内容区 -->
-    <view class="admin-body">
-      <AdminBody
-        :tab="activeTab"
-        :clubs="filteredClubs"
-        :students="filteredStudents"
-        :loading="loading"
-        @edit="handleEdit"
-        @delete="handleDelete"
-      />
-    </view>
-
-    <!-- 底部导航 -->
-    <view class="admin-footer">
-      <AdminFooter
-        :active-tab="activeTab"
-        :club-count="clubs.length"
-        :student-count="students.length"
-        :club-stats="clubStats"
-        :student-stats="studentStats"
-        @tab-change="activeTab = $event"
-      />
-    </view>
-
-    <!-- 编辑模态框 -->
-    <EditModal
-      v-if="showEditModal"
-      :type="editType"
-      :data="editData"
-      @save="handleSave"
-      @close="showEditModal = false"
-    />
-
-    <!-- 删除确认框 -->
-    <ConfirmDialog
-      v-if="showDeleteConfirm"
-      :title="deleteTitle"
-      :message="deleteMessage"
-      @confirm="handleDeleteConfirm"
-      @cancel="showDeleteConfirm = false"
-    />
   </view>
 </template>
 
 <script setup>
 import { ref, computed, onMounted } from "vue";
+import ToastProvider from "@/components/base/ToastProvider.vue";
 import AdminHeader from "./components/AdminHeader.vue";
 import AdminBody from "./components/AdminBody.vue";
 import AdminFooter from "./components/AdminFooter.vue";
 import EditModal from "./components/EditModal.vue";
 import ConfirmDialog from "./components/ConfirmDialog.vue";
 import adminApi from "./api/admin.js";
+import { showToast } from "@/utils/toast";
+import { onLoad, onUnload, onHide, onShow } from "@dcloudio/uni-app";
 
 // ── 基础状态 ──
 const activeTab = ref("clubs");
 const searchQuery = ref("");
 const loading = ref(false);
+const timer = ref(null);
 
 // ── 数据 ──
 const clubs = ref([]);
 const students = ref([]);
+const majors = ref([]);
 
 // ── 筛选状态 ──
 const clubFilters = ref({
@@ -120,33 +131,43 @@ const filteredClubs = computed(() => {
 
   // 招募状态筛选
   if (clubFilters.value.status !== "all") {
-    const statusMap = {
-      open: 1,
-      closed: 0,
-      full: 2,
-      ended: 3,
-    };
     result = result.filter(
-      (club) => club.club_status === statusMap[clubFilters.value.status],
+      (club) => club.club_status === clubFilters.value.status,
     );
   }
 
   // 专业限制筛选
   if (clubFilters.value.majorLimit !== "all") {
-    const hasLimit = clubFilters.value.majorLimit === "yes";
-    result = result.filter((club) => club.has_major_limit === hasLimit);
+    const hasLimit = clubFilters.value.majorLimit;
+    if (hasLimit) result = result.filter((club) => club.has_major_limit);
   }
 
   // 名额状态筛选
   if (clubFilters.value.quotaStatus !== "all") {
     result = result.filter((club) => {
-      const usage =
-        (club.total_quota - club.remaining_quota) / club.total_quota;
+      let usage = (club.total_quota - club.remaining_quota) / club.total_quota;
+      if (club.total_quota === 0) usage = 1; // 避免除以零
       if (clubFilters.value.quotaStatus === "sufficient") return usage < 0.7;
       if (clubFilters.value.quotaStatus === "tight")
         return usage >= 0.7 && usage < 1;
       if (clubFilters.value.quotaStatus === "full") return usage === 1;
       return true;
+    });
+  }
+
+  if (clubFilters.value.sortBy !== "default") {
+    const sortKey = clubFilters.value.sortBy;
+    result = result.slice().sort((a, b) => {
+      if (sortKey === "name") {
+        return b.club_name - a.club_name;
+      }
+      if (sortKey === "newest") {
+        return a.total_quota - b.total_quota;
+      }
+      if (sortKey === "popular") {
+        return b.remaining_quota - a.remaining_quota;
+      }
+      return 0;
     });
   }
 
@@ -171,20 +192,44 @@ const filteredStudents = computed(() => {
   // 选社状态筛选
   if (studentFilters.value.selectedStatus !== "all") {
     const selected = studentFilters.value.selectedStatus === "selected";
-    result = result.filter((student) => student.has_selected === selected);
+    if (selected)
+      result = result.filter(
+        (student) => student.has_selected || student.is_reserved,
+      );
   }
 
   // 年级筛选
   if (studentFilters.value.grade !== "all") {
-    result = result.filter(
-      (student) => student.grade === studentFilters.value.grade,
-    );
+    switch (studentFilters.value.grade) {
+      case "1":
+        result = result.filter(
+          (student) => student.student_id.charAt(3) === "5",
+        );
+        break;
+      case "2":
+        result = result.filter(
+          (student) => student.student_id.charAt(3) === "4",
+        );
+        break;
+      case "3":
+        result = result.filter(
+          (student) => student.student_id.charAt(3) === "3",
+        );
+        break;
+      case "4":
+        result = result.filter(
+          (student) =>
+            student.student_id.charAt(3) === "2" ||
+            student.student_id.charAt(3) >= "7",
+        );
+        break;
+    }
   }
 
   // 专业筛选
   if (studentFilters.value.major !== "all") {
     result = result.filter(
-      (student) => student.major === studentFilters.value.major,
+      (student) => student.major_name === studentFilters.value.major,
     );
   }
 
@@ -204,26 +249,42 @@ const studentStats = computed(() => ({
   unselected: students.value.filter((s) => !s.has_selected).length,
 }));
 
-// ── 生命周期 ──
-onMounted(async () => {
-  await loadData();
+onLoad(async () => {
+  loadData();
+  timer.value = setInterval(loadData, 7000); // 每 30 秒刷新一次数据
+});
+
+onHide(() => {
+  clearInterval(timer.value);
+});
+
+onShow(() => {
+  loadData();
+  clearInterval(timer.value);
+  timer.value = setInterval(loadData, 7000);
+});
+
+onUnload(() => {
+  clearInterval(timer.value);
 });
 
 // ── 数据加载 ──
 const loadData = async () => {
   try {
-    loading.value = true;
-    const [clubsRes, studentsRes] = await Promise.all([
+    // loading.value = true;
+    const [clubsRes, majorsRes, studentsRes] = await Promise.all([
       await adminApi.getClubs(),
+      await adminApi.getMajors(),
       await adminApi.getStudents(),
     ]);
     clubs.value = clubsRes || [];
+    majors.value = majorsRes || [];
     students.value = studentsRes || [];
   } catch (error) {
     console.error("加载数据失败:", error);
     uni.showToast({ title: "加载失败", icon: "error" });
   } finally {
-    loading.value = false;
+    // loading.value = false;
   }
 };
 
@@ -243,11 +304,10 @@ const handleEdit = (item) => {
 };
 
 const handleAdd = () => {
-  editType.value = activeTab.value === "clubs" ? "club" : "student";
+  editType.value = activeTab.value === "clubs" ? "club" : "club";
   editData.value =
     activeTab.value === "clubs"
       ? {
-          club_id: null,
           club_name: "",
           club_status: 1,
           total_quota: 0,
@@ -267,7 +327,7 @@ const handleDelete = (item) => {
     deleteTitle.value = "删除社团";
     deleteMessage.value = `确定要删除社团"${item.club_name}"吗？此操作不可撤销。`;
     deleteItemType.value = "club";
-    deleteItemId.value = item.club_id;
+    deleteItemId.value = item.club_name;
   } else {
     deleteTitle.value = "删除学生";
     deleteMessage.value = `确定要删除学生"${item.name}"吗？此操作不可撤销。`;
@@ -281,31 +341,23 @@ const handleSave = async (data) => {
   try {
     loading.value = true;
     if (editType.value === "club") {
-      if (data.club_id) {
+      if (editData.value.club_name) {
         await adminApi.updateClub(data);
-        const index = clubs.value.findIndex((c) => c.club_id === data.club_id);
-        if (index > -1) clubs.value[index] = data;
       } else {
-        const res = await adminApi.createClub(data);
-        clubs.value.push(res.data);
+        await adminApi.createClub(data);
       }
     } else {
       if (data.student_id) {
         await adminApi.updateStudent(data);
-        const index = students.value.findIndex(
-          (s) => s.student_id === data.student_id,
-        );
-        if (index > -1) students.value[index] = data;
       } else {
-        const res = await adminApi.createStudent(data);
-        students.value.push(res.data);
+        await adminApi.createStudent(data);
       }
     }
     showEditModal.value = false;
-    uni.showToast({ title: "保存成功", icon: "success" });
+    showToast({ title: "保存成功", icon: "success" });
   } catch (error) {
     console.error("保存失败:", error);
-    uni.showToast({ title: "保存失败", icon: "error" });
+    showToast({ title: "保存失败", icon: "error" });
   } finally {
     loading.value = false;
   }
@@ -320,18 +372,17 @@ const handleDeleteConfirm = async () => {
       await deleteStudent(deleteItemId.value);
     }
     showDeleteConfirm.value = false;
-    uni.showToast({ title: "删除成功", icon: "success" });
+    showToast({ title: "删除成功", icon: "success" });
   } catch (error) {
     console.error("删除失败:", error);
-    uni.showToast({ title: "删除失败", icon: "error" });
+    showToast({ title: "删除失败", icon: "error" });
   } finally {
     loading.value = false;
   }
 };
 
-const deleteClub = async (clubId) => {
-  await adminApi.deleteClub(clubId);
-  clubs.value = clubs.value.filter((c) => c.club_id !== clubId);
+const deleteClub = async (clubName) => {
+  await adminApi.deleteClub(clubName);
 };
 
 const deleteStudent = async (studentId) => {

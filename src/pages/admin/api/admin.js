@@ -21,6 +21,14 @@ export const getClubs = async () => {
 };
 
 /**
+ * 获取所有专业
+ * @returns {Promise}
+ */
+export const getMajors = async () => {
+  return await get("/admin/majors");
+};
+
+/**
  * 获取单个社团详情
  * @param {string} clubName - 社团名称
  * @returns {Promise}
@@ -44,22 +52,22 @@ export const getClubDetail = async (clubName) => {
  * @param {number} data.foundation_year - 成立年份
  * @param {number} data.total_quota - 总名额
  * @param {number} data.reserved_quota - 预留名额
+ * @param {number} data.remaining_quota - 剩余名额
  * @param {number} data.club_status - 社团状态 0-未开放 1-抢课中 2-名额已满 3-已结束
  * @param {boolean} data.has_major_limit - 是否限制专业
  * @returns {Promise}
  */
-export const createClub = (data) => {
-  return post("/admin/clubs", data);
+export const createClub = async (data) => {
+  return await post("/admin/create/club", data);
 };
 
 /**
  * 更新社团信息
- * @param {string} clubName - 社团名称
  * @param {Object} data - 更新的社团数据
  * @returns {Promise}
  */
-export const updateClub = (clubName, data) => {
-  return put(`/admin/clubs/${clubName}`, data);
+export const updateClub = async (data) => {
+  return await post(`/admin/update/club`, data);
 };
 
 /**
@@ -68,7 +76,7 @@ export const updateClub = (clubName, data) => {
  * @returns {Promise}
  */
 export const deleteClub = (clubName) => {
-  return del(`/admin/clubs/${clubName}`);
+  return post(`/admin/delete/club`, { club_name: clubName });
 };
 
 /**
@@ -149,8 +157,8 @@ export const createStudent = (data) => {
  * @param {Object} data - 更新的学生数据
  * @returns {Promise}
  */
-export const updateStudent = (studentId, data) => {
-  return put(`/admin/students/${studentId}`, data);
+export const updateStudent = async (data) => {
+  return await post(`/admin/update/student/`, data);
 };
 
 /**
@@ -158,8 +166,8 @@ export const updateStudent = (studentId, data) => {
  * @param {string} studentId - 学号
  * @returns {Promise}
  */
-export const deleteStudent = (studentId) => {
-  return del(`/admin/students/${studentId}`);
+export const deleteStudent = async (studentId) => {
+  return await post(`/admin/delete/student/`, { student_id: studentId });
 };
 
 /**
@@ -324,6 +332,7 @@ export const resetAllSelections = () => {
 const adminApi = {
   // 社团管理
   getClubs,
+  getMajors,
   getClubDetail,
   createClub,
   updateClub,
