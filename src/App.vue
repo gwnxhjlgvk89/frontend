@@ -15,6 +15,11 @@ export default {
         "https://cdn.jsdelivr.net/npm/source-han-sans-cn@1.0.0/SourceHanSansCN-Medium.otf",
       success: () => console.log("字体加载成功"),
     });
+    // 全局启用分享菜单
+    wx.showShareMenu({
+      withShareTicket: true,
+      menus: ["shareAppMessage", "shareTimeline"],
+    });
     console.log("App Launch");
   },
   onShow: function () {

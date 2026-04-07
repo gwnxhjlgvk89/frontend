@@ -5,9 +5,7 @@
       <template #header>
         <LoginHeader
           :title="
-            activeView === LOGIN_VIEWS.LOGIN
-              ? 'Sign in to your account.'
-              : 'Reset your password.'
+            activeView === LOGIN_VIEWS.LOGIN ? '请登录你的账号' : '重置密码'
           "
         />
       </template>
@@ -63,6 +61,14 @@ const { LOGIN_VIEWS } = cardStore;
 const activeView = ref(currentView.value);
 /** 控制 CSS 类，驱动淡入淡出 */
 const isVisible = ref(true);
+
+function onShareAppMessage() {
+  return {
+    title: "加入我们的社团平台",
+    path: "/pages/login/index", // 修改为你的登录页路径
+    imageUrl: "", // 可选：自定义分享图片 URL
+  };
+}
 
 watch(currentView, (newView) => {
   // 1. 触发离场动画（淡出 + 上移）

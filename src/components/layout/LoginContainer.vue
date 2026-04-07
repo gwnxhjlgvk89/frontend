@@ -6,9 +6,9 @@
     <view class="login-body">
       <slot name="body" />
     </view>
-    <view class="login-footer">
+    <!-- <view class="login-footer">
       <slot name="footer" />
-    </view>
+    </view> -->
   </view>
 </template>
 
@@ -20,7 +20,7 @@
   flex-direction: column;
   align-items: center;
   min-height: 100vh;
-  padding: 80rpx 60rpx;
+  padding: 120rpx 60rpx;
   background-color: #f9fafb;
   box-sizing: border-box;
 }

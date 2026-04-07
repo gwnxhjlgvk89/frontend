@@ -44,6 +44,7 @@ import { onLoad, onUnload, onHide, onShow } from "@dcloudio/uni-app";
 import { BASE_URL } from "@/utils/request";
 import { homeApi } from "@/api/home";
 import { useWsStore } from "@/stores/wsStore";
+import { useTimerStore } from "@/stores/timer"; // ✅ 引入 Timer Store
 import { showToast } from "@/utils/toast";
 import XModal from "@/components/XModal/index.vue";
 import { showModal } from "@/composables/useModal";
@@ -59,6 +60,7 @@ import { useThemeStore } from "@/stores/theme";
 const profileStore = useProfileStore();
 const profile = computed(() => profileStore.profile);
 const wsStore = useWsStore();
+const timerStore = useTimerStore(); // ✅ 获取 Timer Store
 
 const showEdit = ref(false);
 let timer = null;
@@ -168,6 +170,7 @@ const onLogout = () => {
     async success(res) {
       if (res.confirm) {
         await authApi.logout();
+        timerStore.clearPageTimers("home");
         showToast({ title: "已退出登录", icon: "success" });
       }
     },

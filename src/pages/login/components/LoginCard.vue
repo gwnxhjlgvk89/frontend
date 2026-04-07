@@ -4,7 +4,7 @@
     <view class="login-form">
       <!-- 用户名 -->
       <view class="form-item">
-        <text class="form-item__label">Username</text>
+        <text class="form-item__label">用户名</text>
         <input
           :class="[
             'form-item__input',
@@ -29,7 +29,7 @@
 
       <!-- 密码 -->
       <view class="form-item">
-        <text class="form-item__label">Password</text>
+        <text class="form-item__label">密码</text>
         <view
           :class="[
             'form-item__input-wrap',
@@ -89,14 +89,14 @@
     </view>
 
     <!-- 分割线 -->
-    <view class="divider">
+    <!-- <view class="divider">
       <view class="divider__line" />
       <text class="divider__text">Or continue with</text>
       <view class="divider__line" />
-    </view>
+    </view> -->
 
     <!-- 第三方登录 -->
-    <view class="oauth">
+    <!-- <view class="oauth">
       <view class="oauth__btn" @click="$emit('login-wechat')">
         <image class="oauth__icon" :src="cdn.wechat" mode="aspectFit" />
         <text class="oauth__text">WeChat</text>
@@ -105,7 +105,7 @@
         <image class="oauth__icon" :src="cdn.google" mode="aspectFit" />
         <text class="oauth__text">Google</text>
       </view>
-    </view>
+    </view> -->
   </view>
 </template>
 
@@ -221,6 +221,7 @@ swiper-item {
     0 4rpx 24rpx rgba(0, 0, 0, 0.08),
     0 1rpx 4rpx rgba(0, 0, 0, 0.04);
   padding: 60rpx 40rpx;
+  gap: 24rpx;
 }
 
 /* ── .btn ─────────────────────────────────────────────────── */

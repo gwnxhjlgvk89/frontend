@@ -48,6 +48,7 @@ import { useClubStore } from "@/stores/club.js";
 import { useFavStore } from "@/stores/fav.js";
 import { useProfileStore } from "@/stores/profile";
 import { useWsStore } from "@/stores/wsStore";
+import { useTimerStore } from "@/stores/timer"; // ✅ 引入 Timer Store
 import { showToast } from "@/utils/toast";
 // import { getMemoryInfo, monitorMemory } from "@/utils/memory";
 
@@ -55,6 +56,9 @@ const clubStore = useClubStore();
 const favStore = useFavStore();
 const profileStore = useProfileStore();
 const wsStore = useWsStore();
+const timerStore = useTimerStore(); // ✅ 获取 Timer Store
+
+const PAGE_ID = "home"; // ✅ 定义页面ID
 
 // 监控内存（可选，调试用）
 // let stopMonitor = null;
@@ -83,7 +87,9 @@ onLoad(async () => {
 
   await refresh();
   wsStore.connect();
-  timer = setInterval(refresh, 3000);
+
+  // ✅ 使用 Timer Store 创建定时器
+  timerStore.createTimer(PAGE_ID, "refresh", refresh, 3000);
 
   // 名额更新
   wsStore.on("quota_update", ({ club_name, remaining_quota }) => {
@@ -101,8 +107,7 @@ onLoad(async () => {
 });
 
 onHide(() => {
-  clearInterval(timer);
-  timer = null;
+  timerStore.clearTimer(PAGE_ID);
   // ✅ ws 断线服务端会自动感知，不需要手动 disconnect
   // wsStore.disconnect();
 });
@@ -110,13 +115,13 @@ onHide(() => {
 onShow(async () => {
   await refresh();
   wsStore.connect(); // 重连即可
-  clearInterval(timer);
-  timer = setInterval(refresh, 3000);
+  timerStore.clearTimer(PAGE_ID);
+  timerStore.createTimer(PAGE_ID, "refresh", refresh, 3000);
 });
 
 onUnload(() => {
-  clearInterval(timer);
-  timer = null;
+  timerStore.clearPageTimers(PAGE_ID);
+  wsStore.disconnect();
 });
 
 // ===================== 筛选/排序状态 =====================

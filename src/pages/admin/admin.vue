@@ -9,6 +9,7 @@
         @tab-change="activeTab = $event"
         @search="searchQuery = $event"
         @filter-change="handleFilterChange"
+        @add="handleAdd"
       />
     </view>
 
@@ -21,7 +22,6 @@
         :loading="loading"
         @edit="handleEdit"
         @delete="handleDelete"
-        @add="handleAdd"
       />
     </view>
 
