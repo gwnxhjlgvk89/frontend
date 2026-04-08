@@ -49,6 +49,7 @@
         :data="editData"
         :clubList="clubs"
         :majorList="majors"
+        :classList="classes"
         @save="handleSave"
         @close="showEditModal = false"
       />
@@ -92,6 +93,7 @@ const timer = ref(null);
 const clubs = ref([]);
 const students = ref([]);
 const majors = ref([]);
+const classes = ref([]);
 
 // ── 筛选状态 ──
 const clubFilters = ref({
@@ -281,14 +283,16 @@ onUnload(() => {
 const loadData = async () => {
   try {
     // loading.value = true;
-    const [clubsRes, majorsRes, studentsRes] = await Promise.all([
+    const [clubsRes, majorsRes, studentsRes, classesRes] = await Promise.all([
       await adminApi.getClubs(),
       await adminApi.getMajors(),
       await adminApi.getStudents(),
+      await adminApi.getClasses(),
     ]);
     clubs.value = clubsRes || [];
     majors.value = majorsRes || [];
     students.value = studentsRes || [];
+    classes.value = classesRes || [];
   } catch (error) {
     console.error("加载数据失败:", error);
     uni.showToast({ title: "加载失败", icon: "error" });
@@ -313,7 +317,7 @@ const handleEdit = (item) => {
 };
 
 const handleAdd = () => {
-  editType.value = activeTab.value === "clubs" ? "club" : "club";
+  editType.value = activeTab.value === "clubs" ? "club" : "student";
   editData.value =
     activeTab.value === "clubs"
       ? {
@@ -325,8 +329,7 @@ const handleAdd = () => {
       : {
           student_id: null,
           name: "",
-          major: "",
-          grade: "",
+          major_name: "",
         };
   showEditModal.value = true;
 };
@@ -356,7 +359,8 @@ const handleSave = async (data) => {
         await adminApi.createClub(data);
       }
     } else {
-      if (data.student_id) {
+      console.log(data);
+      if (editData.value.student_id) {
         await adminApi.updateStudent(data);
       } else {
         await adminApi.createStudent(data);

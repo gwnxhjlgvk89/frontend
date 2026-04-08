@@ -378,43 +378,164 @@
                   />
                 </view>
               </view>
+              <!-- 班级表单组 -->
+              <view class="form-group form-group--with-dropdown">
+                <view class="form-label-wrapper">
+                  <text class="form-label">班级</text>
+                  <text class="form-required">*</text>
+                </view>
+                <view class="form-input-wrapper">
+                  <text class="input-icon">🏫</text>
+                  <input
+                    class="form-input"
+                    type="text"
+                    placeholder="请选择或输入班级"
+                    :value="formData.class_name"
+                    @focus="handleClassFocus"
+                    @blur="handleClassBlur"
+                    @input="handleInput('class_name', $event)"
+                  />
+                </view>
 
-              <!-- 专业 -->
-              <view class="form-group">
+                <!-- 班级下拉列表建议 -->
+                <view
+                  v-if="showClassDropdown && classFilteredOptions.length > 0"
+                  class="dropdown-list"
+                  @mousedown.prevent="selectClassOption"
+                >
+                  <view
+                    v-for="(item, index) in classFilteredOptions"
+                    :key="index"
+                    class="dropdown-item"
+                    @click="selectClassOption(item)"
+                  >
+                    <text class="dropdown-text">{{ item }}</text>
+                  </view>
+                </view>
+
+                <!-- 添加新班级 -->
+                <view
+                  v-if="
+                    showClassDropdown &&
+                    formData.class_name &&
+                    !classFilteredOptions.includes(formData.class_name)
+                  "
+                  class="dropdown-add"
+                  @click="handleAddNewClass"
+                >
+                  <text class="dropdown-add-icon">➕</text>
+                  <text class="dropdown-add-text"
+                    >添加新班级: {{ formData.class_name }}</text
+                  >
+                </view>
+              </view>
+
+              <!-- 专业表单组 -->
+              <view class="form-group form-group--with-dropdown">
                 <view class="form-label-wrapper">
                   <text class="form-label">专业</text>
+                  <text class="form-required">*</text>
                 </view>
                 <view class="form-input-wrapper">
                   <text class="input-icon">🎓</text>
                   <input
                     class="form-input"
                     type="text"
-                    placeholder="请输入专业"
+                    placeholder="请选择或输入专业"
                     :value="formData.major_name"
+                    @focus="handleMajorFocus"
+                    @blur="handleMajorBlur"
                     @input="handleInput('major_name', $event)"
                   />
                 </view>
+
+                <!-- 专业下拉列表建议 -->
+                <view
+                  v-if="showMajorDropdown && majorFilteredOptions.length > 0"
+                  class="dropdown-list"
+                >
+                  <view
+                    v-for="(item, index) in majorFilteredOptions"
+                    :key="index"
+                    class="dropdown-item"
+                    @click="selectMajorOption(item)"
+                  >
+                    <text class="dropdown-text">{{ item.major_name }}</text>
+                    <text class="dropdown-dept">{{ item.department }}</text>
+                  </view>
+                </view>
+
+                <!-- 添加新专业 -->
+                <view
+                  v-if="
+                    showMajorDropdown &&
+                    formData.major_name &&
+                    !majorFilteredOptions.some(
+                      (m) => m.major_name === formData.major_name,
+                    )
+                  "
+                  class="dropdown-add"
+                  @click="handleAddNewMajor"
+                >
+                  <text class="dropdown-add-icon">➕</text>
+                  <text class="dropdown-add-text">添加新专业</text>
+                </view>
               </view>
 
-              <!-- 年级 -->
-              <view class="form-group">
+              <!-- 部门表单组 -->
+              <view
+                v-if="isAddingNewMajor"
+                class="form-group form-group--with-dropdown"
+              >
                 <view class="form-label-wrapper">
-                  <text class="form-label">年级</text>
+                  <text class="form-label">部门</text>
+                  <text class="form-required">*</text>
                 </view>
-                <view class="select-wrapper">
-                  <picker
-                    mode="selector"
-                    :range="gradeOptions"
-                    :value="gradeIndex"
-                    @change="handleGradeChange"
+                <view class="form-input-wrapper">
+                  <text class="input-icon">🏢</text>
+                  <input
+                    class="form-input"
+                    type="text"
+                    placeholder="请选择或输入部门"
+                    :value="formData.department"
+                    @focus="handleDepartmentFocus"
+                    @blur="handleDepartmentBlur"
+                    @input="handleInput('department', $event)"
+                  />
+                </view>
+
+                <!-- 部门下拉列表 -->
+                <view
+                  v-if="
+                    showDepartmentDropdown &&
+                    departmentFilteredOptions.length > 0
+                  "
+                  class="dropdown-list"
+                >
+                  <view
+                    v-for="(item, index) in departmentFilteredOptions"
+                    :key="index"
+                    class="dropdown-item"
+                    @click="selectDepartmentOption(item)"
                   >
-                    <view class="picker-value">
-                      <text class="picker-icon">📚</text>
-                      <text>{{
-                        gradeOptions[gradeIndex] || "请选择年级"
-                      }}</text>
-                    </view>
-                  </picker>
+                    <text class="dropdown-text">{{ item }}</text>
+                  </view>
+                </view>
+
+                <!-- 添加新部门 -->
+                <view
+                  v-if="
+                    showDepartmentDropdown &&
+                    formData.department &&
+                    !departmentFilteredOptions.includes(formData.department)
+                  "
+                  class="dropdown-add"
+                  @click="handleAddNewDepartment"
+                >
+                  <text class="dropdown-add-icon">➕</text>
+                  <text class="dropdown-add-text"
+                    >添加新部门: {{ formData.department }}</text
+                  >
                 </view>
               </view>
             </view>
@@ -503,7 +624,7 @@
                     <view
                       class="picker-value"
                       :class="{
-                        'picker-value--empty': !formData.selected_club,
+                        'picker-value--empty': !formData.selected_club_name,
                       }"
                     >
                       <text class="picker-icon">🏢</text>
@@ -548,7 +669,7 @@
                     <view
                       class="picker-value"
                       :class="{
-                        'picker-value--empty': !formData.reserved_club,
+                        'picker-value--empty': !formData.reserved_club_name,
                       }"
                     >
                       <text class="picker-icon">🏢</text>
@@ -592,6 +713,7 @@
 
 <script setup>
 import { ref, computed, watch } from "vue";
+import { onHide } from "@dcloudio/uni-app";
 import { showToast } from "@/utils/toast.js";
 
 const props = defineProps({
@@ -606,6 +728,14 @@ const props = defineProps({
   },
   // ✅ 新增：传入可用的社团列表
   clubList: {
+    type: Array,
+    default: () => [],
+  },
+  majorList: {
+    type: Array,
+    default: () => [],
+  },
+  classList: {
     type: Array,
     default: () => [],
   },
@@ -632,7 +762,6 @@ const clubOptions = computed(() => {
 
 // 选项
 const statusOptions = ["🔒 未开放", "🔓 招募中", "✅ 已满员", "🏁 已结束"];
-const gradeOptions = ["大一", "大二", "大三", "大四"];
 
 // 计算属性
 const isNew = computed(() => {
@@ -646,11 +775,6 @@ const modalIcon = computed(() => (props.type === "club" ? "🏢" : "👤"));
 const statusIndex = computed(() => {
   const statusMap = { 0: 0, 1: 1, 2: 2, 3: 3 };
   return statusMap[formData.value.club_status] || 0;
-});
-
-const gradeIndex = computed(() => {
-  if (!formData.value.grade) return 0;
-  return gradeOptions.indexOf(formData.value.grade);
 });
 
 const currentFormStep = computed(() => {
@@ -689,14 +813,14 @@ watch(
 
 // ✅ 已选社团的索引
 const selectedClubIndex = computed(() => {
-  if (!formData.value.selected_club) return 0;
-  return clubOptions.value.indexOf(formData.value.selected_club);
+  if (!formData.value.selected_club_name) return 0;
+  return clubOptions.value.indexOf(formData.value.selected_club_name);
 });
 
 // ✅ 已预留社团的索引
 const reservedClubIndex = computed(() => {
-  if (!formData.value.reserved_club) return 0;
-  return clubOptions.value.indexOf(formData.value.reserved_club);
+  if (!formData.value.reserved_club_name) return 0;
+  return clubOptions.value.indexOf(formData.value.reserved_club_name);
 });
 
 // ✅ 处理状态切换（已选社/已预留 互斥）
@@ -708,26 +832,26 @@ const handleStatusToggle = (field, event) => {
     // 如果选中"已选社"，需要清除"已预留"
     if (value && formData.value.is_reserved) {
       formData.value.is_reserved = false;
-      formData.value.reserved_club = "";
+      formData.value.reserved_club_name = "";
     }
   } else if (field === "is_reserved") {
     formData.value.is_reserved = value;
     // 如果选中"已预留"，需要清除"已选社"
     if (value && formData.value.has_selected) {
       formData.value.has_selected = false;
-      formData.value.selected_club = "";
+      formData.value.selected_club_name = "";
     }
   }
 };
 
 // ✅ 处理已选社团
 const handleClubChange = (event) => {
-  formData.value.selected_club = clubOptions.value[event.detail.value];
+  formData.value.selected_club_name = clubOptions.value[event.detail.value];
 };
 
 // ✅ 处理已预留社团
 const handleReservedClubChange = (event) => {
-  formData.value.reserved_club = clubOptions.value[event.detail.value];
+  formData.value.reserved_club_name = clubOptions.value[event.detail.value];
 };
 
 // 处理输入
@@ -752,11 +876,6 @@ const handleSuperClubChange = (event) => {
 const handleStatusChange = (event) => {
   const statusMap = { 0: 0, 1: 1, 2: 2, 3: 3 };
   formData.value.club_status = statusMap[event.detail.value];
-};
-
-// 处理年级选择
-const handleGradeChange = (event) => {
-  formData.value.grade = gradeOptions[event.detail.value];
 };
 
 // 处理背景点击
@@ -810,6 +929,24 @@ const validateForm = () => {
       return false;
     }
 
+    // ✅ 验证班级
+    if (!formData.value.class_name?.trim()) {
+      showToast({ title: "请选择或输入班级", icon: "error" });
+      return false;
+    }
+
+    // ✅ 验证专业
+    if (!formData.value.major_name?.trim()) {
+      showToast({ title: "请选择或输入专业", icon: "error" });
+      return false;
+    }
+
+    // ✅ 验证新专业时必须有部门
+    if (isAddingNewMajor.value && !formData.value.department?.trim()) {
+      showToast({ title: "添加新专业必须选择或输入部门", icon: "error" });
+      return false;
+    }
+
     // ✅ 验证已选社和已预留不能同时勾选
     if (formData.value.has_selected && formData.value.is_reserved) {
       showToast({ title: "不能同时选择'已选社'和'已预留'", icon: "error" });
@@ -817,13 +954,19 @@ const validateForm = () => {
     }
 
     // ✅ 验证已选社必须选择社团
-    if (formData.value.has_selected && !formData.value.selected_club?.trim()) {
+    if (
+      formData.value.has_selected &&
+      !formData.value.selected_club_name?.trim()
+    ) {
       showToast({ title: "已选社必须选择对应的社团", icon: "error" });
       return false;
     }
 
     // ✅ 验证已预留必须选择社团
-    if (formData.value.is_reserved && !formData.value.reserved_club?.trim()) {
+    if (
+      formData.value.is_reserved &&
+      !formData.value.reserved_club_name?.trim()
+    ) {
       showToast({ title: "已预留必须选择对应的社团", icon: "error" });
       return false;
     }
@@ -846,6 +989,168 @@ const handleSave = () => {
 
   emit("save", formData.value);
 };
+// ✅ 下拉列表状态
+const showClassDropdown = ref(false);
+const showMajorDropdown = ref(false);
+const showDepartmentDropdown = ref(false);
+const isAddingNewMajor = ref(false);
+
+// ✅ 定时器引用（用于延迟关闭）
+let classBlurTimer = null;
+let majorBlurTimer = null;
+let departmentBlurTimer = null;
+
+// ✅ 班级焦点处理
+const handleClassFocus = () => {
+  // 清除可能存在的延迟关闭定时器
+  if (classBlurTimer) {
+    clearTimeout(classBlurTimer);
+    classBlurTimer = null;
+  }
+
+  showClassDropdown.value = true;
+  showMajorDropdown.value = false;
+  showDepartmentDropdown.value = false;
+};
+
+// ✅ 班级失焦处理 - 延迟关闭
+const handleClassBlur = () => {
+  classBlurTimer = setTimeout(() => {
+    showClassDropdown.value = false;
+  }, 200); // 200ms 延迟，给点击预留时间
+};
+
+// ✅ 专业焦点处理
+const handleMajorFocus = () => {
+  // 清除可能存在的延迟关闭定时器
+  if (majorBlurTimer) {
+    clearTimeout(majorBlurTimer);
+    majorBlurTimer = null;
+  }
+
+  showMajorDropdown.value = true;
+  showClassDropdown.value = false;
+  showDepartmentDropdown.value = false;
+};
+
+// ✅ 专业失焦处理 - 延迟关闭
+const handleMajorBlur = () => {
+  majorBlurTimer = setTimeout(() => {
+    showMajorDropdown.value = false;
+  }, 200); // 200ms 延迟
+};
+
+// ✅ 部门焦点处理
+const handleDepartmentFocus = () => {
+  // 清除可能存在的延迟关闭定时器
+  if (departmentBlurTimer) {
+    clearTimeout(departmentBlurTimer);
+    departmentBlurTimer = null;
+  }
+
+  showDepartmentDropdown.value = true;
+  showClassDropdown.value = false;
+  showMajorDropdown.value = false;
+};
+
+// ✅ 部门失焦处理 - 延迟关闭
+const handleDepartmentBlur = () => {
+  departmentBlurTimer = setTimeout(() => {
+    showDepartmentDropdown.value = false;
+  }, 200); // 200ms 延迟
+};
+
+// ✅ 班级过滤选项
+const classFilteredOptions = computed(() => {
+  const searchText = formData.value.class_name?.toLowerCase() || "";
+  const allClassNames = props.classList.map((c) => c.class_name);
+
+  if (!searchText) return allClassNames;
+
+  return allClassNames.filter((name) =>
+    name.toLowerCase().includes(searchText),
+  );
+});
+
+// ✅ 专业过滤选项
+const majorFilteredOptions = computed(() => {
+  const searchText = formData.value.major_name?.toLowerCase() || "";
+  if (!searchText) return props.majorList;
+
+  return props.majorList.filter((major) =>
+    major.major_name.toLowerCase().includes(searchText),
+  );
+});
+
+// ✅ 部门过滤选项
+const departmentFilteredOptions = computed(() => {
+  const searchText = formData.value.department?.toLowerCase() || "";
+  const departments = [...new Set(props.majorList.map((m) => m.department))];
+
+  if (!searchText) return departments;
+
+  return departments.filter((dept) => dept.toLowerCase().includes(searchText));
+});
+
+// ✅ 选择班级
+const selectClassOption = (className) => {
+  formData.value.class_name = className;
+  showClassDropdown.value = false;
+};
+
+// ✅ 选择专业
+const selectMajorOption = (major) => {
+  formData.value.major_name = major.major_name;
+  formData.value.department = major.department;
+  showMajorDropdown.value = false;
+  isAddingNewMajor.value = false;
+};
+
+// ✅ 选择部门
+const selectDepartmentOption = (department) => {
+  formData.value.department = department;
+  showDepartmentDropdown.value = false;
+};
+
+// ✅ 添加新班级
+const handleAddNewClass = () => {
+  showClassDropdown.value = false;
+  // 可以在这里添加额外逻辑
+};
+
+// ✅ 添加新专业
+const handleAddNewMajor = () => {
+  showMajorDropdown.value = false;
+  isAddingNewMajor.value = true;
+};
+
+// ✅ 添加新部门
+const handleAddNewDepartment = () => {
+  showDepartmentDropdown.value = false;
+  // 可以在这里添加额外逻辑
+};
+
+// ✅ 监听专业字段变化
+watch(
+  () => formData.value.major_name,
+  (newValue) => {
+    if (newValue) {
+      const majorExists = props.majorList.some(
+        (m) => m.major_name === newValue,
+      );
+      isAddingNewMajor.value = !majorExists;
+    } else {
+      isAddingNewMajor.value = false;
+    }
+  },
+);
+
+// ✅ 组件卸载时清理定时器
+onHide(() => {
+  if (classBlurTimer) clearTimeout(classBlurTimer);
+  if (majorBlurTimer) clearTimeout(majorBlurTimer);
+  if (departmentBlurTimer) clearTimeout(departmentBlurTimer);
+});
 </script>
 
 <style scoped>
@@ -859,7 +1164,7 @@ const handleSave = () => {
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 1000;
+  z-index: 100;
   animation: fadeIn 0.3s ease;
   backdrop-filter: blur(2px);
 }
@@ -889,6 +1194,7 @@ const handleSave = () => {
     0 0 1rpx rgba(99, 102, 241, 0.1),
     inset 0 1rpx 0 rgba(255, 255, 255, 0.8);
   position: relative;
+  z-index: 101;
 }
 
 @keyframes slideUp {
@@ -933,7 +1239,7 @@ const handleSave = () => {
   border-bottom: 1rpx solid rgba(99, 102, 241, 0.12);
   flex-shrink: 0;
   position: relative;
-  z-index: 2;
+  z-index: 10;
 }
 
 .header-content {
@@ -1009,7 +1315,7 @@ const handleSave = () => {
   gap: 10rpx;
   padding: 10rpx 24rpx;
   position: relative;
-  z-index: 2;
+  z-index: 10;
 }
 
 .progress-bar {
@@ -1128,6 +1434,7 @@ const handleSave = () => {
   display: flex;
   flex-direction: column;
   gap: 8rpx;
+  position: relative;
 }
 
 .form-group-row {
@@ -1333,7 +1640,7 @@ switch {
   background: #f8fafc;
   flex-shrink: 0;
   position: relative;
-  z-index: 2;
+  z-index: 10;
 }
 
 .btn {
@@ -1538,5 +1845,130 @@ switch {
   .modal-overlay {
     display: none;
   }
+}
+
+/* ════════════════════════════════════════
+   下拉列表样式（最高层级）
+════════════════════════════════════════ */
+.dropdown-list {
+  position: absolute;
+  top: calc(100% + 4rpx);
+  left: 0;
+  right: 0;
+  max-height: 220rpx;
+  background: #ffffff;
+  border: 1rpx solid rgba(99, 102, 241, 0.2);
+  border-top: none;
+  border-radius: 0 0 12rpx 12rpx;
+  overflow-y: auto;
+  z-index: 9999;
+  box-shadow: 0 8rpx 16rpx rgba(99, 102, 241, 0.15);
+  animation: dropdownSlideDown 0.25s ease-out;
+}
+
+@keyframes dropdownSlideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-8rpx);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.dropdown-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12rpx 14rpx;
+  border-bottom: 1rpx solid rgba(99, 102, 241, 0.08);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  user-select: none;
+}
+
+.dropdown-item:last-child {
+  border-bottom: none;
+}
+
+.dropdown-item:hover {
+  background: rgba(99, 102, 241, 0.05);
+}
+
+.dropdown-item:active {
+  background: rgba(99, 102, 241, 0.1);
+}
+
+.dropdown-text {
+  font-size: 16rpx;
+  color: #1e293b;
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.dropdown-dept {
+  font-size: 13rpx;
+  color: #94a3b8;
+  margin-left: 8rpx;
+  flex-shrink: 0;
+}
+
+.dropdown-add {
+  display: flex;
+  align-items: center;
+  gap: 8rpx;
+  padding: 12rpx 14rpx;
+  background: rgba(99, 102, 241, 0.05);
+  border-top: 1rpx solid rgba(99, 102, 241, 0.12);
+  border-radius: 0 0 12rpx 12rpx;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  user-select: none;
+}
+
+.dropdown-add:hover {
+  background: rgba(99, 102, 241, 0.08);
+}
+
+.dropdown-add:active {
+  background: rgba(99, 102, 241, 0.12);
+}
+
+.dropdown-add-icon {
+  font-size: 16rpx;
+  color: #6366f1;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.dropdown-add-text {
+  font-size: 15rpx;
+  color: #6366f1;
+  font-weight: 600;
+}
+
+/* ════════════════════════════════════════
+   滚动条美化
+════════════════════════════════════════ */
+.dropdown-list::-webkit-scrollbar {
+  width: 4rpx;
+}
+
+.dropdown-list::-webkit-scrollbar-track {
+  background: rgba(99, 102, 241, 0.05);
+  border-radius: 2rpx;
+}
+
+.dropdown-list::-webkit-scrollbar-thumb {
+  background: rgba(99, 102, 241, 0.25);
+  border-radius: 2rpx;
+  transition: background 0.2s ease;
+}
+
+.dropdown-list::-webkit-scrollbar-thumb:hover {
+  background: rgba(99, 102, 241, 0.4);
 }
 </style>

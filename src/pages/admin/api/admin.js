@@ -124,13 +124,8 @@ export const getStudents = async () => {
   return await get("/admin/students");
 };
 
-/**
- * 获取单个学生详情
- * @param {string} studentId - 学号
- * @returns {Promise}
- */
-export const getStudentDetail = async (studentId) => {
-  return await get(`/admin/students/${studentId}`);
+export const getClasses = async () => {
+  return await get("/admin/classes");
 };
 
 /**
@@ -148,7 +143,7 @@ export const getStudentDetail = async (studentId) => {
  * @returns {Promise}
  */
 export const createStudent = (data) => {
-  return post("/admin/students", data);
+  return post("/admin/create/student/", data);
 };
 
 /**
@@ -352,7 +347,7 @@ const adminApi = {
 
   // 学生管理
   getStudents,
-  getStudentDetail,
+  getClasses,
   createStudent,
   updateStudent,
   deleteStudent,

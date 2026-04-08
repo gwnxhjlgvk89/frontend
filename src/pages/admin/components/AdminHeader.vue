@@ -62,7 +62,7 @@
         <!-- 添加数据按钮 -->
         <view class="add-button" @click="$emit('add')" v-if="adminRole === 2">
           <text class="add-icon">➕</text>
-          <text class="add-text">添加社团</text>
+          <text class="add-text">添加数据</text>
         </view>
 
         <!-- 筛选按钮 -->
