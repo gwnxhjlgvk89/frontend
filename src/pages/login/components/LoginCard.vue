@@ -178,6 +178,7 @@ async function handleLogin() {
       cardStore.onLoginSuccess({ isFirstLogin: !student.is_pwd_changed }); // TODO: 替换为实际登录结果
     } else {
       cardStore.setIdentity(data.identity);
+      cardStore.setRole(data.admin.role);
       uni.redirectTo({ url: "/pages/admin/admin" });
     }
     isSubmitting.value = true;

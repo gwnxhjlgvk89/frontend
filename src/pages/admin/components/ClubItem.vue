@@ -74,7 +74,7 @@
       </view>
 
       <!-- 操作按钮区 -->
-      <view class="club-actions">
+      <view class="club-actions" v-if="adminRole === 2">
         <view class="action-btn btn-edit" @click="$emit('edit')" title="编辑">
           <text class="action-icon">✎</text>
         </view>
@@ -95,14 +95,20 @@
 </template>
 
 <script setup>
-import { computed } from "vue";
+import { computed, ref } from "vue";
 
 const props = defineProps({
   club: {
     type: Object,
     required: true,
   },
+  role: {
+    type: Number,
+    default: 1,
+  },
 });
+
+const adminRole = ref(props.role);
 
 defineEmits(["edit", "delete"]);
 

@@ -324,6 +324,14 @@ export const resetAllSelections = () => {
 };
 
 /**
+ * 导出所有社团和学生数据为 Excel
+ * @returns {Promise}
+ */
+export const exportAllData = async () => {
+  return await post("/admin/export/all", {});
+};
+
+/**
  * ═══════════════════════════════════════════════════════════════
  * 导出对象（方便使用）
  * ═══════════════════════════════════════════════════════════════
@@ -333,6 +341,7 @@ const adminApi = {
   // 社团管理
   getClubs,
   getMajors,
+  exportAllData,
   getClubDetail,
   createClub,
   updateClub,

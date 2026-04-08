@@ -9,6 +9,7 @@
           :search-query="searchQuery"
           :filters="currentFilters"
           :majors="majors"
+          :role="role"
           @tab-change="activeTab = $event"
           @search="searchQuery = $event"
           @filter-change="handleFilterChange"
@@ -23,6 +24,7 @@
           :clubs="filteredClubs"
           :students="filteredStudents"
           :loading="loading"
+          :role="role"
           @edit="handleEdit"
           @delete="handleDelete"
         />
@@ -74,6 +76,11 @@ import ConfirmDialog from "./components/ConfirmDialog.vue";
 import adminApi from "./api/admin.js";
 import { showToast } from "@/utils/toast";
 import { onLoad, onUnload, onHide, onShow } from "@dcloudio/uni-app";
+import { loginCardStore } from "@/stores/loginCardStore";
+
+const cardStore = loginCardStore();
+
+const role = computed(() => cardStore.role);
 
 // ── 基础状态 ──
 const activeTab = ref("clubs");
@@ -245,8 +252,10 @@ const clubStats = computed(() => ({
 
 const studentStats = computed(() => ({
   total: students.value.length,
-  selected: students.value.filter((s) => s.has_selected).length,
-  unselected: students.value.filter((s) => !s.has_selected).length,
+  selected: students.value.filter((s) => s.has_selected || s.is_reserved)
+    .length,
+  unselected: students.value.filter((s) => !s.has_selected && !s.is_reserved)
+    .length,
 }));
 
 onLoad(async () => {

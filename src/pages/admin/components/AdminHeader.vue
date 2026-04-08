@@ -43,18 +43,24 @@
       <view class="action-wrapper">
         <!-- 导出数据按钮 -->
         <view class="export-button" @click="handleExport">
-          <text class="export-icon">📊</text>
-          <text class="export-text">导出数据</text>
+          <text class="export-icon">{{ exporting ? "⏳" : "📥" }}</text>
+          <text class="export-text">{{
+            exporting ? "导出中..." : "导出数据"
+          }}</text>
         </view>
 
         <!-- 导入数据按钮 -->
-        <view class="import-button" @click="handleImportClick">
+        <view
+          class="import-button"
+          @click="handleImportClick"
+          v-if="adminRole === 2"
+        >
           <text class="import-icon">📥</text>
-          <text class="import-text">导入数据</text>
+          <text class="import-text">{{ "导入数据" }}</text>
         </view>
 
         <!-- 添加数据按钮 -->
-        <view class="add-button" @click="$emit('add')">
+        <view class="add-button" @click="$emit('add')" v-if="adminRole === 2">
           <text class="add-icon">➕</text>
           <text class="add-text">添加社团</text>
         </view>
@@ -90,7 +96,10 @@
 
 <script setup>
 import { ref, computed } from "vue";
+import { showToast } from "@/utils/toast";
 import FilterPanel from "./FilterPanel.vue";
+import adminApi from "../api/admin.js";
+import { BASE_URL } from "@/utils/request.js";
 
 const props = defineProps({
   activeTab: {
@@ -109,12 +118,18 @@ const props = defineProps({
     type: Array,
     default: () => [],
   },
+  role: {
+    type: Number,
+    default: 1,
+  },
 });
 
 const emit = defineEmits(["tab-change", "search", "filter-change", "add"]);
 
 const filterExpanded = ref(false);
 const fileInput = ref(null);
+const exporting = ref(false);
+const adminRole = ref(props.role);
 
 const tabs = [
   { id: "clubs", label: "社团管理", icon: "🏢" },
@@ -133,13 +148,61 @@ const handleFilterChange = (newFilters) => {
 };
 
 // ── 导出数据 ──
-const handleExport = () => {
-  uni.showToast({
-    title: "开始导出数据...",
-    icon: "loading",
-    duration: 1500,
-  });
-  // 后续可在此添加具体导出逻辑
+const handleExport = async () => {
+  if (exporting.value) return;
+
+  exporting.value = true;
+  try {
+    const downloadTask = uni.downloadFile({
+      url: `${BASE_URL}/admin/export/all`,
+      success: (res) => {
+        if (res.statusCode === 200) {
+          showToast({
+            title: "导出成功",
+            icon: "success",
+          });
+
+          console.log("下载完成，路径:", res.tempFilePath);
+
+          // 延迟 500ms 确保文件写入完成
+          setTimeout(() => {
+            uni.openDocument({
+              filePath: res.tempFilePath,
+              showMenu: true,
+              success: () => {
+                console.log("文件打开成功");
+              },
+              fail: (err) => {
+                console.error("打开失败:", err.errMsg);
+                showToast({
+                  title: `打开失败: ${err.errMsg}`,
+                  icon: "error",
+                });
+              },
+            });
+          }, 500);
+        }
+      },
+      fail: (err) => {
+        showToast({
+          title: "下载失败",
+          icon: "error",
+        });
+        console.error("下载错误:", err.errMsg);
+      },
+    });
+
+    downloadTask.onProgressUpdate((res) => {
+      console.log("下载进度:", res.progress + "%");
+    });
+  } catch (error) {
+    showToast({
+      title: error.message || "导出失败",
+      icon: "error",
+    });
+  } finally {
+    exporting.value = false;
+  }
 };
 
 // ── 导入数据（点击按钮触发文件选择） ──

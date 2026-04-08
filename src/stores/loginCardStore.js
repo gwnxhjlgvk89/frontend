@@ -20,6 +20,8 @@ export const loginCardStore = defineStore("login", () => {
 
   const identity = ref("student"); // 临时身份标识，实际应由登录接口返回
 
+  const role = ref(1); // 管理员登记，默认普通
+
   // ── Actions ──────────────────────────────────────────────
 
   /** 视图跳转（带合法性校验） */
@@ -29,6 +31,10 @@ export const loginCardStore = defineStore("login", () => {
 
   function setIdentity(newIdentity) {
     identity.value = newIdentity;
+  }
+
+  function setRole(newRole) {
+    role.value = newRole;
   }
 
   // 语义化跳转
@@ -55,6 +61,7 @@ export const loginCardStore = defineStore("login", () => {
     currentView.value = LOGIN_VIEWS.LOGIN;
     isFirstLogin.value = false;
     identity.value = "student";
+    role.value = 1;
   }
 
   return {
@@ -62,12 +69,14 @@ export const loginCardStore = defineStore("login", () => {
     currentView: readonly(currentView),
     isFirstLogin: readonly(isFirstLogin),
     identity: readonly(identity),
+    role: readonly(role),
 
     // Actions
     goLogin,
     goReset,
     goFirstReset,
     onLoginSuccess,
+    setRole,
     setIdentity,
     resetView,
     LOGIN_VIEWS,

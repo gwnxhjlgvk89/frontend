@@ -20,6 +20,7 @@
             v-for="club in paginatedClubs"
             :key="club.club_id"
             :club="club"
+            :role="adminRole"
             @edit="$emit('edit', club)"
             @delete="$emit('delete', club)"
           />
@@ -38,6 +39,7 @@
             v-for="student in paginatedStudents"
             :key="student.student_id"
             :student="student"
+            :role="adminRole"
             @edit="$emit('edit', student)"
             @delete="$emit('delete', student)"
           />
@@ -83,6 +85,10 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  role: {
+    type: Number,
+    default: 1,
+  },
 });
 
 defineEmits(["edit", "delete"]);
@@ -90,6 +96,7 @@ defineEmits(["edit", "delete"]);
 // ── 分页状态 ──
 const currentPage = ref(1);
 const pageSize = ref(10);
+const adminRole = ref(props.role);
 
 // ── 监听 tab 切换，重置页码 ──
 watch(

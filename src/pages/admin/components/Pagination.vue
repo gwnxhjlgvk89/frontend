@@ -13,8 +13,8 @@
       <!-- 页码按钮 -->
       <view class="pagination-pages">
         <view
-          v-for="page in pageNumbers"
-          :key="page"
+          v-for="(page, index) in pageNumbers"
+          :key="`page-${index}-${page}`"
           class="pagination-page"
           :class="{ 'pagination-page--active': page === currentPage }"
           @click="page !== '...' && handlePageClick(page)"

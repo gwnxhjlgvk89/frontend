@@ -96,7 +96,7 @@
     </view>
 
     <!-- 底部：操作按钮 -->
-    <view class="student-actions">
+    <view class="student-actions" v-if="adminRole === 2">
       <view class="action-btn btn-edit" @click="$emit('edit')">
         <text class="btn-icon">✎</text>
         <text class="btn-text">编辑</text>
@@ -110,14 +110,20 @@
 </template>
 
 <script setup>
-import { computed } from "vue";
+import { computed, ref } from "vue";
 
 const props = defineProps({
   student: {
     type: Object,
     required: true,
   },
+  role: {
+    type: Number,
+    default: 1,
+  },
 });
+
+const adminRole = ref(props.role);
 
 defineEmits(["edit", "delete"]);
 
