@@ -406,7 +406,7 @@ const deleteStudent = async (studentId) => {
   flex-direction: column;
   width: 100%;
   height: 100vh;
-  background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+  background: linear-gradient(135deg, #0f172a 0%, #1a1f35 100%);
   overflow: hidden;
 
   .admin-header,
@@ -414,15 +414,11 @@ const deleteStudent = async (studentId) => {
     flex-shrink: 0;
     position: relative;
     z-index: 100;
-    background: linear-gradient(135deg, #ffffff 0%, #f0f4f8 100%);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
   }
-
   .admin-body {
     flex: 1;
     overflow: hidden;
     box-sizing: border-box;
-    background-color: #f8f9fa;
   }
 }
 </style>

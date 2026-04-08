@@ -136,8 +136,8 @@ const handlePageClick = (page) => {
 <style scoped>
 .pagination-wrapper {
   flex-shrink: 0;
-  background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
-  /* border-top: 1rpx solid rgba(99, 102, 241, 0.12); */
+  background: linear-gradient(135deg, #0a0e27 0%, #1a1f35 100%);
+  /* border-top: 1rpx solid rgba(99, 102, 241, 0.2); */
   padding: 10rpx 24rpx;
   min-height: 100rpx;
 }
@@ -148,8 +148,8 @@ const handlePageClick = (page) => {
   justify-content: center;
   gap: 16rpx;
   flex-wrap: wrap;
-  background: rgba(99, 102, 241, 0.04);
-  border: 1rpx solid rgba(99, 102, 241, 0.12);
+  background: rgba(99, 102, 241, 0.08);
+  border: 1rpx solid rgba(99, 102, 241, 0.15);
   border-radius: 12rpx;
   padding: 16rpx;
 }
@@ -158,9 +158,9 @@ const handlePageClick = (page) => {
    分页按钮（上一页/下一页）
 ════════════════════════════════════════ */
 .pagination-btn {
-  padding: 12rpx 22rpx;
-  background: #f1f5f9;
-  border: 1rpx solid rgba(99, 102, 241, 0.15);
+  padding: 10rpx 20rpx;
+  background: rgba(99, 102, 241, 0.2);
+  border: 1rpx solid rgba(99, 102, 241, 0.3);
   border-radius: 8rpx;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -169,8 +169,8 @@ const handlePageClick = (page) => {
 }
 
 .pagination-btn:active:not(.pagination-btn--disabled) {
-  background: #e0e7ff;
-  box-shadow: 0 4rpx 12rpx rgba(99, 102, 241, 0.15);
+  background: rgba(99, 102, 241, 0.35);
+  box-shadow: 0 4rpx 12rpx rgba(99, 102, 241, 0.2);
   transform: translateY(-2rpx);
 }
 
@@ -180,13 +180,13 @@ const handlePageClick = (page) => {
 }
 
 .pagination-btn-text {
-  font-size: 18rpx;
-  color: #6366f1;
+  font-size: 16rpx;
+  color: rgba(165, 243, 252, 0.8);
   font-weight: 600;
 }
 
 .pagination-btn--disabled .pagination-btn-text {
-  color: #cbd5e1;
+  color: rgba(255, 255, 255, 0.3);
 }
 
 /* ════════════════════════════════════════
@@ -206,13 +206,13 @@ const handlePageClick = (page) => {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #f8fafc;
-  border: 1rpx solid rgba(99, 102, 241, 0.12);
+  background: rgba(255, 255, 255, 0.06);
+  border: 1rpx solid rgba(255, 255, 255, 0.1);
   border-radius: 8rpx;
   cursor: pointer;
   transition: all 0.3s ease;
-  font-size: 18rpx;
-  color: #64748b;
+  font-size: 16rpx;
+  color: rgba(255, 255, 255, 0.6);
   font-weight: 600;
 }
 
@@ -222,9 +222,9 @@ const handlePageClick = (page) => {
 
 .pagination-page--active {
   background: linear-gradient(135deg, #6366f1, #8b5cf6);
-  border-color: rgba(99, 102, 241, 0.3);
+  border-color: rgba(99, 102, 241, 0.5);
   color: #ffffff;
-  box-shadow: 0 4rpx 12rpx rgba(99, 102, 241, 0.2);
+  box-shadow: 0 4rpx 12rpx rgba(99, 102, 241, 0.3);
   font-weight: 700;
 }
 
@@ -239,8 +239,8 @@ const handlePageClick = (page) => {
 }
 
 .pagination-info-text {
-  font-size: 18rpx;
-  color: #64748b;
+  font-size: 16rpx;
+  color: rgba(255, 255, 255, 0.5);
   font-weight: 600;
 }
 </style>

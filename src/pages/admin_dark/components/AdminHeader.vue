@@ -277,8 +277,8 @@ const handleFileSelect = (event) => {
 
 <style scoped>
 .admin-header {
-  background: linear-gradient(135deg, #ffffff 0%, #f0f4f8 100%);
-  border-bottom: 1rpx solid rgba(99, 102, 241, 0.15);
+  background: linear-gradient(135deg, #1a1f35 0%, #0f172a 100%);
+  border-bottom: 1rpx solid rgba(99, 102, 241, 0.2);
   overflow: visible;
 }
 
@@ -287,8 +287,8 @@ const handleFileSelect = (event) => {
   inset: 0;
   background: linear-gradient(
     135deg,
-    rgba(99, 102, 241, 0.03) 0%,
-    rgba(139, 92, 246, 0.02) 100%
+    rgba(99, 102, 241, 0.05) 0%,
+    rgba(139, 92, 246, 0.03) 100%
   );
 }
 
@@ -307,7 +307,7 @@ const handleFileSelect = (event) => {
 .tab-switch {
   display: flex;
   gap: 0;
-  border-bottom: 2rpx solid rgba(51, 65, 85, 0.1);
+  border-bottom: 2rpx solid rgba(255, 255, 255, 0.1);
 }
 
 .tab-item {
@@ -324,7 +324,7 @@ const handleFileSelect = (event) => {
 
 .tab-item--active {
   border-bottom-color: #6366f1;
-  background: rgba(99, 102, 241, 0.06);
+  background: rgba(99, 102, 241, 0.08);
 }
 
 .tab-icon {
@@ -332,13 +332,13 @@ const handleFileSelect = (event) => {
 }
 
 .tab-label {
-  font-size: 24rpx;
+  font-size: 22rpx;
   font-weight: 600;
-  color: #64748b;
+  color: rgba(255, 255, 255, 0.6);
 }
 
 .tab-item--active .tab-label {
-  color: #6366f1;
+  color: #a5f3fc;
 }
 
 /* ════════════════════════════════════════
@@ -349,44 +349,43 @@ const handleFileSelect = (event) => {
   align-items: center;
   gap: 12rpx;
   padding: 12rpx 16rpx;
-  background: #ffffff;
+  background: rgba(255, 255, 255, 0.06);
   border: 1rpx solid rgba(99, 102, 241, 0.2);
   border-radius: 16rpx;
   transition: all 0.3s ease;
-  box-shadow: 0 2px 4px rgba(99, 102, 241, 0.06);
 }
 
 .search-wrapper:focus-within {
-  background: #ffffff;
-  border-color: #6366f1;
-  box-shadow: 0 8rpx 24rpx rgba(99, 102, 241, 0.12);
+  background: rgba(99, 102, 241, 0.12);
+  border-color: rgba(99, 102, 241, 0.5);
+  box-shadow: 0 8rpx 24rpx rgba(99, 102, 241, 0.15);
 }
 
 .search-icon {
   font-size: 20rpx;
-  color: #94a3b8;
+  color: rgba(255, 255, 255, 0.45);
   flex-shrink: 0;
 }
 
 .search-input {
   flex: 1;
   background: transparent;
-  color: #1e293b;
-  font-size: 22rpx;
+  color: #ffffff;
+  font-size: 20rpx;
   outline: none;
   border: none;
 }
 
 .search-clear {
   font-size: 20rpx;
-  color: #94a3b8;
+  color: rgba(255, 255, 255, 0.45);
   cursor: pointer;
   transition: color 0.2s ease;
   flex-shrink: 0;
 }
 
 .search-clear:active {
-  color: #64748b;
+  color: rgba(255, 255, 255, 0.7);
 }
 
 /* ════════════════════════════════════════
@@ -406,11 +405,11 @@ const handleFileSelect = (event) => {
   display: flex;
   align-items: center;
   gap: 8rpx;
-  padding: 12rpx 18rpx;
+  padding: 10rpx 16rpx;
   background: linear-gradient(
     135deg,
-    rgba(34, 197, 94, 0.1),
-    rgba(22, 163, 74, 0.08)
+    rgba(34, 197, 94, 0.2),
+    rgba(22, 163, 74, 0.15)
   );
   border: 1rpx solid rgba(34, 197, 94, 0.3);
   border-radius: 12rpx;
@@ -422,10 +421,10 @@ const handleFileSelect = (event) => {
 .export-button:active {
   background: linear-gradient(
     135deg,
-    rgba(34, 197, 94, 0.2),
-    rgba(22, 163, 74, 0.15)
+    rgba(34, 197, 94, 0.35),
+    rgba(22, 163, 74, 0.25)
   );
-  box-shadow: 0 8rpx 16rpx rgba(34, 197, 94, 0.15);
+  box-shadow: 0 8rpx 16rpx rgba(34, 197, 94, 0.2);
   transform: scale(0.98);
 }
 
@@ -434,9 +433,9 @@ const handleFileSelect = (event) => {
 }
 
 .export-text {
-  font-size: 20rpx;
+  font-size: 18rpx;
   font-weight: 600;
-  color: #16a34a;
+  color: rgba(134, 239, 172, 0.85);
 }
 
 /* ════════════════════════════════════════
@@ -446,11 +445,11 @@ const handleFileSelect = (event) => {
   display: flex;
   align-items: center;
   gap: 8rpx;
-  padding: 12rpx 18rpx;
+  padding: 10rpx 16rpx;
   background: linear-gradient(
     135deg,
-    rgba(59, 130, 246, 0.1),
-    rgba(37, 99, 235, 0.08)
+    rgba(59, 130, 246, 0.2),
+    rgba(37, 99, 235, 0.15)
   );
   border: 1rpx solid rgba(59, 130, 246, 0.3);
   border-radius: 12rpx;
@@ -462,10 +461,10 @@ const handleFileSelect = (event) => {
 .import-button:active {
   background: linear-gradient(
     135deg,
-    rgba(59, 130, 246, 0.2),
-    rgba(37, 99, 235, 0.15)
+    rgba(59, 130, 246, 0.35),
+    rgba(37, 99, 235, 0.25)
   );
-  box-shadow: 0 8rpx 16rpx rgba(59, 130, 246, 0.15);
+  box-shadow: 0 8rpx 16rpx rgba(59, 130, 246, 0.2);
   transform: scale(0.98);
 }
 
@@ -474,9 +473,9 @@ const handleFileSelect = (event) => {
 }
 
 .import-text {
-  font-size: 20rpx;
+  font-size: 18rpx;
   font-weight: 600;
-  color: #2563eb;
+  color: rgba(147, 197, 253, 0.85);
 }
 
 /* ════════════════════════════════════════
@@ -486,11 +485,11 @@ const handleFileSelect = (event) => {
   display: flex;
   align-items: center;
   gap: 8rpx;
-  padding: 12rpx 18rpx;
+  padding: 10rpx 16rpx;
   background: linear-gradient(
     135deg,
-    rgba(139, 92, 246, 0.1),
-    rgba(168, 85, 247, 0.08)
+    rgba(139, 92, 246, 0.2),
+    rgba(168, 85, 247, 0.15)
   );
   border: 1rpx solid rgba(139, 92, 246, 0.3);
   border-radius: 12rpx;
@@ -502,10 +501,10 @@ const handleFileSelect = (event) => {
 .add-button:active {
   background: linear-gradient(
     135deg,
-    rgba(139, 92, 246, 0.2),
-    rgba(168, 85, 247, 0.15)
+    rgba(139, 92, 246, 0.35),
+    rgba(168, 85, 247, 0.25)
   );
-  box-shadow: 0 8rpx 16rpx rgba(139, 92, 246, 0.15);
+  box-shadow: 0 8rpx 16rpx rgba(139, 92, 246, 0.2);
   transform: scale(0.98);
 }
 
@@ -514,9 +513,9 @@ const handleFileSelect = (event) => {
 }
 
 .add-text {
-  font-size: 20rpx;
+  font-size: 18rpx;
   font-weight: 600;
-  color: #9333ea;
+  color: rgba(221, 214, 254, 0.85);
 }
 
 /* ════════════════════════════════════════
@@ -526,12 +525,8 @@ const handleFileSelect = (event) => {
   display: flex;
   align-items: center;
   gap: 8rpx;
-  padding: 12rpx 18rpx;
-  background: linear-gradient(
-    135deg,
-    rgba(99, 102, 241, 0.1),
-    rgba(99, 102, 241, 0.08)
-  );
+  padding: 10rpx 16rpx;
+  background: rgba(99, 102, 241, 0.2);
   border: 1rpx solid rgba(99, 102, 241, 0.3);
   border-radius: 12rpx;
   cursor: pointer;
@@ -540,12 +535,8 @@ const handleFileSelect = (event) => {
 }
 
 .filter-toggle:active {
-  background: linear-gradient(
-    135deg,
-    rgba(99, 102, 241, 0.2),
-    rgba(99, 102, 241, 0.15)
-  );
-  box-shadow: 0 8rpx 16rpx rgba(99, 102, 241, 0.12);
+  background: rgba(99, 102, 241, 0.35);
+  box-shadow: 0 8rpx 16rpx rgba(99, 102, 241, 0.2);
   transform: scale(0.98);
 }
 
@@ -554,8 +545,8 @@ const handleFileSelect = (event) => {
 }
 
 .filter-text {
-  font-size: 20rpx;
+  font-size: 18rpx;
   font-weight: 600;
-  color: #6366f1;
+  color: rgba(165, 243, 252, 0.8);
 }
 </style>

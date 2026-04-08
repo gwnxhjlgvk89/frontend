@@ -343,8 +343,8 @@ const handleApply = () => {
    筛选面板整体
 ════════════════════════════════════════ */
 .filter-panel {
-  background: #f8fafc;
-  border-bottom: 1rpx solid rgba(99, 102, 241, 0.12);
+  background: rgba(99, 102, 241, 0.08);
+  border-bottom: 1rpx solid rgba(99, 102, 241, 0.2);
   animation: slideDown 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
   max-height: 70vh;
   overflow-y: auto;
@@ -390,20 +390,20 @@ const handleApply = () => {
 }
 
 .filter-label {
-  font-size: 20rpx;
+  font-size: 18rpx;
   font-weight: 700;
-  color: #6366f1;
+  color: #a5f3fc;
   text-transform: uppercase;
   letter-spacing: 1rpx;
 }
 
 .filter-badge {
   display: inline-block;
-  padding: 6rpx 10rpx;
+  padding: 4rpx 8rpx;
   background: linear-gradient(135deg, #6366f1, #8b5cf6);
   color: #ffffff;
   border-radius: 6rpx;
-  font-size: 14rpx;
+  font-size: 12rpx;
   font-weight: 600;
 }
 
@@ -421,29 +421,32 @@ const handleApply = () => {
   flex-direction: column;
   align-items: center;
   gap: 6rpx;
-  padding: 14rpx 18rpx;
-  background: #ffffff;
-  border: 1.5rpx solid rgba(99, 102, 241, 0.12);
+  padding: 12rpx 16rpx;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1.5rpx solid rgba(99, 102, 241, 0.15);
   border-radius: 12rpx;
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
   flex: 1;
   min-width: 100rpx;
   max-width: calc(50% - 6rpx);
-  box-shadow: 0 2rpx 4rpx rgba(99, 102, 241, 0.04);
 }
 
 .filter-option:active {
   transform: scale(0.95);
-  background: #f0f4f8;
+  background: rgba(99, 102, 241, 0.1);
 }
 
 .filter-option--active {
-  background: linear-gradient(135deg, #eef2ff 0%, #f0f4f8 100%);
-  border-color: rgba(99, 102, 241, 0.3);
+  background: linear-gradient(
+    135deg,
+    rgba(99, 102, 241, 0.3),
+    rgba(139, 92, 246, 0.25)
+  );
+  border-color: rgba(99, 102, 241, 0.6);
   box-shadow:
-    0 8rpx 20rpx rgba(99, 102, 241, 0.12),
-    inset 0 0 0 1.5rpx rgba(99, 102, 241, 0.15);
+    0 8rpx 20rpx rgba(99, 102, 241, 0.2),
+    inset 0 0 0 1.5rpx rgba(165, 243, 252, 0.3);
   position: relative;
 }
 
@@ -456,15 +459,15 @@ const handleApply = () => {
 }
 
 .option-label {
-  font-size: 16rpx;
-  color: #64748b;
+  font-size: 14rpx;
+  color: rgba(255, 255, 255, 0.6);
   font-weight: 600;
   text-align: center;
   line-height: 1.4;
 }
 
 .filter-option--active .option-label {
-  color: #6366f1;
+  color: #a5f3fc;
   font-weight: 700;
 }
 
@@ -476,7 +479,7 @@ const handleApply = () => {
   gap: 12rpx;
   margin-top: 16rpx;
   padding-top: 20rpx;
-  border-top: 1rpx solid rgba(99, 102, 241, 0.12);
+  border-top: 1rpx solid rgba(99, 102, 241, 0.2);
 }
 
 .btn {
@@ -485,10 +488,10 @@ const handleApply = () => {
   align-items: center;
   justify-content: center;
   gap: 8rpx;
-  padding: 16rpx;
+  padding: 14rpx;
   border: none;
   border-radius: 12rpx;
-  font-size: 18rpx;
+  font-size: 16rpx;
   font-weight: 700;
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
@@ -496,27 +499,27 @@ const handleApply = () => {
 }
 
 .btn-reset {
-  background: #f1f5f9;
-  color: #64748b;
-  border: 1.5rpx solid rgba(99, 102, 241, 0.12);
+  background: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.7);
+  border: 1.5rpx solid rgba(255, 255, 255, 0.15);
 }
 
 .btn-reset:active {
-  background: #e2e8f0;
-  border-color: rgba(99, 102, 241, 0.25);
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.3);
   transform: translateY(-1rpx);
 }
 
 .btn-apply {
   background: linear-gradient(135deg, #6366f1, #8b5cf6);
   color: #ffffff;
-  box-shadow: 0 12rpx 32rpx rgba(99, 102, 241, 0.2);
+  box-shadow: 0 12rpx 32rpx rgba(99, 102, 241, 0.3);
   border: none;
 }
 
 .btn-apply:active {
   transform: translateY(-2rpx);
-  box-shadow: 0 16rpx 48rpx rgba(99, 102, 241, 0.28);
+  box-shadow: 0 16rpx 48rpx rgba(99, 102, 241, 0.4);
 }
 
 .btn-icon {
@@ -539,7 +542,7 @@ const handleApply = () => {
 
   .filter-option {
     max-width: calc(50% - 6rpx);
-    padding: 12rpx 14rpx;
+    padding: 10rpx 12rpx;
     font-size: 12rpx;
   }
 
@@ -549,21 +552,21 @@ const handleApply = () => {
   }
 
   .option-label {
-    font-size: 14rpx;
+    font-size: 12rpx;
   }
 
   .filter-label {
-    font-size: 18rpx;
+    font-size: 16rpx;
   }
 
   .btn {
-    padding: 14rpx;
-    font-size: 16rpx;
+    padding: 12rpx;
+    font-size: 14rpx;
   }
 }
 
 /* ════════════════════════════════════════
-   光影效果
+   深色主题优化
 ════════════════════════════════════════ */
 .filter-option {
   position: relative;
@@ -580,7 +583,7 @@ const handleApply = () => {
   background: linear-gradient(
     90deg,
     transparent,
-    rgba(99, 102, 241, 0.1),
+    rgba(255, 255, 255, 0.1),
     transparent
   );
   transition: left 0.5s ease;
@@ -602,11 +605,11 @@ const handleApply = () => {
 }
 
 .filter-panel::-webkit-scrollbar-thumb {
-  background: rgba(99, 102, 241, 0.2);
+  background: rgba(99, 102, 241, 0.3);
   border-radius: 4rpx;
 }
 
 .filter-panel::-webkit-scrollbar-thumb:hover {
-  background: rgba(99, 102, 241, 0.4);
+  background: rgba(99, 102, 241, 0.5);
 }
 </style>

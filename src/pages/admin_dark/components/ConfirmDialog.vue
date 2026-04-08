@@ -131,7 +131,7 @@ const handleBackdropClick = () => {
   right: 0;
   bottom: 0;
   z-index: 1000;
-  background: rgba(0, 0, 0, 0.3);
+  background: rgba(0, 0, 0, 0.6);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -165,7 +165,7 @@ const handleBackdropClick = () => {
 .dialog-content {
   width: 100%;
   max-width: 560rpx;
-  background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+  background: linear-gradient(135deg, #1a1f35 0%, #0f172a 100%);
   border-radius: 24rpx;
   display: flex;
   flex-direction: column;
@@ -173,8 +173,8 @@ const handleBackdropClick = () => {
   gap: 20rpx;
   padding: 32rpx 24rpx;
   animation: zoomIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-  box-shadow: 0 20rpx 64rpx rgba(99, 102, 241, 0.15);
-  border: 1rpx solid rgba(99, 102, 241, 0.12);
+  box-shadow: 0 20rpx 64rpx rgba(0, 0, 0, 0.5);
+  border: 1rpx solid rgba(99, 102, 241, 0.15);
   position: relative;
   overflow: hidden;
 }
@@ -189,7 +189,7 @@ const handleBackdropClick = () => {
   height: 200%;
   background: radial-gradient(
     circle,
-    rgba(99, 102, 241, 0.06) 0%,
+    rgba(99, 102, 241, 0.1) 0%,
     transparent 70%
   );
   animation: drift 6s ease-in-out infinite;
@@ -237,46 +237,46 @@ const handleBackdropClick = () => {
 .dialog-icon--confirm {
   background: linear-gradient(
     135deg,
-    rgba(99, 102, 241, 0.12),
-    rgba(139, 92, 246, 0.08)
+    rgba(99, 102, 241, 0.25),
+    rgba(139, 92, 246, 0.15)
   );
-  border: 2rpx solid rgba(99, 102, 241, 0.25);
+  border: 2rpx solid rgba(99, 102, 241, 0.4);
 }
 
 .dialog-icon--warning {
   background: linear-gradient(
     135deg,
-    rgba(251, 191, 36, 0.12),
-    rgba(245, 158, 11, 0.08)
+    rgba(251, 191, 36, 0.25),
+    rgba(245, 158, 11, 0.15)
   );
-  border: 2rpx solid rgba(251, 191, 36, 0.25);
+  border: 2rpx solid rgba(251, 191, 36, 0.4);
 }
 
 .dialog-icon--error {
   background: linear-gradient(
     135deg,
-    rgba(239, 68, 68, 0.12),
-    rgba(220, 38, 38, 0.08)
+    rgba(239, 68, 68, 0.25),
+    rgba(220, 38, 38, 0.15)
   );
-  border: 2rpx solid rgba(239, 68, 68, 0.25);
+  border: 2rpx solid rgba(239, 68, 68, 0.4);
 }
 
 .dialog-icon--success {
   background: linear-gradient(
     135deg,
-    rgba(34, 197, 94, 0.12),
-    rgba(16, 185, 129, 0.08)
+    rgba(34, 197, 94, 0.25),
+    rgba(16, 185, 129, 0.15)
   );
-  border: 2rpx solid rgba(34, 197, 94, 0.25);
+  border: 2rpx solid rgba(34, 197, 94, 0.4);
 }
 
 .dialog-icon--info {
   background: linear-gradient(
     135deg,
-    rgba(59, 130, 246, 0.12),
-    rgba(37, 99, 235, 0.08)
+    rgba(59, 130, 246, 0.25),
+    rgba(37, 99, 235, 0.15)
   );
-  border: 2rpx solid rgba(59, 130, 246, 0.25);
+  border: 2rpx solid rgba(59, 130, 246, 0.4);
 }
 
 @keyframes bounce {
@@ -303,9 +303,9 @@ const handleBackdropClick = () => {
 }
 
 .dialog-title {
-  font-size: 30rpx;
+  font-size: 28rpx;
   font-weight: 800;
-  color: #1e293b;
+  color: #ffffff;
   letter-spacing: 0.5rpx;
 }
 
@@ -319,8 +319,8 @@ const handleBackdropClick = () => {
 }
 
 .dialog-message {
-  font-size: 22rpx;
-  color: #64748b;
+  font-size: 20rpx;
+  color: rgba(255, 255, 255, 0.65);
   line-height: 1.6;
   letter-spacing: 0.3rpx;
   word-break: break-word;
@@ -340,10 +340,10 @@ const handleBackdropClick = () => {
 
 .action-btn {
   flex: 1;
-  padding: 16rpx 20rpx;
+  padding: 14rpx 20rpx;
   border: none;
   border-radius: 12rpx;
-  font-size: 22rpx;
+  font-size: 20rpx;
   font-weight: 700;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -357,14 +357,14 @@ const handleBackdropClick = () => {
 
 /* ── Cancel Button ── */
 .action-btn--cancel {
-  background: #f1f5f9;
-  color: #64748b;
-  border: 1rpx solid rgba(99, 102, 241, 0.15);
+  background: rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.7);
+  border: 1rpx solid rgba(255, 255, 255, 0.15);
 }
 
 .action-btn--cancel:active:not(:disabled) {
-  background: #e2e8f0;
-  border-color: rgba(99, 102, 241, 0.25);
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.3);
   transform: translateY(-1rpx);
 }
 
@@ -377,12 +377,12 @@ const handleBackdropClick = () => {
 .action-btn--confirm {
   background: linear-gradient(135deg, #6366f1, #8b5cf6);
   color: #ffffff;
-  box-shadow: 0 8rpx 24rpx rgba(99, 102, 241, 0.25);
+  box-shadow: 0 8rpx 24rpx rgba(99, 102, 241, 0.3);
 }
 
 .action-btn--confirm:active:not(:disabled) {
   transform: translateY(-2rpx);
-  box-shadow: 0 12rpx 36rpx rgba(99, 102, 241, 0.35);
+  box-shadow: 0 12rpx 36rpx rgba(99, 102, 241, 0.4);
 }
 
 .action-btn--confirm:disabled {
@@ -426,16 +426,16 @@ const handleBackdropClick = () => {
   }
 
   .dialog-title {
-    font-size: 28rpx;
+    font-size: 24rpx;
   }
 
   .dialog-message {
-    font-size: 20rpx;
+    font-size: 18rpx;
   }
 
   .action-btn {
-    font-size: 20rpx;
-    padding: 14rpx 16rpx;
+    font-size: 18rpx;
+    padding: 12rpx 16rpx;
   }
 }
 </style>

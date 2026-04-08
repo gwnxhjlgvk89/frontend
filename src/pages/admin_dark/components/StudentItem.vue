@@ -178,19 +178,22 @@ const formatSelectedTime = (dateStr) => {
   flex-direction: column;
   gap: 16rpx;
   padding: 16rpx;
-  background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
-  border: 1rpx solid rgba(99, 102, 241, 0.12);
+  background: linear-gradient(
+    135deg,
+    rgba(99, 102, 241, 0.08) 0%,
+    rgba(139, 92, 246, 0.06) 100%
+  );
+  border: 1rpx solid rgba(99, 102, 241, 0.2);
   border-radius: 16rpx;
   transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
   overflow: hidden;
-  box-shadow: 0 2rpx 4rpx rgba(99, 102, 241, 0.04);
 }
 
 .student-item:active {
-  background: linear-gradient(135deg, #f0f4f8 0%, #e0e7ff 100%);
-  border-color: rgba(99, 102, 241, 0.25);
+  background: rgba(99, 102, 241, 0.15);
+  border-color: rgba(99, 102, 241, 0.4);
   transform: translateY(-2rpx);
-  box-shadow: 0 8rpx 24rpx rgba(99, 102, 241, 0.12);
+  box-shadow: 0 8rpx 24rpx rgba(99, 102, 241, 0.15);
 }
 
 /* ════════════════════════════════════════
@@ -213,7 +216,7 @@ const formatSelectedTime = (dateStr) => {
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  box-shadow: 0 4rpx 12rpx rgba(99, 102, 241, 0.15);
+  box-shadow: 0 4rpx 12rpx rgba(99, 102, 241, 0.3);
 }
 
 .avatar-img {
@@ -243,9 +246,9 @@ const formatSelectedTime = (dateStr) => {
 }
 
 .student-name {
-  font-size: 24rpx;
+  font-size: 22rpx;
   font-weight: 700;
-  color: #1e293b;
+  color: #ffffff;
   flex: 1;
 }
 
@@ -258,9 +261,9 @@ const formatSelectedTime = (dateStr) => {
 }
 
 .badge {
-  padding: 8rpx 14rpx;
+  padding: 6rpx 12rpx;
   border-radius: 8rpx;
-  font-size: 14rpx;
+  font-size: 12rpx;
   font-weight: 600;
   white-space: nowrap;
   flex-shrink: 0;
@@ -268,40 +271,35 @@ const formatSelectedTime = (dateStr) => {
 }
 
 .badge--active {
-  background: rgba(34, 197, 94, 0.1);
-  color: #16a34a;
-  border: 1rpx solid rgba(34, 197, 94, 0.2);
+  background: rgba(34, 197, 94, 0.25);
+  color: #86efac;
 }
 
 .badge--disabled {
-  background: rgba(239, 68, 68, 0.1);
-  color: #dc2626;
-  border: 1rpx solid rgba(239, 68, 68, 0.2);
+  background: rgba(239, 68, 68, 0.25);
+  color: #fca5a5;
 }
 
 .badge--selected {
-  background: rgba(59, 130, 246, 0.1);
-  color: #2563eb;
-  border: 1rpx solid rgba(59, 130, 246, 0.2);
+  background: rgba(59, 130, 246, 0.25);
+  color: #93c5fd;
 }
 
 .badge--unselected {
-  background: rgba(251, 191, 36, 0.1);
-  color: #d97706;
-  border: 1rpx solid rgba(251, 191, 36, 0.2);
+  background: rgba(251, 191, 36, 0.25);
+  color: #fde68a;
 }
 
 .badge--reserved {
-  background: rgba(168, 85, 247, 0.1);
-  color: #7c3aed;
-  border: 1rpx solid rgba(168, 85, 247, 0.2);
+  background: rgba(168, 85, 247, 0.25);
+  color: #d8b4fe;
 }
 
 /* ── 详细信息行 ── */
 .info-row-detail {
   display: flex;
   gap: 24rpx;
-  font-size: 16rpx;
+  font-size: 14rpx;
 }
 
 .student-id,
@@ -309,11 +307,11 @@ const formatSelectedTime = (dateStr) => {
   display: flex;
   align-items: center;
   gap: 4rpx;
-  color: #64748b;
+  color: rgba(255, 255, 255, 0.7);
 }
 
 .label {
-  color: #94a3b8;
+  color: rgba(255, 255, 255, 0.45);
   font-weight: 600;
 }
 
@@ -325,18 +323,18 @@ const formatSelectedTime = (dateStr) => {
   grid-template-columns: repeat(3, 1fr);
   gap: 12rpx;
   padding: 12rpx 0;
-  border-top: 1rpx solid rgba(99, 102, 241, 0.12);
-  border-bottom: 1rpx solid rgba(99, 102, 241, 0.12);
+  border-top: 1rpx solid rgba(99, 102, 241, 0.1);
+  border-bottom: 1rpx solid rgba(99, 102, 241, 0.1);
 }
 
 .detail-item {
   display: flex;
   flex-direction: column;
   gap: 4rpx;
-  padding: 10rpx;
-  background: #f8fafc;
+  padding: 8rpx;
+  background: rgba(255, 255, 255, 0.03);
   border-radius: 8rpx;
-  border: 1rpx solid rgba(99, 102, 241, 0.1);
+  border: 1rpx solid rgba(99, 102, 241, 0.08);
 }
 
 .detail-item.selected-club {
@@ -344,50 +342,50 @@ const formatSelectedTime = (dateStr) => {
   flex-direction: row;
   align-items: center;
   gap: 12rpx;
-  background: #eff6ff;
+  background: rgba(59, 130, 246, 0.08);
   border-color: rgba(59, 130, 246, 0.2);
   padding: 10rpx 12rpx;
 }
 
 .detail-label {
-  font-size: 14rpx;
-  color: #94a3b8;
+  font-size: 12rpx;
+  color: rgba(255, 255, 255, 0.45);
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.5rpx;
 }
 
 .detail-value {
-  font-size: 16rpx;
-  color: #1e293b;
+  font-size: 14rpx;
+  color: rgba(255, 255, 255, 0.8);
   font-weight: 500;
   word-break: break-all;
 }
 
 .email-value {
-  font-size: 14rpx;
-  color: #6366f1;
+  font-size: 12rpx;
+  color: rgba(165, 243, 252, 0.8);
 }
 
 .club-name {
-  font-size: 18rpx;
+  font-size: 16rpx;
   font-weight: 600;
-  color: #2563eb;
+  color: #93c5fd;
   flex: 1;
 }
 
 .selected-time {
-  font-size: 14rpx;
-  color: #94a3b8;
+  font-size: 12rpx;
+  color: rgba(255, 255, 255, 0.45);
   white-space: nowrap;
 }
 
 .pwd-1 {
-  color: #16a34a;
+  color: #86efac;
 }
 
 .pwd-0 {
-  color: #d97706;
+  color: #fde68a;
 }
 
 /* ════════════════════════════════════════
@@ -404,13 +402,13 @@ const formatSelectedTime = (dateStr) => {
   align-items: center;
   justify-content: center;
   gap: 6rpx;
-  padding: 12rpx 18rpx;
-  background: #f1f5f9;
-  border: 1rpx solid rgba(99, 102, 241, 0.12);
+  padding: 10rpx 16rpx;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1rpx solid rgba(255, 255, 255, 0.1);
   border-radius: 8rpx;
   cursor: pointer;
   transition: all 0.2s ease;
-  font-size: 16rpx;
+  font-size: 14rpx;
   min-width: 70rpx;
 }
 
@@ -419,23 +417,23 @@ const formatSelectedTime = (dateStr) => {
 }
 
 .btn-edit {
-  color: #2563eb;
-  border-color: rgba(37, 99, 235, 0.2);
+  color: rgba(165, 243, 252, 0.8);
+  border-color: rgba(99, 102, 241, 0.3);
 }
 
 .btn-edit:active {
-  background: #dbeafe;
-  border-color: rgba(37, 99, 235, 0.3);
+  background: rgba(99, 102, 241, 0.25);
+  border-color: rgba(99, 102, 241, 0.5);
 }
 
 .btn-delete {
-  color: #dc2626;
-  border-color: rgba(220, 38, 38, 0.2);
+  color: rgba(252, 165, 165, 0.8);
+  border-color: rgba(239, 68, 68, 0.3);
 }
 
 .btn-delete:active {
-  background: #fee2e2;
-  border-color: rgba(220, 38, 38, 0.3);
+  background: rgba(239, 68, 68, 0.25);
+  border-color: rgba(239, 68, 68, 0.5);
 }
 
 .btn-icon {

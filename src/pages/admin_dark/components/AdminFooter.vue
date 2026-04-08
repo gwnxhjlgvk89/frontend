@@ -69,10 +69,10 @@ onMounted(() => {
 
 <style scoped>
 .admin-footer {
-  background: linear-gradient(135deg, #ffffff 0%, #f0f4f8 100%);
-  border-top: 1rpx solid rgba(99, 102, 241, 0.12);
+  background: linear-gradient(135deg, #0a0e27 0%, #1a1f35 100%);
+  /* border-top: 1rpx solid rgba(99, 102, 241, 0.2); */
   padding: 16rpx 24rpx;
-  padding-top: 12rpx;
+  padding-top: 0;
   display: flex;
   flex-direction: column;
   gap: 12rpx;
@@ -92,23 +92,21 @@ onMounted(() => {
   flex-direction: column;
   align-items: center;
   gap: 6rpx;
-  padding: 14rpx;
-  background: linear-gradient(135deg, #eef2ff 0%, #f0f4f8 100%);
-  border: 1rpx solid #dbeafe;
+  padding: 12rpx;
+  background: rgba(99, 102, 241, 0.08);
+  border: 1rpx solid rgba(99, 102, 241, 0.15);
   border-radius: 8rpx;
-  box-shadow: 0 2px 4px rgba(99, 102, 241, 0.06);
 }
 
 .stat-label {
-  font-size: 16rpx;
-  color: #64748b;
+  font-size: 14rpx;
+  color: rgba(255, 255, 255, 0.45);
   font-weight: 600;
-  letter-spacing: 0.5rpx;
 }
 
 .stat-value {
-  font-size: 26rpx;
-  color: #6366f1;
+  font-size: 22rpx;
+  color: #86efac;
   font-weight: 700;
 }
 

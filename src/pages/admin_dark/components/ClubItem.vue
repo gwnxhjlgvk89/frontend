@@ -186,8 +186,8 @@ const getStatusClass = computed(() => {
   inset: -8rpx;
   background: radial-gradient(
     circle at 30% 50%,
-    rgba(99, 102, 241, 0.08) 0%,
-    rgba(139, 92, 246, 0.04) 50%,
+    rgba(99, 102, 241, 0.1) 0%,
+    rgba(139, 92, 246, 0.05) 50%,
     transparent 100%
   );
   border-radius: 20rpx;
@@ -204,24 +204,34 @@ const getStatusClass = computed(() => {
   display: flex;
   gap: 16rpx;
   padding: 20rpx;
-  background: linear-gradient(135deg, #ffffff 0%, #f8fafc 50%, #f0f4f8 100%);
-  border: 1rpx solid rgba(99, 102, 241, 0.12);
+  background: linear-gradient(
+    135deg,
+    rgba(99, 102, 241, 0.06) 0%,
+    rgba(139, 92, 246, 0.04) 50%,
+    rgba(59, 130, 246, 0.03) 100%
+  );
+  border: 1rpx solid rgba(99, 102, 241, 0.15);
   border-radius: 20rpx;
   backdrop-filter: blur(10px);
   box-shadow:
-    0 4rpx 12rpx rgba(99, 102, 241, 0.08),
-    0 0 1rpx rgba(99, 102, 241, 0.08),
-    inset 0 1rpx 0 rgba(255, 255, 255, 0.6);
+    0 4rpx 12rpx rgba(0, 0, 0, 0.1),
+    0 0 1rpx rgba(99, 102, 241, 0.1),
+    inset 0 1rpx 0 rgba(255, 255, 255, 0.05);
   transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .club-item:hover .club-container {
-  background: linear-gradient(135deg, #ffffff 0%, #f0f9ff 50%, #eff6ff 100%);
-  border-color: rgba(99, 102, 241, 0.2);
+  background: linear-gradient(
+    135deg,
+    rgba(99, 102, 241, 0.12) 0%,
+    rgba(139, 92, 246, 0.08) 50%,
+    rgba(59, 130, 246, 0.06) 100%
+  );
+  border-color: rgba(99, 102, 241, 0.25);
   box-shadow:
-    0 12rpx 32rpx rgba(99, 102, 241, 0.12),
-    0 0 1rpx rgba(99, 102, 241, 0.12),
-    inset 0 1rpx 0 rgba(255, 255, 255, 0.8);
+    0 12rpx 32rpx rgba(99, 102, 241, 0.15),
+    0 0 1rpx rgba(99, 102, 241, 0.2),
+    inset 0 1rpx 0 rgba(255, 255, 255, 0.08);
 }
 
 .club-item:hover .club-glow {
@@ -239,7 +249,7 @@ const getStatusClass = computed(() => {
   width: 4rpx;
   background: linear-gradient(180deg, #6366f1 0%, #8b5cf6 50%, #a855f7 100%);
   border-radius: 20rpx 0 0 20rpx;
-  box-shadow: 2rpx 0 8rpx rgba(99, 102, 241, 0.2);
+  box-shadow: 2rpx 0 8rpx rgba(99, 102, 241, 0.3);
 }
 
 /* ════════════════════════════════════════
@@ -288,13 +298,13 @@ const getStatusClass = computed(() => {
 }
 
 .club-name {
-  font-size: 28rpx;
+  font-size: 26rpx;
   font-weight: 700;
-  color: #1e293b;
+  color: #ffffff;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  background: linear-gradient(135deg, #1e293b, #6366f1);
+  background: linear-gradient(135deg, #ffffff, #a5f3fc);
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -313,9 +323,9 @@ const getStatusClass = computed(() => {
   display: flex;
   align-items: center;
   gap: 4rpx;
-  padding: 8rpx 14rpx;
+  padding: 6rpx 12rpx;
   border-radius: 12rpx;
-  font-size: 16rpx;
+  font-size: 14rpx;
   font-weight: 600;
   white-space: nowrap;
   backdrop-filter: blur(10px);
@@ -356,42 +366,42 @@ const getStatusClass = computed(() => {
 }
 
 .badge--default {
-  background: rgba(107, 114, 128, 0.08);
-  border-color: rgba(107, 114, 128, 0.2);
-  color: #64748b;
+  background: rgba(107, 114, 128, 0.15);
+  border-color: rgba(107, 114, 128, 0.3);
+  color: #d1d5db;
 }
 
 .badge--success {
-  background: rgba(34, 197, 94, 0.08);
-  border-color: rgba(34, 197, 94, 0.2);
-  color: #16a34a;
-  box-shadow: 0 0 12rpx rgba(34, 197, 94, 0.12);
+  background: rgba(34, 197, 94, 0.15);
+  border-color: rgba(34, 197, 94, 0.3);
+  color: #86efac;
+  box-shadow: 0 0 12rpx rgba(34, 197, 94, 0.2);
 }
 
 .badge--danger {
-  background: rgba(239, 68, 68, 0.08);
-  border-color: rgba(239, 68, 68, 0.2);
-  color: #dc2626;
-  box-shadow: 0 0 12rpx rgba(239, 68, 68, 0.12);
+  background: rgba(239, 68, 68, 0.15);
+  border-color: rgba(239, 68, 68, 0.3);
+  color: #fca5a5;
+  box-shadow: 0 0 12rpx rgba(239, 68, 68, 0.2);
 }
 
 .badge--warning {
-  background: rgba(251, 191, 36, 0.08);
-  border-color: rgba(251, 191, 36, 0.2);
-  color: #d97706;
-  box-shadow: 0 0 12rpx rgba(251, 191, 36, 0.12);
+  background: rgba(251, 191, 36, 0.15);
+  border-color: rgba(251, 191, 36, 0.3);
+  color: #fde68a;
+  box-shadow: 0 0 12rpx rgba(251, 191, 36, 0.2);
 }
 
 .badge--limit {
-  background: rgba(99, 102, 241, 0.08);
-  border-color: rgba(99, 102, 241, 0.2);
-  color: #6366f1;
-  box-shadow: 0 0 12rpx rgba(99, 102, 241, 0.12);
+  background: rgba(99, 102, 241, 0.15);
+  border-color: rgba(99, 102, 241, 0.3);
+  color: #c4b5fd;
+  box-shadow: 0 0 12rpx rgba(99, 102, 241, 0.2);
 }
 
 .badge:hover {
   transform: translateY(-2rpx);
-  box-shadow: 0 4rpx 16rpx rgba(99, 102, 241, 0.15);
+  box-shadow: 0 4rpx 16rpx rgba(99, 102, 241, 0.2);
 }
 
 /* ════════════════════════════════════════
@@ -408,29 +418,29 @@ const getStatusClass = computed(() => {
   flex-direction: column;
   gap: 6rpx;
   padding: 12rpx;
-  background: #f8f9fa;
-  border: 1rpx solid rgba(99, 102, 241, 0.1);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1rpx solid rgba(255, 255, 255, 0.08);
   border-radius: 12rpx;
   transition: all 0.3s ease;
 }
 
 .info-card:hover {
-  background: #f0f4f8;
+  background: rgba(99, 102, 241, 0.1);
   border-color: rgba(99, 102, 241, 0.2);
   transform: translateY(-2rpx);
 }
 
 .info-label {
-  font-size: 16rpx;
-  color: #64748b;
+  font-size: 14rpx;
+  color: rgba(255, 255, 255, 0.45);
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.5rpx;
 }
 
 .info-value {
-  font-size: 20rpx;
-  color: #6366f1;
+  font-size: 18rpx;
+  color: #a5f3fc;
   font-weight: 700;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -445,8 +455,12 @@ const getStatusClass = computed(() => {
   flex-direction: column;
   gap: 10rpx;
   padding: 14rpx;
-  background: linear-gradient(135deg, #f0f4f8 0%, #f8fafc 100%);
-  border: 1rpx solid rgba(99, 102, 241, 0.12);
+  background: linear-gradient(
+    135deg,
+    rgba(99, 102, 241, 0.08) 0%,
+    rgba(59, 130, 246, 0.05) 100%
+  );
+  border: 1rpx solid rgba(99, 102, 241, 0.15);
   border-radius: 12rpx;
 }
 
@@ -457,13 +471,13 @@ const getStatusClass = computed(() => {
 }
 
 .quota-label {
-  font-size: 18rpx;
-  color: #475569;
+  font-size: 16rpx;
+  color: rgba(255, 255, 255, 0.6);
   font-weight: 600;
 }
 
 .quota-percentage {
-  font-size: 22rpx;
+  font-size: 20rpx;
   font-weight: 700;
   color: #6366f1;
   animation: countUp 0.6s ease-out;
@@ -487,8 +501,8 @@ const getStatusClass = computed(() => {
 
 .quota-bar {
   width: 100%;
-  height: 10rpx;
-  background: rgba(99, 102, 241, 0.1);
+  height: 8rpx;
+  background: rgba(255, 255, 255, 0.1);
   border-radius: 8rpx;
   overflow: hidden;
   position: relative;
@@ -499,30 +513,30 @@ const getStatusClass = computed(() => {
   background: linear-gradient(90deg, #6366f1 0%, #8b5cf6 50%, #a855f7 100%);
   border-radius: 8rpx;
   transition: width 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-  box-shadow: 0 0 12rpx rgba(99, 102, 241, 0.3);
+  box-shadow: 0 0 12rpx rgba(99, 102, 241, 0.4);
   animation: shimmer 2s ease-in-out infinite;
 }
 
 @keyframes shimmer {
   0%,
   100% {
-    box-shadow: 0 0 12rpx rgba(99, 102, 241, 0.3);
+    box-shadow: 0 0 12rpx rgba(99, 102, 241, 0.4);
   }
   50% {
-    box-shadow: 0 0 20rpx rgba(99, 102, 241, 0.5);
+    box-shadow: 0 0 20rpx rgba(99, 102, 241, 0.6);
   }
 }
 
 .quota-fill--full {
   background: linear-gradient(90deg, #10b981 0%, #34d399 100%);
-  box-shadow: 0 0 12rpx rgba(16, 185, 129, 0.3);
+  box-shadow: 0 0 12rpx rgba(16, 185, 129, 0.4);
 }
 
 .quota-info {
   display: flex;
   justify-content: space-between;
-  font-size: 16rpx;
-  color: #64748b;
+  font-size: 14rpx;
+  color: rgba(255, 255, 255, 0.5);
 }
 
 .count-highlight {
@@ -551,8 +565,12 @@ const getStatusClass = computed(() => {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #f8f9fa, #f0f4f8);
-  border: 1rpx solid rgba(99, 102, 241, 0.12);
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.1),
+    rgba(255, 255, 255, 0.05)
+  );
+  border: 1rpx solid rgba(255, 255, 255, 0.1);
   border-radius: 12rpx;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -567,7 +585,7 @@ const getStatusClass = computed(() => {
   inset: 0;
   background: radial-gradient(
     circle at center,
-    rgba(99, 102, 241, 0.1),
+    rgba(255, 255, 255, 0.2),
     transparent
   );
   opacity: 0;
@@ -576,8 +594,8 @@ const getStatusClass = computed(() => {
 
 .action-btn:hover {
   transform: translateY(-2rpx);
-  box-shadow: 0 4rpx 12rpx rgba(99, 102, 241, 0.12);
-  border-color: rgba(99, 102, 241, 0.2);
+  box-shadow: 0 4rpx 12rpx rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.2);
 }
 
 .action-btn:active {
@@ -600,35 +618,35 @@ const getStatusClass = computed(() => {
 }
 
 .btn-edit {
-  color: #2563eb;
+  color: #60a5fa;
 }
 
 .btn-edit:hover {
   background: linear-gradient(
     135deg,
-    rgba(37, 99, 235, 0.1),
-    rgba(37, 99, 235, 0.05)
+    rgba(96, 165, 250, 0.2),
+    rgba(96, 165, 250, 0.1)
   );
-  border-color: rgba(37, 99, 235, 0.2);
+  border-color: rgba(96, 165, 250, 0.3);
 }
 
 .btn-delete {
-  color: #dc2626;
+  color: #f87171;
 }
 
 .btn-delete:hover {
   background: linear-gradient(
     135deg,
-    rgba(220, 38, 38, 0.1),
-    rgba(220, 38, 38, 0.05)
+    rgba(248, 113, 113, 0.2),
+    rgba(248, 113, 113, 0.1)
   );
-  border-color: rgba(220, 38, 38, 0.2);
+  border-color: rgba(248, 113, 113, 0.3);
 }
 
 .action-divider {
   width: 1rpx;
   height: 24rpx;
-  background: rgba(99, 102, 241, 0.1);
+  background: rgba(255, 255, 255, 0.1);
   border-radius: 1rpx;
 }
 

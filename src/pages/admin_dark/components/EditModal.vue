@@ -855,7 +855,7 @@ const handleSave = () => {
 .modal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.3);
+  background: rgba(0, 0, 0, 0.6);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -877,17 +877,21 @@ const handleSave = () => {
   display: flex;
   flex-direction: column;
   width: 85%;
-  max-width: 600rpx;
-  max-height: 75vh;
-  background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
-  border: 1rpx solid rgba(99, 102, 241, 0.12);
+  max-width: 600rpx; /* 从 700rpx 改为 600rpx */
+  max-height: 75vh; /* 从 80vh 改为 75vh */
+  background: linear-gradient(
+    135deg,
+    rgba(15, 23, 42, 0.95) 0%,
+    rgba(26, 31, 53, 0.95) 100%
+  );
+  border: 1rpx solid rgba(99, 102, 241, 0.25);
   border-radius: 28rpx;
   overflow: hidden;
   animation: slideUp 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
   box-shadow:
-    0 25rpx 50rpx rgba(99, 102, 241, 0.12),
-    0 0 1rpx rgba(99, 102, 241, 0.1),
-    inset 0 1rpx 0 rgba(255, 255, 255, 0.8);
+    0 25rpx 50rpx rgba(0, 0, 0, 0.4),
+    0 0 1rpx rgba(99, 102, 241, 0.3),
+    inset 0 1rpx 0 rgba(255, 255, 255, 0.08);
   position: relative;
 }
 
@@ -911,12 +915,12 @@ const handleSave = () => {
   background:
     radial-gradient(
       circle at 20% 50%,
-      rgba(99, 102, 241, 0.05) 0%,
+      rgba(99, 102, 241, 0.08) 0%,
       transparent 50%
     ),
     radial-gradient(
       circle at 80% 80%,
-      rgba(139, 92, 246, 0.03) 0%,
+      rgba(139, 92, 246, 0.06) 0%,
       transparent 50%
     );
   pointer-events: none;
@@ -929,8 +933,8 @@ const handleSave = () => {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 20rpx 24rpx 16rpx;
-  border-bottom: 1rpx solid rgba(99, 102, 241, 0.12);
+  padding: 20rpx 24rpx 16rpx; /* 从 28rpx 改为 20rpx/24rpx */
+  border-bottom: 1rpx solid rgba(99, 102, 241, 0.15);
   flex-shrink: 0;
   position: relative;
   z-index: 2;
@@ -965,17 +969,17 @@ const handleSave = () => {
 }
 
 .modal-title {
-  font-size: 28rpx;
+  font-size: 26rpx; /* 从 28rpx 改为 26rpx */
   font-weight: 700;
-  background: linear-gradient(135deg, #1e293b, #6366f1);
+  background: linear-gradient(135deg, #a5f3fc, #c4b5fd);
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
 .modal-subtitle {
-  font-size: 15rpx;
-  color: #64748b;
+  font-size: 13rpx; /* 从 14rpx 改为 13rpx */
+  color: rgba(255, 255, 255, 0.45);
   letter-spacing: 0.5rpx;
 }
 
@@ -986,17 +990,17 @@ const handleSave = () => {
   align-items: center;
   justify-content: center;
   border-radius: 50%;
-  background: #f1f5f9;
-  color: #64748b;
+  background: rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.6);
   font-size: 22rpx;
   cursor: pointer;
   transition: all 0.3s ease;
-  border: 1rpx solid rgba(99, 102, 241, 0.12);
+  border: 1rpx solid rgba(255, 255, 255, 0.1);
   flex-shrink: 0;
 }
 
 .modal-close:active {
-  background: #e2e8f0;
+  background: rgba(255, 255, 255, 0.15);
   transform: scale(0.9) rotate(90deg);
 }
 
@@ -1006,8 +1010,8 @@ const handleSave = () => {
 .modal-progress {
   display: flex;
   align-items: center;
-  gap: 10rpx;
-  padding: 10rpx 24rpx;
+  gap: 10rpx; /* 从 12rpx 改为 10rpx */
+  padding: 10rpx 24rpx; /* 从 12rpx 改为 10rpx */
   position: relative;
   z-index: 2;
 }
@@ -1015,7 +1019,7 @@ const handleSave = () => {
 .progress-bar {
   flex: 1;
   height: 4rpx;
-  background: rgba(99, 102, 241, 0.1);
+  background: rgba(255, 255, 255, 0.1);
   border-radius: 2rpx;
   overflow: hidden;
 }
@@ -1025,12 +1029,12 @@ const handleSave = () => {
   background: linear-gradient(90deg, #6366f1, #8b5cf6);
   border-radius: 2rpx;
   transition: width 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-  box-shadow: 0 0 8rpx rgba(99, 102, 241, 0.3);
+  box-shadow: 0 0 8rpx rgba(99, 102, 241, 0.4);
 }
 
 .progress-text {
-  font-size: 14rpx;
-  color: #6366f1;
+  font-size: 12rpx;
+  color: #a5f3fc;
   font-weight: 600;
   min-width: 40rpx;
 }
@@ -1046,10 +1050,10 @@ const handleSave = () => {
 }
 
 .form-section {
-  padding: 20rpx 24rpx;
+  padding: 20rpx 24rpx; /* 从 28rpx 改为 20rpx/24rpx */
   display: flex;
   flex-direction: column;
-  gap: 20rpx;
+  gap: 20rpx; /* 从 24rpx 改为 20rpx */
 }
 
 /* ════════════════════════════════════════
@@ -1058,9 +1062,13 @@ const handleSave = () => {
 .form-module {
   display: flex;
   flex-direction: column;
-  gap: 14rpx;
-  padding: 16rpx;
-  background: linear-gradient(135deg, #f0f4f8 0%, #f8fafc 100%);
+  gap: 14rpx; /* 从 16rpx 改为 14rpx */
+  padding: 16rpx; /* 从 20rpx 改为 16rpx */
+  background: linear-gradient(
+    135deg,
+    rgba(99, 102, 241, 0.06) 0%,
+    rgba(59, 130, 246, 0.04) 100%
+  );
   border: 1rpx solid rgba(99, 102, 241, 0.12);
   border-radius: 20rpx;
   transition: all 0.3s ease;
@@ -1079,21 +1087,24 @@ const handleSave = () => {
 }
 
 .form-module:hover {
-  background: linear-gradient(135deg, #e0e7ff 0%, #f0f4f8 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(99, 102, 241, 0.1) 0%,
+    rgba(59, 130, 246, 0.08) 100%
+  );
   border-color: rgba(99, 102, 241, 0.2);
 }
 
 .module-header {
   display: flex;
   align-items: center;
-  gap: 8rpx;
-  padding-bottom: 10rpx;
-  border-bottom: 1rpx solid rgba(99, 102, 241, 0.12);
+  gap: 8rpx; /* 从 10rpx 改为 8rpx */
+  padding-bottom: 10rpx; /* 从 12rpx 改为 10rpx */
+  border-bottom: 1rpx solid rgba(99, 102, 241, 0.15);
 }
 
 .module-icon {
-  font-size: 22rpx;
-  color: #6366f1;
+  font-size: 22rpx; /* 从 24rpx 改为 22rpx */
   animation: rotate 3s linear infinite;
 }
 
@@ -1108,17 +1119,17 @@ const handleSave = () => {
 }
 
 .module-title {
-  font-size: 18rpx;
+  font-size: 16rpx; /* 从 18rpx 改为 16rpx */
   font-weight: 700;
-  color: #6366f1;
+  color: #a5f3fc;
   text-transform: uppercase;
-  letter-spacing: 0.8rpx;
+  letter-spacing: 0.8rpx; /* 从 1rpx 改为 0.8rpx */
 }
 
 .module-content {
   display: flex;
   flex-direction: column;
-  gap: 14rpx;
+  gap: 14rpx; /* 从 16rpx 改为 14rpx */
 }
 
 /* ════════════════════════════════════════
@@ -1127,13 +1138,13 @@ const handleSave = () => {
 .form-group {
   display: flex;
   flex-direction: column;
-  gap: 8rpx;
+  gap: 8rpx; /* 从 10rpx 改为 8rpx */
 }
 
 .form-group-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 12rpx;
+  gap: 12rpx; /* 从 16rpx 改为 12rpx */
 }
 
 .form-group--half {
@@ -1144,15 +1155,15 @@ const handleSave = () => {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 14rpx;
-  background: #ffffff;
-  border: 1rpx solid rgba(99, 102, 241, 0.12);
+  padding: 14rpx; /* 从 16rpx 改为 14rpx */
+  background: rgba(255, 255, 255, 0.04);
+  border: 1rpx solid rgba(99, 102, 241, 0.1);
   border-radius: 12rpx;
   transition: all 0.3s ease;
 }
 
 .form-group--toggle:active {
-  background: #f8fafc;
+  background: rgba(99, 102, 241, 0.1);
   border-color: rgba(99, 102, 241, 0.2);
 }
 
@@ -1166,13 +1177,13 @@ const handleSave = () => {
 }
 
 .form-label {
-  font-size: 17rpx;
+  font-size: 15rpx; /* 从 16rpx 改为 15rpx */
   font-weight: 600;
-  color: #1e293b;
+  color: rgba(255, 255, 255, 0.8);
 }
 
 .form-required {
-  color: #dc2626;
+  color: #f87171;
   font-weight: 700;
   font-size: 18rpx;
 }
@@ -1183,9 +1194,9 @@ const handleSave = () => {
 .form-input-wrapper {
   display: flex;
   align-items: center;
-  gap: 8rpx;
-  padding: 10rpx 14rpx;
-  background: #ffffff;
+  gap: 8rpx; /* 从 10rpx 改为 8rpx */
+  padding: 10rpx 14rpx; /* 从 12rpx 改为 10rpx/14rpx */
+  background: rgba(255, 255, 255, 0.05);
   border: 1rpx solid rgba(99, 102, 241, 0.15);
   border-radius: 12rpx;
   transition: all 0.3s ease;
@@ -1193,59 +1204,57 @@ const handleSave = () => {
 }
 
 .form-input-wrapper:focus-within {
-  background: #ffffff;
-  border-color: #6366f1;
-  box-shadow: 0 0 12rpx rgba(99, 102, 241, 0.12);
+  background: rgba(99, 102, 241, 0.12);
+  border-color: rgba(99, 102, 241, 0.4);
+  box-shadow: 0 0 12rpx rgba(99, 102, 241, 0.15);
 }
-
 .input-icon {
-  font-size: 16rpx;
+  font-size: 16rpx; /* 从 18rpx 改为 16rpx */
   flex-shrink: 0;
-  color: #94a3b8;
+  color: rgba(255, 255, 255, 0.5);
 }
 
 .form-input,
 .form-textarea {
   flex: 1;
   background: transparent;
-  color: #1e293b;
-  font-size: 17rpx;
+  color: #ffffff;
+  font-size: 15rpx; /* 从 16rpx 改为 15rpx */
   border: none;
   outline: none;
   padding: 0;
 }
-
 .form-input::placeholder,
 .form-textarea::placeholder {
-  color: #cbd5e1;
+  color: rgba(255, 255, 255, 0.3);
 }
 
 /* ════════════════════════════════════════
    文本区域
 ════════════════════════════════════════ */
 .form-textarea {
-  min-height: 85rpx;
-  max-height: 180rpx;
-  padding: 10rpx 14rpx;
-  background: #ffffff;
+  min-height: 85rpx; /* 从 100rpx 改为 85rpx */
+  max-height: 180rpx; /* 从 200rpx 改为 180rpx */
+  padding: 10rpx 14rpx; /* 从 12rpx 改为 10rpx/14rpx */
+  background: rgba(255, 255, 255, 0.05);
   border: 1rpx solid rgba(99, 102, 241, 0.15);
   border-radius: 12rpx;
-  color: #1e293b;
-  font-size: 17rpx;
+  color: #ffffff;
+  font-size: 15rpx;
   font-family: inherit;
   transition: all 0.3s ease;
   resize: vertical;
 }
 
 .form-textarea:focus {
-  background: #ffffff;
-  border-color: #6366f1;
-  box-shadow: 0 0 12rpx rgba(99, 102, 241, 0.12);
+  background: rgba(99, 102, 241, 0.12);
+  border-color: rgba(99, 102, 241, 0.4);
+  box-shadow: 0 0 12rpx rgba(99, 102, 241, 0.15);
 }
 
 .form-hint {
-  font-size: 14rpx;
-  color: #94a3b8;
+  font-size: 12rpx;
+  color: rgba(255, 255, 255, 0.4);
   text-align: right;
   margin-top: 4rpx;
 }
@@ -1265,23 +1274,23 @@ const handleSave = () => {
 .picker-value {
   display: flex;
   align-items: center;
-  gap: 8rpx;
-  padding: 10rpx 14rpx;
-  background: #ffffff;
+  gap: 8rpx; /* 从 10rpx 改为 8rpx */
+  padding: 10rpx 14rpx; /* 从 12rpx 改为 10rpx/14rpx */
+  background: rgba(255, 255, 255, 0.05);
   border: 1rpx solid rgba(99, 102, 241, 0.15);
   border-radius: 12rpx;
   transition: all 0.3s ease;
-  color: #1e293b;
-  font-size: 17rpx;
+  color: #ffffff;
+  font-size: 15rpx;
 }
 
 .select-wrapper picker-view-column .picker-value:active {
-  background: #f8fafc;
-  border-color: #6366f1;
+  background: rgba(99, 102, 241, 0.12);
+  border-color: rgba(99, 102, 241, 0.4);
 }
 
 .picker-icon {
-  font-size: 16rpx;
+  font-size: 16rpx; /* 从 18rpx 改为 16rpx */
   flex-shrink: 0;
 }
 
@@ -1291,19 +1300,19 @@ const handleSave = () => {
 .toggle-label {
   display: flex;
   align-items: center;
-  gap: 10rpx;
+  gap: 10rpx; /* 从 12rpx 改为 10rpx */
   flex: 1;
 }
 
 .toggle-icon {
-  font-size: 18rpx;
+  font-size: 18rpx; /* 从 20rpx 改为 18rpx */
   flex-shrink: 0;
 }
 
 .toggle-title {
-  font-size: 17rpx;
+  font-size: 15rpx; /* 从 16rpx 改为 15rpx */
   font-weight: 600;
-  color: #1e293b;
+  color: #ffffff;
 }
 
 .toggle-text {
@@ -1313,13 +1322,13 @@ const handleSave = () => {
 }
 
 .toggle-desc {
-  font-size: 13rpx;
-  color: #94a3b8;
+  font-size: 11rpx; /* 从 12rpx 改为 11rpx */
+  color: rgba(255, 255, 255, 0.45);
 }
 
 switch {
-  transform: scale(0.8);
-  margin-right: -6rpx;
+  transform: scale(0.8); /* 从 0.85 改为 0.8 */
+  margin-right: -6rpx; /* 从 -8rpx 改为 -6rpx */
 }
 
 /* ════════════════════════════════════════
@@ -1327,10 +1336,10 @@ switch {
 ════════════════════════════════════════ */
 .modal-footer {
   display: flex;
-  gap: 10rpx;
-  padding: 16rpx 24rpx;
-  border-top: 1rpx solid rgba(99, 102, 241, 0.12);
-  background: #f8fafc;
+  gap: 10rpx; /* 从 12rpx 改为 10rpx */
+  padding: 16rpx 24rpx; /* 从 20rpx 改为 16rpx */
+  border-top: 1rpx solid rgba(99, 102, 241, 0.15);
+  background: rgba(15, 23, 42, 0.5);
   flex-shrink: 0;
   position: relative;
   z-index: 2;
@@ -1341,15 +1350,15 @@ switch {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 6rpx;
-  padding: 12rpx 18rpx;
+  gap: 6rpx; /* 从 8rpx 改为 6rpx */
+  padding: 12rpx 18rpx; /* 从 14rpx 改为 12rpx */
   border: none;
   border-radius: 12rpx;
-  font-size: 17rpx;
+  font-size: 15rpx; /* 从 16rpx 改为 15rpx */
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-  letter-spacing: 0.8rpx;
+  letter-spacing: 0.8rpx; /* 从 1rpx 改为 0.8rpx */
   position: relative;
   overflow: hidden;
 }
@@ -1360,7 +1369,7 @@ switch {
   inset: 0;
   background: radial-gradient(
     circle at center,
-    rgba(99, 102, 241, 0.1),
+    rgba(255, 255, 255, 0.15),
     transparent
   );
   opacity: 0;
@@ -1373,35 +1382,43 @@ switch {
 }
 
 .btn-icon {
-  font-size: 18rpx;
+  font-size: 18rpx; /* 从 20rpx 改为 18rpx */
   font-weight: 700;
 }
 
 .btn-cancel {
-  background: #f1f5f9;
-  border: 1rpx solid rgba(99, 102, 241, 0.12);
-  color: #64748b;
+  background: linear-gradient(
+    135deg,
+    rgba(107, 114, 128, 0.2),
+    rgba(75, 85, 99, 0.15)
+  );
+  border: 1rpx solid rgba(107, 114, 128, 0.3);
+  color: #d1d5db;
 }
 
 .btn-cancel:active {
-  background: #e2e8f0;
-  border-color: rgba(99, 102, 241, 0.25);
+  background: linear-gradient(
+    135deg,
+    rgba(107, 114, 128, 0.35),
+    rgba(75, 85, 99, 0.25)
+  );
+  border-color: rgba(107, 114, 128, 0.5);
   transform: scale(0.98);
-  box-shadow: 0 4rpx 12rpx rgba(99, 102, 241, 0.1);
+  box-shadow: 0 4rpx 12rpx rgba(107, 114, 128, 0.2);
 }
 
 .btn-save {
   background: linear-gradient(135deg, #6366f1, #8b5cf6);
   border: 1rpx solid rgba(99, 102, 241, 0.3);
   color: #ffffff;
-  box-shadow: 0 8rpx 20rpx rgba(99, 102, 241, 0.2);
+  box-shadow: 0 8rpx 20rpx rgba(99, 102, 241, 0.25);
 }
 
 .btn-save:active {
   background: linear-gradient(135deg, #4f46e5, #7c3aed);
   border-color: rgba(99, 102, 241, 0.6);
   transform: scale(0.98);
-  box-shadow: 0 12rpx 28rpx rgba(99, 102, 241, 0.3);
+  box-shadow: 0 12rpx 28rpx rgba(99, 102, 241, 0.35);
 }
 
 /* ════════════════════════════════════════
@@ -1412,18 +1429,18 @@ switch {
 }
 
 .modal-body::-webkit-scrollbar-track {
-  background: rgba(99, 102, 241, 0.05);
+  background: rgba(255, 255, 255, 0.05);
   border-radius: 3rpx;
 }
 
 .modal-body::-webkit-scrollbar-thumb {
-  background: rgba(99, 102, 241, 0.25);
+  background: rgba(99, 102, 241, 0.3);
   border-radius: 3rpx;
   transition: background 0.3s ease;
 }
 
 .modal-body::-webkit-scrollbar-thumb:hover {
-  background: rgba(99, 102, 241, 0.4);
+  background: rgba(99, 102, 241, 0.5);
 }
 
 /* ════════════════════════════════════════
@@ -1463,7 +1480,7 @@ switch {
 
   .btn {
     padding: 10rpx 14rpx;
-    font-size: 15rpx;
+    font-size: 13rpx;
   }
 
   .module-icon {
@@ -1475,42 +1492,50 @@ switch {
   }
 
   .modal-title {
-    font-size: 24rpx;
+    font-size: 22rpx;
   }
 
   .modal-subtitle {
-    font-size: 13rpx;
+    font-size: 11rpx;
   }
 }
 
 /* ════════════════════════════════════════
-   明亮模式优化
+   深色模式优化
 ════════════════════════════════════════ */
-@media (prefers-color-scheme: light) {
+@media (prefers-color-scheme: dark) {
   .modal-container {
-    background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+    background: linear-gradient(
+      135deg,
+      rgba(10, 15, 30, 0.98) 0%,
+      rgba(15, 20, 40, 0.98) 100%
+    );
   }
 
   .form-module {
-    background: linear-gradient(135deg, #f0f4f8 0%, #f8fafc 100%);
+    background: linear-gradient(
+      135deg,
+      rgba(99, 102, 241, 0.05) 0%,
+      rgba(59, 130, 246, 0.03) 100%
+    );
   }
 
   .form-input-wrapper:focus-within,
   .form-textarea:focus {
-    box-shadow: 0 0 16rpx rgba(99, 102, 241, 0.12);
+    box-shadow: 0 0 16rpx rgba(99, 102, 241, 0.2);
   }
 }
 
 /* ════════════════════════════════════════
-   警告提示样式
+   新增：警告提示样式
 ════════════════════════════════════════ */
 .form-warning {
   display: flex;
   align-items: center;
   gap: 8rpx;
   padding: 12rpx 14rpx;
-  background: rgba(239, 68, 68, 0.08);
-  border: 1rpx solid rgba(239, 68, 68, 0.2);
+  background: rgba(239, 68, 68, 0.1);
+  border: 1rpx solid rgba(239, 68, 68, 0.3);
   border-radius: 8rpx;
   margin-top: 8rpx;
 }
@@ -1518,19 +1543,18 @@ switch {
 .warning-icon {
   font-size: 16rpx;
   flex-shrink: 0;
-  color: #dc2626;
 }
 
 .warning-text {
-  font-size: 15rpx;
-  color: #dc2626;
+  font-size: 13rpx;
+  color: #fca5a5;
   font-weight: 500;
 }
 
+/* 已有样式下方新增 picker-value--empty 样式 */
 .picker-value--empty {
-  color: #cbd5e1;
+  color: rgba(255, 255, 255, 0.3);
 }
-
 /* ════════════════════════════════════════
    打印样式
 ════════════════════════════════════════ */

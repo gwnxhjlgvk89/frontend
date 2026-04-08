@@ -141,7 +141,7 @@ const handlePageChange = (newPage) => {
   width: 100%;
   height: 100%;
   overflow: hidden;
-  background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+  background: linear-gradient(135deg, #0f172a 0%, #1a1f35 100%);
   position: relative;
   display: flex;
   flex-direction: column;
@@ -162,7 +162,7 @@ const handlePageChange = (newPage) => {
 .spinner {
   width: 50rpx;
   height: 50rpx;
-  border: 4rpx solid rgba(99, 102, 241, 0.15);
+  border: 4rpx solid rgba(99, 102, 241, 0.3);
   border-top-color: #6366f1;
   border-radius: 50%;
   animation: spin 1s linear infinite;
@@ -175,9 +175,8 @@ const handlePageChange = (newPage) => {
 }
 
 .loading-text {
-  font-size: 24rpx;
-  color: #64748b;
-  font-weight: 500;
+  font-size: 20rpx;
+  color: rgba(255, 255, 255, 0.6);
 }
 
 /* ════════════════════════════════════════
@@ -208,7 +207,7 @@ const handlePageChange = (newPage) => {
   justify-content: center;
   height: 100%;
   gap: 20rpx;
-  color: #94a3b8;
+  color: rgba(255, 255, 255, 0.35);
 }
 
 .empty-icon {
@@ -227,8 +226,7 @@ const handlePageChange = (newPage) => {
 }
 
 .empty-text {
-  font-size: 28rpx;
-  font-weight: 500;
+  font-size: 24rpx;
 }
 
 .list-container {
