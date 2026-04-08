@@ -50,14 +50,14 @@
         </view>
 
         <!-- 导入数据按钮 -->
-        <view
+        <!-- <view
           class="import-button"
           @click="handleImportClick"
           v-if="adminRole === 2"
         >
           <text class="import-icon">📥</text>
           <text class="import-text">{{ "导入数据" }}</text>
-        </view>
+        </view> -->
 
         <!-- 添加数据按钮 -->
         <view class="add-button" @click="$emit('add')" v-if="adminRole === 2">

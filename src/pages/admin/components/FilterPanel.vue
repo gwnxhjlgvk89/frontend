@@ -277,9 +277,10 @@ const majorLimitOptions = [
 // ════════════════════════════════════════
 
 const selectedStatusOptions = [
-  { value: "all", label: "全部", icon: "📊" },
-  { value: "selected", label: "已选社", icon: "✓" },
-  { value: "unselected", label: "未选社", icon: "❌" },
+  { value: "all", label: "全部", icon: "📋" }, // 📋 文件夹/列表
+  { value: "selected", label: "已选社", icon: "✅" }, // ✅ 绿色勾选
+  { value: "reserved", label: "已预留", icon: "⏳" }, // ⏳ 沙漏/等待
+  { value: "empty", label: "未选社", icon: "⭕" }, // ⭕ 空心圆/未选
 ];
 
 const gradeOptions = [

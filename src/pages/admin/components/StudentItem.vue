@@ -93,6 +93,12 @@
           {{ formatSelectedTime(student.selected_at) }}
         </text>
       </view>
+      <view v-if="student.is_reserved" class="detail-item reserved-club">
+        <text class="detail-label">预留</text>
+        <text class="detail-value club-name">
+          {{ student.reserved_club_name || "暂无" }}
+        </text>
+      </view>
     </view>
 
     <!-- 底部：操作按钮 -->
@@ -346,6 +352,16 @@ const formatSelectedTime = (dateStr) => {
   gap: 12rpx;
   background: #eff6ff;
   border-color: rgba(59, 130, 246, 0.2);
+  padding: 10rpx 12rpx;
+}
+
+.detail-item.reserved-club {
+  grid-column: span 3;
+  flex-direction: row;
+  align-items: center;
+  gap: 12rpx;
+  background: #eff6ff;
+  border-color: rgba(171, 59, 246, 0.2);
   padding: 10rpx 12rpx;
 }
 

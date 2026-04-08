@@ -200,11 +200,19 @@ const filteredStudents = computed(() => {
 
   // 选社状态筛选
   if (studentFilters.value.selectedStatus !== "all") {
-    const selected = studentFilters.value.selectedStatus === "selected";
-    if (selected)
-      result = result.filter(
-        (student) => student.has_selected || student.is_reserved,
-      );
+    switch (studentFilters.value.selectedStatus) {
+      case "selected":
+        result = result.filter((student) => student.has_selected);
+        break;
+      case "reserved":
+        result = result.filter((student) => student.is_reserved);
+        break;
+      case "empty":
+        result = result.filter(
+          (student) => !student.is_reserved && !student.has_selected,
+        );
+        break;
+    }
   }
 
   // 年级筛选
