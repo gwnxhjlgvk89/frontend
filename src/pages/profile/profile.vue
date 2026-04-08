@@ -31,7 +31,7 @@
 </template>
 
 <script setup>
-import { ref, reactive, computed } from "vue";
+import { ref, computed, onBeforeUnmount } from "vue";
 import ToastProvider from "@/components/base/ToastProvider.vue";
 import ProfileHeader from "./components/ProfileHeader.vue";
 import ProfileBody from "./components/ProfileBody.vue";
@@ -44,27 +44,36 @@ import { onLoad, onUnload, onHide, onShow } from "@dcloudio/uni-app";
 import { BASE_URL } from "@/utils/request";
 import { homeApi } from "@/api/home";
 import { useWsStore } from "@/stores/wsStore";
-import { useTimerStore } from "@/stores/timer"; // ✅ 引入 Timer Store
+import { useTimerStore } from "@/stores/timer";
 import { showToast } from "@/utils/toast";
 import XModal from "@/components/XModal/index.vue";
-import { showModal } from "@/composables/useModal";
 import {
+  showModal,
   modalState,
   _modalConfirm,
   _modalCancel,
 } from "@/composables/useModal";
-
 import { useThemeStore } from "@/stores/theme";
 
-// ── 静态数据（后续替换为 store）──────────────────────────────
+// ========== Store 初始化 ==========
 const profileStore = useProfileStore();
-const profile = computed(() => profileStore.profile);
 const wsStore = useWsStore();
-const timerStore = useTimerStore(); // ✅ 获取 Timer Store
+const timerStore = useTimerStore();
+const themeStore = useThemeStore();
 
+// ========== 响应式数据 ==========
+const profile = computed(() => profileStore.profile);
 const showEdit = ref(false);
-let timer = null;
 
+// ========== 常量配置 ==========
+const PAGE_ID = "profile";
+const REFRESH_TIMER_ID = "refresh";
+const REFRESH_DELAY = 3000;
+
+// ========== 工具函数 ==========
+/**
+ * 刷新个人信息
+ */
 async function refresh() {
   try {
     await profileApi.init();
@@ -72,30 +81,76 @@ async function refresh() {
     console.error("[Profile] 刷新失败", e);
   }
 }
-// ===================== 生命周期 =====================
+
+/**
+ * 启动定时器
+ */
+function startRefreshTimer() {
+  timerStore.createTimer(PAGE_ID, REFRESH_TIMER_ID, refresh, REFRESH_DELAY);
+  console.log(
+    `[Profile] 启动定时器，当前活跃数: ${timerStore.getActiveTimerCount()}`,
+  );
+}
+
+/**
+ * 停止定时器
+ */
+function stopRefreshTimer() {
+  timerStore.clearTimer(PAGE_ID, REFRESH_TIMER_ID);
+  console.log(
+    `[Profile] 停止定时器，当前活跃数: ${timerStore.getActiveTimerCount()}`,
+  );
+}
+
+// ========== 生命周期 ==========
+
+/**
+ * 页面加载
+ */
 onLoad(async () => {
+  console.log("[Profile] 页面加载");
   await refresh();
-  timer = setInterval(refresh, 3000);
+  startRefreshTimer();
 });
 
-onHide(() => {
-  clearInterval(timer);
-  timer = null;
-});
-
+/**
+ * 页面显示（从后台返回）
+ */
 onShow(async () => {
+  console.log("[Profile] 页面显示");
   await refresh();
-  // 这一行很重要，防止定时器叠加
-  clearInterval(timer);
-  timer = setInterval(refresh, 3000);
+  startRefreshTimer();
 });
 
+/**
+ * 页面隐藏（进入后台）
+ */
+onHide(() => {
+  console.log("[Profile] 页面隐藏");
+  stopRefreshTimer();
+});
+
+/**
+ * 页面卸载（离开页面）
+ */
 onUnload(() => {
-  clearInterval(timer);
-  timer = null;
+  console.log("[Profile] 页面卸载");
+  stopRefreshTimer();
+  timerStore.clearPageTimers(PAGE_ID);
 });
 
-// ── 头像 ─────────────────────────────────────────────────────
+/**
+ * 组件卸载前
+ */
+onBeforeUnmount(() => {
+  timerStore.clearPageTimers(PAGE_ID);
+});
+
+// ========== 事件处理 ==========
+
+/**
+ * 更改头像
+ */
 const onChangeAvatar = () => {
   uni.chooseImage({
     count: 1,
@@ -105,7 +160,7 @@ const onChangeAvatar = () => {
       const tempPath = res.tempFilePaths[0];
       showToast({ title: "上传中...", icon: "loading" });
 
-      // ✅ 封装成 Promise，才能被 await
+      // 封装成Promise
       const uploadFile = (options) =>
         new Promise((resolve, reject) => {
           uni.uploadFile({
@@ -126,25 +181,34 @@ const onChangeAvatar = () => {
         });
 
         const data = JSON.parse(uploadRes.data);
-
-        // ✅ 更新 store 里的头像
         profileStore.profile.avatar = data.data.avatar;
         showToast({ title: "头像更新成功", icon: "success" });
       } catch (err) {
-        console.error(err);
+        console.error("[Profile] 上传失败", err);
         showToast({ title: "上传失败", icon: "error" });
       }
     },
   });
 };
 
-// ── 保存编辑 ─────────────────────────────────────────────────
+/**
+ * 保存编辑
+ */
 const onSave = async (form) => {
-  await profileApi.renewContact(form);
-  showEdit.value = false;
-  showToast({ title: "保存成功", icon: "success" });
+  try {
+    await profileApi.renewContact(form);
+    showEdit.value = false;
+    showToast({ title: "保存成功", icon: "success" });
+    await refresh();
+  } catch (e) {
+    console.error("[Profile] 保存失败", e);
+    showToast({ title: "保存失败", icon: "error" });
+  }
 };
-// ── 退出社团 ─────────────────────────────────────────────────
+
+/**
+ * 退出社团
+ */
 const onQuitClub = () => {
   showModal({
     title: "退出确认",
@@ -153,14 +217,22 @@ const onQuitClub = () => {
     confirmColor: "#ef4444",
     async success(res) {
       if (res.confirm) {
-        await homeApi.quitClub();
-        showToast({ title: "已退出社团", icon: "success" });
+        try {
+          await homeApi.quitClub();
+          showToast({ title: "已退出社团", icon: "success" });
+          await refresh();
+        } catch (e) {
+          console.error("[Profile] 退出失败", e);
+          showToast({ title: "退出失败", icon: "error" });
+        }
       }
     },
   });
 };
 
-// ── 退出登录 ─────────────────────────────────────────────────
+/**
+ * 退出登录
+ */
 const onLogout = () => {
   showModal({
     title: "退出登录",
@@ -169,9 +241,14 @@ const onLogout = () => {
     confirmColor: "#ef4444",
     async success(res) {
       if (res.confirm) {
-        await authApi.logout();
-        timerStore.clearPageTimers("home");
-        showToast({ title: "已退出登录", icon: "success" });
+        try {
+          await authApi.logout();
+          timerStore.clearAllTimers();
+          showToast({ title: "已退出登录", icon: "success" });
+        } catch (e) {
+          console.error("[Profile] 登出失败", e);
+          showToast({ title: "登出失败", icon: "error" });
+        }
       }
     },
   });

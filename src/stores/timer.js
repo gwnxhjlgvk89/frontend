@@ -105,6 +105,9 @@ export const useTimerStore = defineStore("timer", () => {
 
     timers.value.forEach((timerInfo) => {
       clearInterval(timerInfo.timer);
+      console.log(
+        `[Timer] 清理定时器: ${timerInfo.pageId}_${timerInfo.timerId}`,
+      );
     });
 
     timers.value.clear();

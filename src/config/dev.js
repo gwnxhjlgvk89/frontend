@@ -3,8 +3,8 @@ export const devConfig = {
   // ── 后端服务器地址 ──────────────────────────
 
   // 方式一：本地后端（开发时最常用）
-  baseURL: "http://localhost:8000",
-  wsURL: "ws://localhost:8000/ws",
+  baseURL: "http://localhost:8001",
+  wsURL: "ws://localhost:8001/ws",
 
   // 方式二：远程服务器（可选，用于测试部署效果）
   // baseURL: 'http://106.14.169.230:8000',
