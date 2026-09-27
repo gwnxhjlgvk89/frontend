@@ -130,3 +130,31 @@ it("accepts compact quota deltas and ignores older versions", async () => {
   expect(s.clubs[0].remaining).toBe(8);
   s.suspend();
 });
+
+it("reuses fresh page data and refreshes only enrollment on a personal event", async () => {
+  mock.request.mockImplementation((path: string) => Promise.resolve(
+    path === "/bootstrap" ? bootstrap() : path === "/enrollment" ? { club_id: 1 } : { ticket: "synthetic-ticket" },
+  ));
+  const s = useSession();
+  await s.resume();
+  await vi.advanceTimersByTimeAsync(2000);
+  await s.resume();
+  expect(mock.request.mock.calls.filter((x) => x[0] === "/bootstrap")).toHaveLength(1);
+  socket.onMessage.mock.calls[0][0]({ data: JSON.stringify({ event: "enrollment" }) });
+  await Promise.resolve();
+  expect(mock.request).toHaveBeenCalledWith("/enrollment");
+  expect(s.enrollment?.club_id).toBe(1);
+  expect(mock.request.mock.calls.filter((x) => x[0] === "/bootstrap")).toHaveLength(1);
+  s.suspend();
+});
+
+it("does not apply an enrollment response after switching accounts", async () => {
+  const s = useSession();
+  let resolve!: Function;
+  mock.request.mockReturnValue(new Promise((r) => (resolve = r)));
+  const pending = s.refreshEnrollment();
+  mock.token = "account-b";
+  resolve({ club_id: 1 });
+  await pending;
+  expect(s.enrollment).toBeNull();
+});

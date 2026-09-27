@@ -72,7 +72,7 @@ export const useSession = defineStore("v2-session", () => {
   }
   async function refresh(force = false) {
     if (refreshTask) return refreshTask;
-    if (!force && Date.now() - lastRefresh < 1000) return;
+    if (!force && Date.now() - lastRefresh < 30000) return;
     loading.value = true;
     const startedToken = getToken();
     const requestedAt = Date.now();
@@ -102,6 +102,11 @@ export const useSession = defineStore("v2-session", () => {
       });
     refreshTask = task;
     return task;
+  }
+  async function refreshEnrollment() {
+    const startedToken = getToken();
+    const mine = await request<Enrollment | null>("/enrollment");
+    if (startedToken === getToken()) enrollment.value = mine;
   }
   function schedule() {
     clearTimeout(syncTimer);
@@ -163,9 +168,9 @@ export const useSession = defineStore("v2-session", () => {
                   version,
                 })),
             );
-          else if (
-            ["resync", "catalog", "activity", "enrollment"].includes(msg.event)
-          )
+          else if (msg.event === "enrollment")
+            refreshEnrollment().catch(() => {});
+          else if (["resync", "catalog", "activity"].includes(msg.event))
             refresh(true).catch(() => {});
         } catch {}
       });
@@ -257,6 +262,7 @@ export const useSession = defineStore("v2-session", () => {
     canCancel,
     activityLabel,
     refresh,
+    refreshEnrollment,
     resume,
     suspend,
     logout,

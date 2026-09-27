@@ -158,7 +158,6 @@ async function enroll() {
     s.enrollment = result.enrollment;
     key = "";
     message.value = "报名成功，期待在社团见到你！";
-    await s.refresh(true);
   } catch (e) {
     if (e instanceof ApiError && (e.status === 0 || e.status >= 500)) {
       uncertain.value = true;
