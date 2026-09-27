@@ -1,41 +1,27 @@
-<script>
-export default {
-  onLaunch: function () {
-    wx.loadFontFace({
-      family: "Inter",
-      global: true,
-      source:
-        "https://cdn.jsdelivr.net/npm/inter-ui@4.1.1/web/Inter-Bold.woff2",
-      success: () => console.log("字体加载成功"),
-    });
-    wx.loadFontFace({
-      family: "Source Han Sans CN",
-      global: true,
-      source:
-        "https://cdn.jsdelivr.net/npm/source-han-sans-cn@1.0.0/SourceHanSansCN-Medium.otf",
-      success: () => console.log("字体加载成功"),
-    });
-    // 全局启用分享菜单
-    wx.showShareMenu({
-      withShareTicket: true,
-      menus: ["shareAppMessage", "shareTimeline"],
-    });
-    console.log("App Launch");
-  },
-  onShow: function () {
-    console.log("App Show");
-  },
-  onHide: function () {
-    // uni.clearStorageSync();
-    console.log("App Hide");
-  },
-  onUnload: function () {
-    uni.$off("themeChange");
-  },
-};
+<script setup lang="ts">
+import { onShow, onHide, onLaunch } from "@dcloudio/uni-app";
+import { useSession } from "./v2/session";
+import { getToken } from "./v2/api";
+onLaunch(() => {
+  uni.removeStorageSync("password");
+  const manager = uni.getUpdateManager();
+  manager.onUpdateReady(() =>
+    uni.showModal({
+      title: "新版本已准备好",
+      content: "更新后使用最新报名功能。",
+      showCancel: false,
+      success: () => manager.applyUpdate(),
+    }),
+  );
+});
+onShow(() => {
+  if (getToken())
+    useSession()
+      .resume()
+      .catch(() => {});
+});
+onHide(() => useSession().suspend());
 </script>
-<style>
-page {
-  font-family: "Inter", "Source Han Sans CN", sans-serif;
-}
+<style lang="scss">
+@import "./v2/theme.scss";
 </style>

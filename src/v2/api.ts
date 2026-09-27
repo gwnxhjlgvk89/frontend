@@ -1,0 +1,112 @@
+const origin = import.meta.env.VITE_API_ORIGIN || "http://127.0.0.1:8001";
+export const API = `${origin}/api/v1`;
+export const WS = `${origin.replace(/^http/, "ws")}/api/v1/ws`;
+let invalidating = false;
+const pending = new Map<string, Promise<unknown>>();
+export class ApiError extends Error {
+  constructor(
+    public status: number,
+    public code: string,
+    message: string,
+    public requestId = "",
+  ) {
+    super(message);
+  }
+}
+export function getToken(): string {
+  return uni.getStorageSync("v2_token") || "";
+}
+export function setToken(token: string) {
+  uni.setStorageSync("v2_token", token);
+  invalidating = false;
+}
+export function clearSession() {
+  uni.removeStorageSync("v2_token");
+  uni.removeStorageSync("password");
+  uni.removeStorageSync("token");
+  uni.$emit("v2-session-clear");
+}
+export function notifyError(e: unknown) {
+  uni.showToast({
+    title: e instanceof Error ? e.message : "操作失败，请重试",
+    icon: "none",
+    duration: 2500,
+  });
+}
+export function request<T>(
+  path: string,
+  method: "GET" | "POST" | "PUT" | "DELETE" = "GET",
+  data?: unknown,
+  headers: Record<string, string> = {},
+): Promise<T> {
+  const key = `${getToken()}:${path}`;
+  if (method === "GET" && pending.has(key))
+    return pending.get(key) as Promise<T>;
+  const task = new Promise<T>((resolve, reject) => {
+    uni.request({
+      url: API + path,
+      method,
+      data: data as any,
+      timeout: 10000,
+      header: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${getToken()}`,
+        ...headers,
+      },
+      success(res) {
+        const body = res.data as any;
+        if (res.statusCode >= 200 && res.statusCode < 300) {
+          resolve(body.data as T);
+          return;
+        }
+        const e = new ApiError(
+          res.statusCode,
+          body?.error?.code || "REQUEST_FAILED",
+          body?.error?.message || "请求失败",
+          body?.error?.request_id,
+        );
+        if (res.statusCode === 401 && path !== "/auth/login" && !invalidating) {
+          invalidating = true;
+          clearSession();
+          uni.reLaunch({ url: "/pages/v2/login" });
+        }
+        reject(e);
+      },
+      fail() {
+        reject(
+          new ApiError(0, "NETWORK_ERROR", "网络连接中断，请确认操作结果"),
+        );
+      },
+    });
+  });
+  if (method === "GET") {
+    pending.set(key, task);
+    task.finally(() => pending.delete(key)).catch(() => {});
+  }
+  return task;
+}
+export function requestKey() {
+  return `${Date.now().toString(36)}-${Math.random().toString(36).slice(2)}-${Math.random().toString(36).slice(2)}`;
+}
+export function upload<T>(path: string, filePath: string): Promise<T> {
+  return new Promise((resolve, reject) =>
+    uni.uploadFile({
+      url: API + path,
+      filePath,
+      name: "file",
+      header: { Authorization: `Bearer ${getToken()}` },
+      success(res) {
+        try {
+          const data = JSON.parse(res.data);
+          if (res.statusCode >= 200 && res.statusCode < 300) resolve(data.data);
+          else reject(new Error(data.error?.message || "上传失败"));
+        } catch {
+          reject(new Error("服务器响应异常"));
+        }
+      },
+      fail() {
+        reject(new Error("上传失败，请检查网络"));
+      },
+    }),
+  );
+}

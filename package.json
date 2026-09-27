@@ -3,8 +3,8 @@
   "version": "0.0.0",
   "scripts": {
     "dev:mp-weixin": "uni -p mp-weixin --mode development",
-    "proc:mp-weixin": "uni -p mp-weixin --mode production",
-    "build:mp-weixin": "uni build -p mp-weixin --mode production"
+    "build:mp-weixin": "cross-env UNI_OUTPUT_DIR=dist/release/mp-weixin uni build -p mp-weixin --mode production",
+    "typecheck": "vue-tsc --noEmit"
   },
   "dependencies": {
     "@dcloudio/uni-app": "3.0.0-alpha-5000320260310001",
@@ -37,10 +37,14 @@
     "@dcloudio/uni-cli-shared": "3.0.0-alpha-5000320260310001",
     "@dcloudio/uni-stacktracey": "3.0.0-alpha-5000320260310001",
     "@dcloudio/vite-plugin-uni": "3.0.0-alpha-5000320260310001",
+    "@types/wechat-miniprogram": "^3.4.10",
     "@uni-helper/vite-plugin-uni-components": "^0.2.10",
     "@vue/runtime-core": "^3.4.21",
+    "prettier": "3.6.2",
     "sass": "^1.98.0",
-    "vite": "5.2.8"
+    "typescript": "5.9.3",
+    "vite": "5.2.8",
+    "vue-tsc": "3.0.8"
   },
   "packageManager": "pnpm@11.20.0",
   "engines": {

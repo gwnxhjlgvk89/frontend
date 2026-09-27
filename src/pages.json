@@ -1,48 +1,45 @@
 {
   "pages": [
-    //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
     {
-      "path": "pages/login/login",
+      "path": "pages/v2/login",
       "style": {
-        "navigationBarTitleText": "登录"
+        "navigationBarTitleText": "社团填报助手"
       }
     },
     {
-      "path": "pages/home/home",
+      "path": "pages/v2/home",
       "style": {
-        "navigationBarTitleText": "主页"
+        "navigationBarTitleText": "发现社团"
       }
     },
     {
-      "path": "pages/profile/profile",
-      "style": {
-        "navigationBarTitleText": "我的"
-      }
-    },
-    {
-      "path": "pages/club/club",
+      "path": "pages/v2/detail",
       "style": {
         "navigationBarTitleText": "社团详情"
       }
     },
     {
-      "path": "pages/admin/admin",
+      "path": "pages/v2/profile",
       "style": {
-        "navigationBarTitleText": "管理员"
+        "navigationBarTitleText": "我的报名"
+      }
+    },
+    {
+      "path": "pages/v2/password",
+      "style": {
+        "navigationBarTitleText": "修改密码"
+      }
+    },
+    {
+      "path": "pages/v2/admin",
+      "style": {
+        "navigationBarTitleText": "社团管理"
       }
     }
   ],
-  "tabBar": {
-    "custom": true,
-    "list": [
-      { "pagePath": "pages/home/home" },
-      { "pagePath": "pages/profile/profile" }
-    ]
-  },
   "globalStyle": {
     "navigationBarTextStyle": "black",
-    "navigationBarTitleText": "uni-app",
-    "navigationBarBackgroundColor": "#F8F8F8",
-    "backgroundColor": "#F8F8F8"
+    "navigationBarBackgroundColor": "#f3f7f7",
+    "backgroundColor": "#f3f7f7"
   }
 }

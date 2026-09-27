@@ -1,24 +1,11 @@
-import { defineConfig } from "vite";
+import { defineConfig, loadEnv } from "vite";
 import uni from "@dcloudio/vite-plugin-uni";
-import Components from "@uni-helper/vite-plugin-uni-components";
-import { WotResolver } from "@uni-helper/vite-plugin-uni-components/resolvers";
-
 export default defineConfig(({ mode }) => {
-  // mode 会捕获 --mode 参数值
-  const isDev = mode === "development";
-
-  console.log(`🚀 MODE: ${mode}`);
-
+  const env = loadEnv(mode, process.cwd(), "");
+  if (mode === "production" && !/^https:\/\//.test(env.VITE_API_ORIGIN || ""))
+    throw new Error("正式构建必须显式配置 HTTPS VITE_API_ORIGIN");
   return {
-    define: {
-      "globalThis.__DEV__": isDev,
-    },
-    plugins: [
-      Components({
-        resolvers: [WotResolver()],
-      }),
-      uni(),
-    ],
+    plugins: [uni()],
     css: {
       preprocessorOptions: {
         scss: {
@@ -27,13 +14,7 @@ export default defineConfig(({ mode }) => {
         },
       },
     },
-    resolve: {
-      alias: {
-        "@": "/src",
-      },
-    },
-    build: {
-      emptyOutDir: true,
-    },
+    resolve: { alias: { "@": "/src" } },
+    build: { emptyOutDir: true },
   };
 });
