@@ -4,7 +4,8 @@
   "scripts": {
     "dev:mp-weixin": "uni -p mp-weixin --mode development",
     "build:mp-weixin": "cross-env UNI_OUTPUT_DIR=dist/release/mp-weixin uni build -p mp-weixin --mode production",
-    "typecheck": "vue-tsc --noEmit"
+    "typecheck": "vue-tsc --noEmit",
+    "test": "vitest run"
   },
   "dependencies": {
     "@dcloudio/uni-app": "3.0.0-alpha-5000320260310001",
@@ -44,6 +45,7 @@
     "sass": "^1.98.0",
     "typescript": "5.9.3",
     "vite": "5.2.8",
+    "vitest": "3.2.4",
     "vue-tsc": "3.0.8"
   },
   "packageManager": "pnpm@11.20.0",

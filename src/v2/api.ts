@@ -24,6 +24,7 @@ export function clearSession() {
   uni.removeStorageSync("v2_token");
   uni.removeStorageSync("password");
   uni.removeStorageSync("token");
+  uni.removeStorageSync("profile");
   uni.$emit("v2-session-clear");
 }
 export function notifyError(e: unknown) {
@@ -39,7 +40,8 @@ export function request<T>(
   data?: unknown,
   headers: Record<string, string> = {},
 ): Promise<T> {
-  const key = `${getToken()}:${path}`;
+  const requestToken = getToken();
+  const key = `${requestToken}:${path}`;
   if (method === "GET" && pending.has(key))
     return pending.get(key) as Promise<T>;
   const task = new Promise<T>((resolve, reject) => {
@@ -50,7 +52,7 @@ export function request<T>(
       timeout: 10000,
       header: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${getToken()}`,
+        Authorization: `Bearer ${requestToken}`,
         ...headers,
       },
       success(res) {
@@ -65,7 +67,12 @@ export function request<T>(
           body?.error?.message || "请求失败",
           body?.error?.request_id,
         );
-        if (res.statusCode === 401 && path !== "/auth/login" && !invalidating) {
+        if (
+          res.statusCode === 401 &&
+          requestToken === getToken() &&
+          path !== "/auth/login" &&
+          !invalidating
+        ) {
           invalidating = true;
           clearSession();
           uni.reLaunch({ url: "/pages/v2/login" });

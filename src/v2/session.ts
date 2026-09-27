@@ -74,22 +74,34 @@ export const useSession = defineStore("v2-session", () => {
     if (refreshTask) return refreshTask;
     if (!force && Date.now() - lastRefresh < 1000) return;
     loading.value = true;
-    refreshTask = request<Bootstrap>("/bootstrap")
+    const startedToken = getToken();
+    const requestedAt = Date.now();
+    const task = request<Bootstrap>("/bootstrap")
       .then((data) => {
+        if (startedToken !== getToken()) return;
         user.value = data.user;
         activity.value = data.activity;
         enrollment.value = data.enrollment;
         favorites.value = data.favorites;
-        clubs.value = data.clubs;
+        const previous = new Map(clubs.value.map((c) => [c.id, c]));
+        clubs.value = data.clubs.map((c) => ({
+          ...c,
+          remaining: previous.get(c.id)?.remaining || 0,
+          version: previous.get(c.id)?.version || 0,
+        }));
         applyQuotas(data.quotas);
-        offset.value = Date.parse(data.server_time) - Date.now();
+        offset.value =
+          Date.parse(data.server_time) - (requestedAt + Date.now()) / 2;
         lastRefresh = Date.now();
       })
       .finally(() => {
-        loading.value = false;
-        refreshTask = null;
+        if (refreshTask === task) {
+          loading.value = false;
+          refreshTask = null;
+        }
       });
-    return refreshTask;
+    refreshTask = task;
+    return task;
   }
   function schedule() {
     clearTimeout(syncTimer);
@@ -135,6 +147,7 @@ export const useSession = defineStore("v2-session", () => {
         try {
           const msg = JSON.parse(String(res.data));
           if (msg.event === "quota") applyQuotas([msg]);
+          else if (msg.event === "quotas") applyQuotas(msg.items || []);
           else if (
             ["resync", "catalog", "activity", "enrollment"].includes(msg.event)
           )
@@ -192,6 +205,8 @@ export const useSession = defineStore("v2-session", () => {
     enrollment.value = null;
     favorites.value = [];
     lastRefresh = 0;
+    refreshTask = null;
+    loading.value = false;
   }
   async function logout() {
     try {

@@ -4,6 +4,8 @@ import { useSession } from "./v2/session";
 import { getToken } from "./v2/api";
 onLaunch(() => {
   uni.removeStorageSync("password");
+  uni.removeStorageSync("profile");
+  uni.removeStorageSync("token");
   const manager = uni.getUpdateManager();
   manager.onUpdateReady(() =>
     uni.showModal({

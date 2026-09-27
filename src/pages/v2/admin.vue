@@ -180,6 +180,9 @@
         ></view
       ></view
     >
+    <Administrators
+      v-if="tab === 'administrators' && s.user?.role === 'super_admin'"
+    />
     <AdminEditor
       v-if="editing"
       :kind="editing.kind"
@@ -201,6 +204,7 @@ import { API, getToken, notifyError, request, upload } from "@/v2/api";
 import type { Club, Job } from "@/v2/types";
 import AdminEditor from "@/v2/AdminEditor.vue";
 import ActivityEditor from "@/v2/ActivityEditor.vue";
+import Administrators from "@/v2/Administrators.vue";
 const s = useSession(),
   overview = ref<any>({}),
   tab = ref("students"),
@@ -219,7 +223,10 @@ const tabs = computed(() => [
   { key: "students", label: "学生名单" },
   { key: "clubs", label: "社团管理" },
   ...(s.user?.role === "super_admin"
-    ? [{ key: "activity", label: "活动设置" }]
+    ? [
+        { key: "activity", label: "活动设置" },
+        { key: "administrators", label: "管理员" },
+      ]
     : []),
   { key: "jobs", label: "导入导出" },
 ]);

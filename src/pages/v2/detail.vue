@@ -132,6 +132,7 @@ async function confirmResult() {
   try {
     const mine = await request<Enrollment | null>("/enrollment");
     s.enrollment = mine;
+    if (mine) key = "";
     message.value = mine
       ? "报名已确认：" + mine.club_name
       : "暂未查询到报名记录。可以使用原请求重试，系统不会重复占位。";
@@ -155,6 +156,7 @@ async function enroll() {
       { "Idempotency-Key": key },
     );
     s.enrollment = result.enrollment;
+    key = "";
     message.value = "报名成功，期待在社团见到你！";
     await s.refresh(true);
   } catch (e) {
