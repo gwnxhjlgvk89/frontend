@@ -7,7 +7,6 @@ export interface User {
   class_name: string;
   active: boolean;
   must_change_password: boolean;
-  avatar: string;
   phone: string;
   email: string;
 }

@@ -3,23 +3,13 @@
     ><text class="eyebrow">MY CAMPUS LIFE</text
     ><view class="title">我的报名</view
     ><view class="card row"
-      ><image
-        v-if="s.user?.avatar"
-        class="avatar"
-        :src="s.user.avatar"
-        mode="aspectFill"
-      /><view class="grow"
+      ><view class="identity-mark" aria-hidden="true">{{ nameInitial }}</view
+      ><view class="grow"
         ><view class="section-title name">{{ s.user?.name }}</view
         ><view class="muted"
           >{{ s.user?.username }} · {{ s.user?.class_name }}</view
         ><view class="muted">{{ s.user?.major }}</view></view
-      ><button
-        class="secondary small"
-        open-type="chooseAvatar"
-        @chooseavatar="avatar"
-      >
-        换头像
-      </button></view
+      ></view
     >
     <view class="card enrolled"
       ><text class="tag">{{
@@ -77,10 +67,10 @@
   </view>
 </template>
 <script setup lang="ts">
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import { onShow } from "@dcloudio/uni-app";
 import { useSession } from "@/v2/session";
-import { ApiError, notifyError, request, requestKey, upload } from "@/v2/api";
+import { ApiError, notifyError, request, requestKey } from "@/v2/api";
 import type { Enrollment } from "@/v2/types";
 import BottomNav from "@/v2/BottomNav.vue";
 const s = useSession(),
@@ -88,6 +78,7 @@ const s = useSession(),
   email = ref(""),
   busy = ref(false),
   uncertain = ref(false);
+const nameInitial = computed(() => Array.from(s.user?.name?.trim() || "学")[0]);
 onShow(async () => {
   try {
     await s.resume();
@@ -102,17 +93,6 @@ function home() {
 }
 function password() {
   uni.navigateTo({ url: "/pages/v2/password" });
-}
-async function avatar(e: any) {
-  try {
-    const r = await upload<{ avatar: string }>(
-      "/profile/avatar",
-      e.detail.avatarUrl,
-    );
-    if (s.user) s.user.avatar = r.avatar;
-  } catch (err) {
-    notifyError(err);
-  }
 }
 async function save() {
   busy.value = true;
@@ -165,7 +145,15 @@ function cancel() {
 }
 </script>
 <style scoped>
-.avatar {
+.identity-mark {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: #167d75;
+  background: #e9f4f1;
+  font-size: 38rpx;
+  font-weight: 600;
   width: 96rpx;
   height: 96rpx;
   border-radius: 48rpx;
