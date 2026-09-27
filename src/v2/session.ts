@@ -29,6 +29,8 @@ export const useSession = defineStore("v2-session", () => {
     connecting = false,
     refreshTask: Promise<void> | null = null,
     lastRefresh = 0;
+  let connectTask: Promise<void> | null = null;
+  let finishConnectWait: (() => void) | undefined;
   const isAdmin = computed(
     () => user.value?.role !== "student" && !!user.value,
   );
@@ -123,72 +125,92 @@ export const useSession = defineStore("v2-session", () => {
     );
   }
   async function connect() {
+    if (connectTask) return connectTask;
     if (!active || socket || connecting || !getToken()) return;
     connecting = true;
     const gen = generation;
-    try {
-      const { ticket } = await request<{ ticket: string }>(
-        "/auth/ws-ticket",
-        "POST",
-      );
-      if (!active || gen !== generation) return;
-      const task = uni.connectSocket({
-        url: `${WS}?ticket=${encodeURIComponent(ticket)}`,
-        complete() {},
-      });
-      socket = task;
-      task.onOpen(() => {
-        if (gen !== generation) return;
-        connected.value = true;
-        clearInterval(heartbeat);
-        heartbeat = setInterval(
-          () => task.send({ data: JSON.stringify({ event: "ping" }) }),
-          20000,
+    connectTask = (async () => {
+      try {
+        const { ticket } = await request<{ ticket: string }>(
+          "/auth/ws-ticket",
+          "POST",
         );
-        schedule();
-      });
-      task.onMessage((res) => {
-        if (gen !== generation) return;
-        try {
-          const msg = JSON.parse(String(res.data));
-          if (msg.event === "quota") applyQuotas([msg]);
-          else if (msg.event === "quotas") applyQuotas(msg.items || []);
-          else if (msg.event === "quota_delta")
-            applyQuotas(
-              (msg.rows || [])
-                .filter(
-                  (row: unknown) =>
-                    Array.isArray(row) &&
-                    row.length === 3 &&
-                    row.every(Number.isSafeInteger),
-                )
-                .map(([club_id, remaining, version]: number[]) => ({
-                  club_id,
-                  remaining,
-                  version,
-                })),
-            );
-          else if (msg.event === "enrollment")
-            refreshEnrollment().catch(() => {});
-          else if (["resync", "catalog", "activity"].includes(msg.event))
-            refresh(true).catch(() => {});
-        } catch {}
-      });
-      const closed = () => {
-        if (gen !== generation || socket !== task) return;
-        socket = null;
-        connected.value = false;
-        clearInterval(heartbeat);
-        schedule();
-      };
-      task.onClose(closed);
-      task.onError(() => {
-        task.close({});
-        closed();
-      });
-    } finally {
-      if (gen === generation) connecting = false;
-    }
+        if (!active || gen !== generation) return;
+        const task = uni.connectSocket({
+          url: `${WS}?ticket=${encodeURIComponent(ticket)}`,
+          complete() {},
+        });
+        socket = task;
+        let finish!: () => void;
+        const opened = new Promise<void>((resolve) => {
+          const timer = setTimeout(() => finish(), 1500);
+          finish = () => {
+            clearTimeout(timer);
+            if (finishConnectWait === finish) finishConnectWait = undefined;
+            resolve();
+          };
+          finishConnectWait = finish;
+        });
+        task.onOpen(() => {
+          if (gen !== generation) return;
+          finish();
+          connected.value = true;
+          clearInterval(heartbeat);
+          heartbeat = setInterval(
+            () => task.send({ data: JSON.stringify({ event: "ping" }) }),
+            20000,
+          );
+          schedule();
+        });
+        task.onMessage((res) => {
+          if (gen !== generation) return;
+          try {
+            const msg = JSON.parse(String(res.data));
+            if (msg.event === "quota") applyQuotas([msg]);
+            else if (msg.event === "quotas") applyQuotas(msg.items || []);
+            else if (msg.event === "quota_delta")
+              applyQuotas(
+                (msg.rows || [])
+                  .filter(
+                    (row: unknown) =>
+                      Array.isArray(row) &&
+                      row.length === 3 &&
+                      row.every(Number.isSafeInteger),
+                  )
+                  .map(([club_id, remaining, version]: number[]) => ({
+                    club_id,
+                    remaining,
+                    version,
+                  })),
+              );
+            else if (msg.event === "enrollment")
+              refreshEnrollment().catch(() => {});
+            else if (["resync", "catalog", "activity"].includes(msg.event))
+              refresh(true).catch(() => {});
+          } catch {}
+        });
+        const closed = () => {
+          finish();
+          if (gen !== generation || socket !== task) return;
+          socket = null;
+          connected.value = false;
+          clearInterval(heartbeat);
+          schedule();
+        };
+        task.onClose(closed);
+        task.onError(() => {
+          task.close({});
+          closed();
+        });
+        await opened;
+      } finally {
+        if (gen === generation) {
+          connecting = false;
+          connectTask = null;
+        }
+      }
+    })();
+    return connectTask;
   }
   async function resume() {
     if (!getToken()) return;
@@ -197,9 +219,17 @@ export const useSession = defineStore("v2-session", () => {
       clockTimer = setInterval(() => {
         clock.value = Date.now();
       }, 1000);
+    const gen = generation;
     try {
+      try {
+        await connect();
+      } catch (error) {
+        if (!getToken()) throw error;
+        // A WebSocket outage must not prevent an HTTP snapshot.
+      }
+      if (!active || gen !== generation) return;
+      // onOpen precedes the initial resync; both callers share refreshTask.
       await refresh();
-      await connect();
     } finally {
       schedule();
     }
@@ -207,6 +237,8 @@ export const useSession = defineStore("v2-session", () => {
   function suspend() {
     active = false;
     generation++;
+    finishConnectWait?.();
+    connectTask = null;
     connecting = false;
     clearInterval(heartbeat);
     clearInterval(clockTimer);

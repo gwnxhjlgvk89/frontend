@@ -36,8 +36,15 @@ beforeEach(() => {
   mock.request.mockReset();
   mock.events.clear();
   socket = {
-    onOpen: vi.fn((fn) => (mock.opened = fn)),
-    onMessage: vi.fn(),
+    onOpen: vi.fn((fn) => {
+      mock.opened = fn;
+      Promise.resolve().then(() => fn());
+    }),
+    onMessage: vi.fn((fn) => {
+      Promise.resolve().then(() =>
+        fn({ data: JSON.stringify({ event: "resync" }) }),
+      );
+    }),
     onClose: vi.fn(),
     onError: vi.fn(),
     close: vi.fn(),
@@ -132,19 +139,31 @@ it("accepts compact quota deltas and ignores older versions", async () => {
 });
 
 it("reuses fresh page data and refreshes only enrollment on a personal event", async () => {
-  mock.request.mockImplementation((path: string) => Promise.resolve(
-    path === "/bootstrap" ? bootstrap() : path === "/enrollment" ? { club_id: 1 } : { ticket: "synthetic-ticket" },
-  ));
+  mock.request.mockImplementation((path: string) =>
+    Promise.resolve(
+      path === "/bootstrap"
+        ? bootstrap()
+        : path === "/enrollment"
+          ? { club_id: 1 }
+          : { ticket: "synthetic-ticket" },
+    ),
+  );
   const s = useSession();
   await s.resume();
   await vi.advanceTimersByTimeAsync(2000);
   await s.resume();
-  expect(mock.request.mock.calls.filter((x) => x[0] === "/bootstrap")).toHaveLength(1);
-  socket.onMessage.mock.calls[0][0]({ data: JSON.stringify({ event: "enrollment" }) });
+  expect(
+    mock.request.mock.calls.filter((x) => x[0] === "/bootstrap"),
+  ).toHaveLength(1);
+  socket.onMessage.mock.calls[0][0]({
+    data: JSON.stringify({ event: "enrollment" }),
+  });
   await Promise.resolve();
   expect(mock.request).toHaveBeenCalledWith("/enrollment");
   expect(s.enrollment?.club_id).toBe(1);
-  expect(mock.request.mock.calls.filter((x) => x[0] === "/bootstrap")).toHaveLength(1);
+  expect(
+    mock.request.mock.calls.filter((x) => x[0] === "/bootstrap"),
+  ).toHaveLength(1);
   s.suspend();
 });
 
@@ -157,4 +176,43 @@ it("does not apply an enrollment response after switching accounts", async () =>
   resolve({ club_id: 1 });
   await pending;
   expect(s.enrollment).toBeNull();
+});
+
+it("falls back to HTTP when the socket handshake is delayed", async () => {
+  socket.onOpen.mockImplementation((fn) => {
+    mock.opened = fn;
+  });
+  socket.onMessage.mockImplementation(() => {});
+  mock.request.mockImplementation((path: string) =>
+    Promise.resolve(
+      path === "/bootstrap" ? bootstrap() : { ticket: "synthetic-ticket" },
+    ),
+  );
+  const s = useSession();
+  const resume = s.resume();
+  await vi.advanceTimersByTimeAsync(1500);
+  await resume;
+  expect(s.user?.id).toBe(1);
+  expect(s.connected).toBe(false);
+  expect(
+    mock.request.mock.calls.filter((x) => x[0] === "/bootstrap"),
+  ).toHaveLength(1);
+  s.suspend();
+  expect(vi.getTimerCount()).toBe(0);
+});
+
+it("cancels pending connection waits on hide without starting a new HTTP request", async () => {
+  socket.onOpen.mockImplementation(() => {});
+  socket.onMessage.mockImplementation(() => {});
+  mock.request.mockResolvedValue({ ticket: "synthetic-ticket" });
+  const s = useSession();
+  const resume = s.resume();
+  await Promise.resolve();
+  await Promise.resolve();
+  s.suspend();
+  await resume;
+  expect(
+    mock.request.mock.calls.filter((x) => x[0] === "/bootstrap"),
+  ).toHaveLength(0);
+  expect(vi.getTimerCount()).toBe(0);
 });
