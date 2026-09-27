@@ -97,3 +97,36 @@ describe("session and real-time correctness", () => {
     expect(socket.close).toHaveBeenCalledTimes(1);
   });
 });
+
+it("accepts compact quota deltas and ignores older versions", async () => {
+  mock.request.mockImplementation((path: string) =>
+    Promise.resolve(
+      path === "/bootstrap" ? bootstrap() : { ticket: "synthetic-ticket" },
+    ),
+  );
+  const s = useSession();
+  await s.resume();
+  const message = socket.onMessage.mock.calls[0][0];
+  message({
+    data: JSON.stringify({
+      event: "quota_delta",
+      rows: [
+        [1, 8, 6],
+        [2, 9, 6],
+      ],
+    }),
+  });
+  expect(s.clubs[0].remaining).toBe(8);
+  expect(s.clubs[0].version).toBe(6);
+  message({
+    data: JSON.stringify({
+      event: "quota_delta",
+      rows: [
+        [1, 9, 5],
+        [1, "invalid", 7],
+      ],
+    }),
+  });
+  expect(s.clubs[0].remaining).toBe(8);
+  s.suspend();
+});

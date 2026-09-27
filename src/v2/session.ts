@@ -148,6 +148,21 @@ export const useSession = defineStore("v2-session", () => {
           const msg = JSON.parse(String(res.data));
           if (msg.event === "quota") applyQuotas([msg]);
           else if (msg.event === "quotas") applyQuotas(msg.items || []);
+          else if (msg.event === "quota_delta")
+            applyQuotas(
+              (msg.rows || [])
+                .filter(
+                  (row: unknown) =>
+                    Array.isArray(row) &&
+                    row.length === 3 &&
+                    row.every(Number.isSafeInteger),
+                )
+                .map(([club_id, remaining, version]: number[]) => ({
+                  club_id,
+                  remaining,
+                  version,
+                })),
+            );
           else if (
             ["resync", "catalog", "activity", "enrollment"].includes(msg.event)
           )
