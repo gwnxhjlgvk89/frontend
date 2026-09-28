@@ -1,5 +1,5 @@
 <template>
-  <view class="page home">
+  <view class="page home wash">
     <view
       v-if="s.enrollment"
       class="hero done"
@@ -18,6 +18,9 @@
       </view>
     </view>
     <view v-else-if="phase === 'upcoming' || phase === 'open'" class="hero live">
+      <view class="deco" aria-hidden="true"
+        ><view class="ring r1" /><view class="ring r2" /><view class="disc"
+      /></view>
       <view class="row between">
         <text class="h2 hero-head ellipsis">{{ s.activity?.name }}</text>
         <text class="hero-pill"
@@ -30,11 +33,13 @@
         <view class="hero-label">距离开放还有</view>
         <view class="clock num" role="timer">
           <template v-if="left.days"
-            ><text class="seg">{{ left.days }}</text
+            ><text class="seg" :key="'d' + left.days">{{ left.days }}</text
             ><text class="sep">天</text></template
-          ><text class="seg">{{ left.hours }}</text><text class="sep">:</text
-          ><text class="seg">{{ left.minutes }}</text><text class="sep">:</text
-          ><text class="seg">{{ left.seconds }}</text>
+          ><text class="seg" :key="'h' + left.hours">{{ left.hours }}</text
+          ><text class="sep">:</text
+          ><text class="seg" :key="'m' + left.minutes">{{ left.minutes }}</text
+          ><text class="sep">:</text
+          ><text class="seg" :key="'s' + left.seconds">{{ left.seconds }}</text>
         </view>
         <view class="hero-foot"
           >{{ formatTime(s.activity?.starts_at) }} 开放 · 每人限报 1
@@ -135,14 +140,17 @@
       <SkeletonCard v-for="n in 3" :key="n" />
     </template>
     <view v-else>
-      <ClubCard
-        v-for="c in visible"
+      <view
+        v-for="(c, i) in visible"
         :key="c.id"
-        :club="c"
-        :major="s.user?.major"
-        :favorite="s.favorites.includes(c.id)"
-        :stale="!s.connected"
-      />
+        class="enter"
+        :style="`animation-delay:${(i % 12) * 45}ms`"
+        ><ClubCard
+          :club="c"
+          :major="s.user?.major"
+          :favorite="s.favorites.includes(c.id)"
+          :stale="!s.connected"
+      /></view>
     </view>
     <EmptyState
       v-if="!filtered.length && !s.loading && hasLoaded"
@@ -258,8 +266,47 @@ function openProfile() {
   margin-bottom: 24rpx;
 }
 .live {
-  background: var(--c-primary);
+  position: relative;
+  overflow: hidden;
+  background: var(--g-brand);
+  box-shadow: var(--shadow-brand);
   color: #fff;
+}
+.live > .row,
+.live > view:not(.deco) {
+  position: relative;
+}
+.deco {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.ring {
+  position: absolute;
+  border-radius: 50%;
+  border: 2rpx solid rgba(255, 255, 255, 0.18);
+}
+.r1 {
+  width: 360rpx;
+  height: 360rpx;
+  right: -120rpx;
+  top: -150rpx;
+}
+.r2 {
+  width: 220rpx;
+  height: 220rpx;
+  right: -50rpx;
+  top: -80rpx;
+  border-color: rgba(255, 255, 255, 0.12);
+}
+.disc {
+  position: absolute;
+  width: 280rpx;
+  height: 280rpx;
+  right: 40rpx;
+  bottom: -190rpx;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
 }
 .hero-head {
   min-width: 0;
@@ -305,6 +352,15 @@ function openProfile() {
   font-size: 60rpx;
   font-weight: 700;
 }
+.seg {
+  animation: flip 360ms var(--ease-out);
+}
+@keyframes flip {
+  from {
+    opacity: 0.2;
+    transform: translateY(-16rpx) scale(0.96);
+  }
+}
 .sep {
   font-size: 32rpx;
   font-weight: 600;
@@ -327,7 +383,8 @@ function openProfile() {
   margin: 0 4rpx;
 }
 .done {
-  background: var(--c-surface);
+  background: linear-gradient(120deg, #ffffff 40%, var(--c-success-soft) 100%);
+  box-shadow: 0 8rpx 24rpx rgba(8, 122, 84, 0.08);
 }
 .done-icon {
   display: flex;

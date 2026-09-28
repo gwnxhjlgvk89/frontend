@@ -101,7 +101,7 @@ onUnmounted(() => clearTimeout(timer));
   height: 100%;
   width: 100%;
   border-radius: 4rpx;
-  background: var(--c-quota);
+  background: var(--g-quota);
   transform-origin: left center;
   transition: transform 400ms var(--ease-out);
 }

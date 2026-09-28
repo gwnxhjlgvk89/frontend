@@ -1,5 +1,5 @@
 <template>
-  <view class="page profile">
+  <view class="page profile wash">
     <view class="identity row">
       <view class="avatar" aria-hidden="true">{{ initial(s.user?.name, "学") }}</view>
       <view class="grow">
@@ -12,7 +12,7 @@
       </view>
     </view>
 
-    <view v-if="s.enrollment" class="card pass">
+    <view v-if="s.enrollment" class="card pass enter">
       <view class="row between">
         <view class="tag success"
           ><UiIcon name="circle-check" :size="24" /><text>{{
@@ -26,6 +26,7 @@
         hover-class="pressed"
         @tap="openClub(s.enrollment.club_id)"
       >
+        <ClubMark v-if="enrolledClub" :club="enrolledClub" :size="96" />
         <view class="grow">
           <view class="h1 ellipsis">{{ s.enrollment.club_name }}</view>
           <view class="caption">查看社团详情</view>
@@ -126,6 +127,7 @@ import { onShow } from "@dcloudio/uni-app";
 import { useSession } from "@/v2/session";
 import { ApiError, notifyError, request, requestKey } from "@/v2/api";
 import type { Enrollment } from "@/v2/types";
+import ClubMark from "@/v2/ClubMark.vue";
 import EmptyState from "@/v2/EmptyState.vue";
 import StatusBanner from "@/v2/StatusBanner.vue";
 import UiIcon from "@/v2/UiIcon.vue";
@@ -136,6 +138,9 @@ const s = useSession(),
   focused = ref(""),
   busy = ref(false),
   uncertain = ref(false);
+const enrolledClub = computed(() =>
+  s.clubs.find((c) => c.id === s.enrollment?.club_id),
+);
 const dirty = computed(
   () =>
     phone.value !== (s.user?.phone || "") ||
@@ -242,13 +247,18 @@ function cancel() {
   width: 112rpx;
   height: 112rpx;
   border-radius: 56rpx;
-  background: var(--c-primary);
+  background: var(--g-brand);
+  box-shadow: var(--shadow-brand);
+  border: 6rpx solid #fff;
   color: #fff;
   font-size: 44rpx;
   font-weight: 600;
 }
+.pass {
+  box-shadow: 0 8rpx 28rpx rgba(42, 94, 232, 0.08);
+}
 .pass-club {
-  gap: 16rpx;
+  gap: 24rpx;
   margin: 20rpx -16rpx 0;
   padding: 16rpx;
   border-radius: var(--r-md);

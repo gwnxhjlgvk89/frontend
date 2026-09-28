@@ -1,7 +1,10 @@
 <template>
   <view class="page login">
-    <view class="brand">
-      <view class="logo"><UiIcon name="users" :size="56" /></view>
+    <view class="deco" aria-hidden="true"
+      ><view class="ring r1" /><view class="ring r2"
+    /></view>
+    <view class="brand enter">
+      <view class="logo"><UiIcon name="sparkles" :size="56" /></view>
       <view class="h1">社团填报助手</view>
       <view class="caption">新生社团招新报名 · 每人限报 1 个社团</view>
     </view>
@@ -169,8 +172,10 @@ async function submit() {
 </script>
 <style scoped>
 .login {
+  position: relative;
+  overflow: hidden;
   min-height: 100vh;
-  background: var(--c-surface);
+  background: linear-gradient(180deg, var(--c-wash) 0%, #ffffff 520rpx);
   padding: 64rpx 48rpx calc(48rpx + env(safe-area-inset-bottom));
 }
 .brand {
@@ -184,8 +189,40 @@ async function submit() {
   height: 112rpx;
   border-radius: 32rpx;
   margin-bottom: 32rpx;
-  background: var(--c-primary);
+  background: var(--g-brand);
+  box-shadow: var(--shadow-brand);
   color: #fff;
+}
+.brand,
+.form,
+.state {
+  position: relative;
+}
+.deco {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 100%;
+  height: 520rpx;
+  pointer-events: none;
+}
+.ring {
+  position: absolute;
+  border-radius: 50%;
+  border: 2rpx solid rgba(42, 94, 232, 0.12);
+}
+.r1 {
+  width: 420rpx;
+  height: 420rpx;
+  right: -140rpx;
+  top: -120rpx;
+}
+.r2 {
+  width: 260rpx;
+  height: 260rpx;
+  right: -60rpx;
+  top: -40rpx;
+  border-color: rgba(106, 75, 219, 0.14);
 }
 .brand .caption {
   margin-top: 8rpx;

@@ -12,8 +12,13 @@ page {
   --c-primary: #2a5ee8;
   --c-primary-press: #1f4fd1;
   --c-primary-soft: #edf2ff;
+  --c-brand-2: #6a4bdb;
+  --c-wash: #e9efff;
+  --g-brand: linear-gradient(135deg, #2a5ee8 0%, #6a4bdb 100%);
+  --shadow-brand: 0 12rpx 32rpx rgba(66, 84, 226, 0.28);
   --c-primary-soft-press: #dfe8ff;
   --c-quota: #8faaf3;
+  --g-quota: linear-gradient(90deg, #8faaf3 0%, #ab9bf0 100%);
   --c-live: #7cf0b8;
   --c-on-primary-2: #e3eaff;
   --c-hot: #c63d17;
@@ -193,12 +198,16 @@ button.button-hover {
   border-radius: var(--r-sm);
 }
 .btn-primary {
-  background: var(--c-primary);
+  background: var(--g-brand);
   color: #fff;
   font-weight: 600;
 }
+.btn-primary.btn-lg {
+  box-shadow: var(--shadow-brand);
+}
 .btn-primary.button-hover {
-  background: var(--c-primary-press);
+  background: var(--g-brand);
+  opacity: 0.9;
 }
 .btn-soft {
   background: var(--c-primary-soft);
@@ -227,6 +236,35 @@ button[disabled].btn-soft,
 button[disabled].btn-danger {
   background: var(--c-fill-strong) !important;
   color: var(--c-ink-4) !important;
+  box-shadow: none !important;
+}
+
+// Page atmosphere: a soft brand wash at the top of student pages.
+.wash {
+  min-height: 100vh;
+  background: linear-gradient(180deg, var(--c-wash) 0%, var(--c-bg) 440rpx);
+}
+
+// Motion: one-shot entrances; disabled under reduced motion below.
+.enter {
+  animation: rise 460ms var(--ease-out) backwards;
+}
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(28rpx);
+  }
+}
+@keyframes pop {
+  0% {
+    transform: scale(0.6);
+  }
+  60% {
+    transform: scale(1.18);
+  }
+  100% {
+    transform: scale(1);
+  }
 }
 .btn-block {
   width: 100%;

@@ -1,5 +1,9 @@
 <template>
-  <view v-if="club" class="page with-bar detail">
+  <view
+    v-if="club"
+    class="page with-bar detail"
+    :style="`background:linear-gradient(180deg, ${tone.bg} 0%, var(--c-bg) 420rpx)`"
+  >
     <image
       v-if="club.cover && !coverBroken"
       class="cover"
@@ -9,7 +13,9 @@
     />
 
     <view class="head row">
-      <ClubMark v-if="!club.cover || coverBroken" :club="club" :size="120" />
+      <view v-if="!club.cover || coverBroken" class="mark-wrap"
+        ><ClubMark :club="club" :size="120"
+      /></view>
       <view class="grow">
       <view class="h1">{{ club.name }}</view>
       <view class="row tags">
@@ -108,7 +114,9 @@
         :class="{ on: isFavorite }"
         hover-class="pressed"
         @tap="toggleFavorite(id)"
-        ><UiIcon :name="isFavorite ? 'heart-fill' : 'heart'" :size="44" /><text
+        ><view :class="['heart', { on: isFavorite }]"
+          ><UiIcon :name="isFavorite ? 'heart-fill' : 'heart'" :size="44" /></view
+        ><text
           >{{ isFavorite ? "已收藏" : "收藏" }}</text
         ></view
       >
@@ -164,7 +172,15 @@
 
     <Sheet :show="succeeded" @close="succeeded = false">
       <view class="success-panel">
-        <view class="check-ring"><UiIcon name="check" :size="64" /></view>
+        <view class="burst" aria-hidden="true">
+          <view
+            v-for="(p, i) in confetti"
+            :key="i"
+            class="piece"
+            :style="p"
+          />
+          <view class="check-ring"><UiIcon name="check" :size="64" /></view>
+        </view>
         <view class="h2">报名成功</view>
         <view class="caption">期待在社团见到你</view>
         <view class="voucher">
@@ -280,6 +296,13 @@ const buttonText = computed(() =>
               ? "名额已满"
               : "立即报名",
 );
+// One-shot celebration: pieces fly outward from the check mark.
+const confettiColors = ["#2a5ee8", "#6a4bdb", "#c63d17", "#087a54", "#f5b400", "#e84a8a"];
+const confetti = Array.from({ length: 14 }, (_, i) => {
+  const angle = (i / 14) * Math.PI * 2 + (i % 2 ? 0.2 : -0.1);
+  const dist = 130 + (i % 3) * 36;
+  return `--dx:${Math.round(Math.cos(angle) * dist)}rpx;--dy:${Math.round(Math.sin(angle) * dist)}rpx;--rot:${i * 47}deg;background:${confettiColors[i % confettiColors.length]};animation-delay:${(i % 4) * 30}ms;${i % 3 ? "border-radius:50%" : ""}`;
+});
 const cancelRule = computed(() =>
   s.activity?.allow_cancel
     ? `可在 ${formatTime(s.activity.cancel_until)} 前自行退选`
@@ -296,6 +319,10 @@ async function loadClub() {
   message.value = "";
   try {
     club.value = await request<Club>("/clubs/" + id.value);
+    uni.setNavigationBarColor({
+      frontColor: "#000000",
+      backgroundColor: categoryTone(club.value.category).bg,
+    });
   } catch (e) {
     message.value = (e as Error).message;
   }
@@ -375,6 +402,12 @@ function openProfile() {
   height: 340rpx;
   border-radius: var(--r-lg);
   margin-bottom: 32rpx;
+}
+.mark-wrap {
+  display: flex;
+  border: 6rpx solid #fff;
+  border-radius: 40rpx;
+  box-shadow: 0 8rpx 24rpx rgba(29, 33, 41, 0.08);
 }
 .head {
   gap: 24rpx;
@@ -458,6 +491,12 @@ function openProfile() {
   background: var(--c-surface);
   box-shadow: var(--shadow-float);
 }
+.heart {
+  display: flex;
+}
+.heart.on {
+  animation: pop 380ms var(--ease-out);
+}
 .fav {
   display: flex;
   flex-direction: column;
@@ -496,6 +535,35 @@ function openProfile() {
   align-items: center;
   text-align: center;
   padding-top: 32rpx;
+}
+.burst {
+  position: relative;
+  display: flex;
+  justify-content: center;
+}
+.piece {
+  position: absolute;
+  left: 50%;
+  top: 60rpx;
+  width: 14rpx;
+  height: 14rpx;
+  margin-left: -7rpx;
+  border-radius: 3rpx;
+  opacity: 0;
+  animation: fly 900ms var(--ease-out) forwards;
+}
+@keyframes fly {
+  0% {
+    opacity: 1;
+    transform: translate(0, 0) rotate(0deg) scale(0.6);
+  }
+  70% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(var(--dx), var(--dy)) rotate(var(--rot)) scale(1);
+  }
 }
 .check-ring {
   display: flex;

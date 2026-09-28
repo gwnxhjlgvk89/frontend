@@ -14,8 +14,9 @@
           :class="{ on: favorite }"
           :aria-label="favorite ? '取消收藏' : '收藏'"
           @tap.stop="toggleFavorite(club.id)"
-          ><UiIcon :name="favorite ? 'heart-fill' : 'heart'" :size="36"
-        /></view>
+          ><view :class="['heart', { on: favorite }]"
+            ><UiIcon :name="favorite ? 'heart-fill' : 'heart'" :size="36" /></view
+        ></view>
       </view>
       <view class="meta row">
         <text class="tag" :style="`background:${tone.bg};color:${tone.fg}`">{{
@@ -60,13 +61,23 @@ function open() {
 }
 </script>
 <style scoped>
+.club.pressed {
+  transform: scale(0.985);
+}
+.heart {
+  display: flex;
+}
+.heart.on {
+  animation: pop 380ms var(--ease-out);
+}
 .club {
   display: flex;
   align-items: flex-start;
   gap: 24rpx;
   padding: 28rpx;
   margin-bottom: 20rpx;
-  transition: background-color var(--t-fast) ease-out;
+  transition: background-color var(--t-fast) ease-out, transform var(--t-fast) ease-out;
+  box-shadow: 0 4rpx 16rpx rgba(29, 33, 41, 0.04);
 }
 .top {
   gap: 8rpx;

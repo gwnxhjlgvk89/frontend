@@ -1,3 +1,4 @@
+import type { IconName } from "./icons";
 import type { Club } from "./types";
 
 // Category colors carry one meaning only: which category a club belongs to.
@@ -15,6 +16,25 @@ export function categoryTone(category: string) {
   let hash = 0;
   for (const ch of category || "社团") hash = (hash * 31 + ch.charCodeAt(0)) >>> 0;
   return tones[hash % tones.length];
+}
+// Line icons for common club categories; unknown categories fall back to the initial.
+const categoryIcons: [RegExp, IconName][] = [
+  [/摄影|影像|摄像/, "camera"],
+  [/羽毛球/, "feather"],
+  [/篮球|足球|排球|网球|乒乓|球/, "dribbble"],
+  [/合唱|音乐|乐团|吉他|声乐|歌/, "music"],
+  [/机器人|科技|电子|创客/, "bot"],
+  [/编程|计算机|程序|算法/, "code"],
+  [/街舞|舞/, "footprints"],
+  [/志愿|公益|服务/, "heart-handshake"],
+  [/文学|读书|阅读|诗/, "book-open"],
+  [/美术|绘画|书法|设计/, "palette"],
+  [/主持|演讲|辩论|广播/, "mic"],
+  [/戏剧|话剧|动漫|cos/i, "drama"],
+  [/竞赛|运动|健身|武术|跑/, "trophy"],
+];
+export function categoryIcon(category: string) {
+  return categoryIcons.find(([re]) => re.test(category || ""))?.[1];
 }
 export function initial(name?: string, fallback = "社") {
   return Array.from((name || "").trim() || fallback)[0];

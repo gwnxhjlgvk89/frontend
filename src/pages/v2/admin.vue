@@ -656,7 +656,7 @@ onUnload(hide);
   height: 56rpx;
   font-size: 24rpx;
   border-radius: 28rpx;
-  background: var(--c-ink);
+  background: var(--g-brand);
   color: #fff;
   font-weight: 600;
 }
@@ -694,7 +694,7 @@ onUnload(hide);
 }
 .rate-fill {
   height: 100%;
-  background: var(--c-primary);
+  background: var(--g-brand);
   transform-origin: left center;
   transition: transform 400ms var(--ease-out);
 }

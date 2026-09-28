@@ -4,14 +4,15 @@
       "path": "pages/v2/login",
       "style": {
         "navigationBarTitleText": "社团填报助手",
-        "navigationBarBackgroundColor": "#ffffff",
+        "navigationBarBackgroundColor": "#e9efff",
         "backgroundColor": "#ffffff"
       }
     },
     {
       "path": "pages/v2/home",
       "style": {
-        "navigationBarTitleText": "发现社团"
+        "navigationBarTitleText": "发现社团",
+        "navigationBarBackgroundColor": "#e9efff"
       }
     },
     {
@@ -23,7 +24,8 @@
     {
       "path": "pages/v2/profile",
       "style": {
-        "navigationBarTitleText": "我的报名"
+        "navigationBarTitleText": "我的报名",
+        "navigationBarBackgroundColor": "#e9efff"
       }
     },
     {
