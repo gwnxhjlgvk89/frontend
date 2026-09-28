@@ -22,8 +22,8 @@
           club.category || "社团"
         }}</text>
         <text v-if="!eligible" class="tag warn">限指定专业</text>
+        <text class="caption ellipsis grow">{{ where }}</text>
       </view>
-      <view class="caption ellipsis where">{{ where }}</view>
       <view class="meter"
         ><QuotaMeter
           :remaining="club.remaining"
@@ -85,9 +85,6 @@ function open() {
 }
 .meta {
   gap: 12rpx;
-  margin-top: 8rpx;
-}
-.where {
   margin-top: 8rpx;
 }
 .meter {

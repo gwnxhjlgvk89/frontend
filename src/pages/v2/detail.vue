@@ -428,6 +428,11 @@ function openProfile() {
   flex-shrink: 0;
   height: 44rpx;
 }
+/* CJK glyphs sit below the line-box centre; nudge icons to match. */
+.rules .ico,
+.confirm-list .ico {
+  transform: translateY(4rpx);
+}
 .rules .rule {
   align-items: flex-start;
   font-size: 26rpx;
@@ -478,7 +483,7 @@ function openProfile() {
   font-size: 28rpx;
 }
 .confirm-list .row {
-  align-items: flex-start;
+  align-items: center;
   gap: 16rpx;
   line-height: 44rpx;
 }

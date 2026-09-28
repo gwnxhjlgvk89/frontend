@@ -155,8 +155,10 @@ async function save() {
   display: flex;
   align-items: center;
   height: 40rpx;
+  transform: translateY(4rpx);
 }
 .check {
+  align-items: center;
   gap: 12rpx;
   line-height: 40rpx;
   font-size: 26rpx;
