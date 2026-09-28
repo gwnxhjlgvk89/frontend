@@ -14,10 +14,10 @@
 
     <view v-if="s.enrollment" class="card pass">
       <view class="row between">
-        <text class="tag success"
-          ><UiIcon name="circle-check" :size="24" />{{
+        <view class="tag success"
+          ><UiIcon name="circle-check" :size="24" /><text>{{
             s.enrollment.source === "reserved" ? "预报名已确认" : "报名已确认"
-          }}</text
+          }}</text></view
         >
         <text class="caption num">{{ formatTime(s.enrollment.created_at) }}</text>
       </view>

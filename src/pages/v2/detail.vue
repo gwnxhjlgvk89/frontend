@@ -20,10 +20,10 @@
         <text class="tag" :style="`background:${tone.bg};color:${tone.fg}`">{{
           club.category || "社团"
         }}</text>
-        <text :class="['tag', eligible ? 'success' : 'warn']"
-          ><UiIcon :name="eligible ? 'check' : 'triangle-alert'" :size="24" />{{
+        <view :class="['tag', eligible ? 'success' : 'warn']"
+          ><UiIcon :name="eligible ? 'check' : 'triangle-alert'" :size="24" /><text>{{
             eligible ? "你符合报名条件" : "仅限指定专业"
-          }}</text
+          }}</text></view
         >
       </view>
     </view>
@@ -154,15 +154,17 @@
         >
       </view>
       <template #footer>
-        <button class="btn-lg grow" @tap="confirming = false">再想想</button>
-        <button class="btn-primary btn-lg grow" @tap="submit">
-          确认报名
-        </button>
+        <view class="sheet-actions">
+          <button class="btn-lg" @tap="confirming = false">再想想</button>
+          <button class="btn-primary btn-lg" @tap="submit">
+            确认报名
+          </button>
+        </view>
       </template>
     </Sheet>
 
     <Sheet :show="succeeded" @close="succeeded = false">
-      <view class="success">
+      <view class="success-panel">
         <view class="check-ring"><UiIcon name="check" :size="72" /></view>
         <view class="h2">报名成功</view>
         <view class="caption">期待在社团见到你</view>
@@ -184,10 +186,12 @@
         </view>
       </view>
       <template #footer>
-        <button class="btn-lg grow" @tap="succeeded = false">继续浏览</button>
-        <button class="btn-primary btn-lg grow" @tap="openProfile">
-          查看我的报名
-        </button>
+        <view class="sheet-actions">
+          <button class="btn-lg" @tap="succeeded = false">继续浏览</button>
+          <button class="btn-primary btn-lg" @tap="openProfile">
+            查看我的报名
+          </button>
+        </view>
       </template>
     </Sheet>
   </view>
@@ -377,7 +381,6 @@ function openProfile() {
 }
 .tags {
   margin-top: 16rpx;
-  flex-wrap: wrap;
 }
 .sync {
   display: flex;
@@ -473,7 +476,7 @@ function openProfile() {
 .confirm-list .row + .row {
   margin-top: 18rpx;
 }
-.success {
+.success-panel {
   display: flex;
   flex-direction: column;
   align-items: center;

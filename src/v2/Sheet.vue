@@ -8,7 +8,9 @@
           ><UiIcon name="x" :size="40"
         /></view>
       </view>
-      <scroll-view scroll-y class="body" :class="{ scroll }"><slot /></scroll-view>
+      <scroll-view scroll-y class="body" :class="{ scroll }"
+        ><view class="body-inner"><slot /></view
+      ></scroll-view>
       <view v-if="$slots.footer" class="foot"><slot name="footer" /></view>
     </view>
   </view>
@@ -92,15 +94,15 @@ function dismiss() {
   margin-right: -12rpx;
 }
 .body {
+  width: 100%;
+}
+.body-inner {
   padding: 16rpx 32rpx 8rpx;
-  box-sizing: border-box;
 }
 .body.scroll {
   max-height: 60vh;
 }
 .foot {
-  padding: 24rpx 32rpx 24rpx;
-  display: flex;
-  gap: 20rpx;
+  padding: 24rpx 32rpx;
 }
 </style>

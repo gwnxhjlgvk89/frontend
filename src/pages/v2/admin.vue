@@ -38,7 +38,7 @@
         >
       </view>
       <view class="rate-track"
-        ><view class="rate-fill" :style="`transform:scaleX(${(rate || 0) / 100})`"
+        ><view class="rate-fill" :style="`transform:scaleX(${Number(rate || 0) / 100})`"
       /></view>
     </view>
 
@@ -62,17 +62,15 @@
     >
 
     <view class="tabs-bar">
-      <scroll-view scroll-x :show-scrollbar="false" enhanced class="tabs-scroll">
-        <view class="segmented">
-          <view
-            v-for="t in tabs"
-            :key="t.key"
-            :class="['seg', tab === t.key && 'on']"
-            @tap="changeTab(t.key)"
-            >{{ t.label }}</view
-          >
-        </view>
-      </scroll-view>
+      <view class="segmented">
+        <view
+          v-for="t in tabs"
+          :key="t.key"
+          :class="['seg', tab === t.key && 'on']"
+          @tap="changeTab(t.key)"
+          >{{ t.label }}</view
+        >
+      </view>
     </view>
 
     <view v-if="tab === 'students'">
@@ -403,11 +401,11 @@ function jobTone(state: string) {
   );
 }
 const pages = computed(() => Math.max(1, Math.ceil(total.value / pageSize)));
-const rate = computed(() =>
-  overview.value.students
-    ? Math.round((overview.value.enrolled / overview.value.students) * 100)
-    : null,
-);
+const rate = computed(() => {
+  if (!overview.value.students) return null;
+  const pct = (overview.value.enrolled / overview.value.students) * 100;
+  return pct > 0 && pct < 10 ? pct.toFixed(1) : String(Math.round(pct));
+});
 const inconsistent = computed(() => {
   const v = overview.value.inconsistencies;
   return Array.isArray(v) ? v.length > 0 : !!v;
@@ -687,23 +685,22 @@ onUnload(hide);
   padding: 16rpx 32rpx;
   background: var(--c-bg);
 }
-.tabs-scroll {
-  width: 100%;
-  white-space: nowrap;
-}
 .segmented {
-  display: inline-flex;
+  display: flex;
   padding: 6rpx;
   border-radius: var(--r-md);
   background: var(--c-fill-strong);
 }
 .seg {
-  flex-shrink: 0;
+  flex: 1;
+  min-width: 0;
+  text-align: center;
+  white-space: nowrap;
   height: 64rpx;
   line-height: 64rpx;
-  padding: 0 28rpx;
+  padding: 0 8rpx;
   border-radius: 14rpx;
-  font-size: 26rpx;
+  font-size: 25rpx;
   color: var(--c-ink-2);
   transition: background-color var(--t-fast) ease-out, color var(--t-fast) ease-out;
 }

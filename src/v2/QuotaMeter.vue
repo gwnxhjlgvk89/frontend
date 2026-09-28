@@ -72,6 +72,7 @@ onUnmounted(() => clearTimeout(timer));
   color: var(--c-primary);
 }
 .unit {
+  margin-left: 6rpx;
   font-size: 24rpx;
   color: var(--c-ink-3);
 }

@@ -228,6 +228,15 @@ button[disabled].btn-danger {
   width: 100%;
 }
 
+.sheet-actions {
+  display: flex;
+  gap: 20rpx;
+}
+.sheet-actions > button {
+  flex: 1;
+  min-width: 0;
+}
+
 // Form
 .field + .field {
   margin-top: 28rpx;
@@ -311,6 +320,10 @@ button[disabled].btn-danger {
   white-space: nowrap;
   background: var(--c-fill);
   color: var(--c-ink-2);
+}
+.tag > view,
+.tag > text {
+  flex-shrink: 0;
 }
 .tag.primary {
   background: var(--c-primary-soft);

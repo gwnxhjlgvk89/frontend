@@ -54,15 +54,17 @@
       ><StatusBanner tone="danger">{{ error }}</StatusBanner></view
     >
     <template #footer>
-      <button class="btn-lg grow" :disabled="busy" @tap="close">取消</button>
+      <view class="sheet-actions">
+      <button class="btn-lg" :disabled="busy" @tap="close">取消</button>
       <button
-        class="btn-primary btn-lg grow"
+        class="btn-primary btn-lg"
         :loading="busy"
         :disabled="busy"
         @tap="save"
       >
         保存
       </button>
+      </view>
     </template>
   </Sheet>
 </template>
