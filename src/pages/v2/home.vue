@@ -280,7 +280,7 @@ function openProfile() {
   width: 12rpx;
   height: 12rpx;
   border-radius: 6rpx;
-  background: #7cf0b8;
+  background: var(--c-live);
 }
 .hero-label {
   margin-top: 28rpx;

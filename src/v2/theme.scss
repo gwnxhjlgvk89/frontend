@@ -12,6 +12,9 @@ page {
   --c-primary: #2a5ee8;
   --c-primary-press: #1f4fd1;
   --c-primary-soft: #edf2ff;
+  --c-primary-soft-press: #dfe8ff;
+  --c-quota: #8faaf3;
+  --c-live: #7cf0b8;
   --c-on-primary-2: #e3eaff;
   --c-hot: #c63d17;
   --c-hot-soft: #fff1ec;
@@ -21,6 +24,7 @@ page {
   --c-warn-soft: #fff4e5;
   --c-danger: #c8281c;
   --c-danger-soft: #feefee;
+  --c-danger-soft-press: #fde0de;
   --c-scrim: rgba(17, 22, 32, 0.48);
 
   --r-sm: 12rpx;
@@ -201,14 +205,14 @@ button.button-hover {
   color: var(--c-primary);
 }
 .btn-soft.button-hover {
-  background: #dfe8ff;
+  background: var(--c-primary-soft-press);
 }
 .btn-danger {
   background: var(--c-danger-soft);
   color: var(--c-danger);
 }
 .btn-danger.button-hover {
-  background: #fde0de;
+  background: var(--c-danger-soft-press);
 }
 .btn-plain {
   background: transparent;

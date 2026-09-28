@@ -1,0 +1,774 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-09-28T09:06:14.572088+00:00",
+  "title": "Design System: 社团填报助手",
+  "extensions": {
+    "colorMeta": {
+      "primary": {
+        "role": "primary",
+        "displayName": "明亮品牌蓝 Brand Blue",
+        "canonical": "#2a5ee8",
+        "oklch": "oklch(53.6% 0.216 264.4)",
+        "tonalRamp": [
+          "#01003a",
+          "#010376",
+          "#0323af",
+          "#1b4bd5",
+          "#3c73ff",
+          "#77a2fd",
+          "#b2cbfd",
+          "#e7efff"
+        ],
+        "contrast": {
+          "white-text": 5.43,
+          "on-primary-soft": 4.85
+        }
+      },
+      "primary-press": {
+        "role": "primary",
+        "displayName": "按下蓝 Pressed Blue",
+        "canonical": "#1f4fd1",
+        "oklch": "oklch(48.4% 0.207 264.3)",
+        "tonalRamp": [
+          "#000038",
+          "#000973",
+          "#0327aa",
+          "#1e4ed0",
+          "#3f75f9",
+          "#79a2f9",
+          "#b3cbfb",
+          "#e7effe"
+        ]
+      },
+      "primary-soft": {
+        "role": "primary",
+        "displayName": "浅蓝底 Blue Wash",
+        "canonical": "#edf2ff",
+        "oklch": "oklch(96.1% 0.018 269.1)",
+        "tonalRamp": [
+          "#080b13",
+          "#20242d",
+          "#3c404a",
+          "#595d68",
+          "#7c808c",
+          "#a0a4b0",
+          "#c5cad7",
+          "#e9eefb"
+        ]
+      },
+      "on-primary-2": {
+        "role": "primary",
+        "displayName": "蓝上浅字 On-Blue Secondary",
+        "canonical": "#e3eaff",
+        "oklch": "oklch(93.8% 0.029 271.1)",
+        "tonalRamp": [
+          "#070a18",
+          "#1f2332",
+          "#3a3f50",
+          "#575d6f",
+          "#798092",
+          "#9ea4b8",
+          "#c3cade",
+          "#e9eefd"
+        ]
+      },
+      "quota-fill": {
+        "role": "primary",
+        "displayName": "余量条蓝 Quota Fill",
+        "canonical": "#8faaf3",
+        "oklch": "oklch(74.6% 0.110 268.2)",
+        "tonalRamp": [
+          "#030038",
+          "#0f1b58",
+          "#273a79",
+          "#43599c",
+          "#647dc2",
+          "#87a2ea",
+          "#b6cafb",
+          "#e8eefe"
+        ]
+      },
+      "hot": {
+        "role": "secondary",
+        "displayName": "稀缺橙红 Scarcity Orange",
+        "canonical": "#c63d17",
+        "oklch": "oklch(55.6% 0.180 35.3)",
+        "tonalRamp": [
+          "#230000",
+          "#480900",
+          "#751900",
+          "#a52d08",
+          "#d54c28",
+          "#f87a5a",
+          "#fdb7a5",
+          "#fee9e4"
+        ]
+      },
+      "hot-soft": {
+        "role": "secondary",
+        "displayName": "稀缺浅底 Scarcity Wash",
+        "canonical": "#fff1ec",
+        "oklch": "oklch(96.8% 0.017 40.8)",
+        "tonalRamp": [
+          "#110906",
+          "#2b211e",
+          "#483d39",
+          "#665b57",
+          "#897d79",
+          "#aea19d",
+          "#d5c7c2",
+          "#f9ebe6"
+        ]
+      },
+      "success": {
+        "role": "tertiary",
+        "displayName": "成功绿",
+        "canonical": "#087a54",
+        "oklch": "oklch(51.3% 0.110 162.6)",
+        "tonalRamp": [
+          "#001006",
+          "#002c1b",
+          "#014c33",
+          "#126e4d",
+          "#33946d",
+          "#5cba90",
+          "#84e1b6",
+          "#c3fee0"
+        ]
+      },
+      "success-soft": {
+        "role": "tertiary",
+        "displayName": "成功浅底",
+        "canonical": "#e8f6ef",
+        "oklch": "oklch(96.1% 0.017 164.7)",
+        "tonalRamp": [
+          "#050d09",
+          "#1c2722",
+          "#38433d",
+          "#55615b",
+          "#77847d",
+          "#9ba8a2",
+          "#c1cec8",
+          "#e4f2eb"
+        ]
+      },
+      "warn": {
+        "role": "tertiary",
+        "displayName": "提醒琥珀",
+        "canonical": "#9a5200",
+        "oklch": "oklch(51.5% 0.123 58.2)",
+        "tonalRamp": [
+          "#1a0400",
+          "#3b1a00",
+          "#623100",
+          "#8b4b09",
+          "#b66b29",
+          "#de9051",
+          "#fcbb89",
+          "#feeadc"
+        ]
+      },
+      "warn-soft": {
+        "role": "tertiary",
+        "displayName": "提醒浅底",
+        "canonical": "#fff4e5",
+        "oklch": "oklch(97.2% 0.023 75.9)",
+        "tonalRamp": [
+          "#110a02",
+          "#2b2317",
+          "#473e32",
+          "#655c4f",
+          "#887f71",
+          "#ada395",
+          "#d3c9ba",
+          "#f8edde"
+        ]
+      },
+      "danger": {
+        "role": "tertiary",
+        "displayName": "危险红",
+        "canonical": "#c8281c",
+        "oklch": "oklch(54.1% 0.197 29.5)",
+        "tonalRamp": [
+          "#210000",
+          "#4b0100",
+          "#7a0b05",
+          "#b20000",
+          "#dd3f30",
+          "#f87967",
+          "#fdb6aa",
+          "#fee9e5"
+        ]
+      },
+      "danger-soft": {
+        "role": "tertiary",
+        "displayName": "危险浅底",
+        "canonical": "#feefee",
+        "oklch": "oklch(96.4% 0.016 22.1)",
+        "tonalRamp": [
+          "#110808",
+          "#2c2120",
+          "#483c3c",
+          "#675a59",
+          "#8a7d7c",
+          "#afa1a0",
+          "#d5c7c6",
+          "#f9eae9"
+        ]
+      },
+      "bg": {
+        "role": "neutral",
+        "displayName": "页面浅灰",
+        "canonical": "#f5f6f8",
+        "oklch": "oklch(97.3% 0.003 264.5)",
+        "tonalRamp": [
+          "#0b0b0c",
+          "#232425",
+          "#3f4041",
+          "#5d5e5f",
+          "#7f8082",
+          "#a4a4a6",
+          "#c9cacc",
+          "#edeef0"
+        ]
+      },
+      "surface": {
+        "role": "neutral",
+        "displayName": "卡片白",
+        "canonical": "#ffffff",
+        "oklch": "oklch(100.0% 0.000 89.9)",
+        "tonalRamp": [
+          "#0b0b0b",
+          "#242424",
+          "#404040",
+          "#5d5d5d",
+          "#808080",
+          "#a4a4a4",
+          "#cacaca",
+          "#eeeeee"
+        ]
+      },
+      "fill": {
+        "role": "neutral",
+        "displayName": "静态填充",
+        "canonical": "#f2f3f5",
+        "oklch": "oklch(96.4% 0.003 264.5)",
+        "tonalRamp": [
+          "#0a0b0c",
+          "#232425",
+          "#3f4041",
+          "#5d5e5f",
+          "#7f8082",
+          "#a4a4a6",
+          "#c9cacc",
+          "#edeef0"
+        ]
+      },
+      "fill-strong": {
+        "role": "neutral",
+        "displayName": "强填充",
+        "canonical": "#e8eaee",
+        "oklch": "oklch(93.7% 0.006 264.5)",
+        "tonalRamp": [
+          "#0a0b0e",
+          "#232427",
+          "#3e4043",
+          "#5c5e61",
+          "#7e8084",
+          "#a3a5a8",
+          "#c8cace",
+          "#eceef2"
+        ]
+      },
+      "line": {
+        "role": "neutral",
+        "displayName": "分隔线",
+        "canonical": "#e5e6eb",
+        "oklch": "oklch(92.6% 0.007 277.2)",
+        "tonalRamp": [
+          "#0a0b0e",
+          "#232427",
+          "#3f3f43",
+          "#5c5d62",
+          "#7f8084",
+          "#a3a4a9",
+          "#c9cacf",
+          "#edeef3"
+        ]
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "主文字墨",
+        "canonical": "#1d2129",
+        "oklch": "oklch(24.7% 0.016 264.2)",
+        "tonalRamp": [
+          "#080b12",
+          "#20242c",
+          "#3b4049",
+          "#595e67",
+          "#7b808a",
+          "#9fa5af",
+          "#c5cbd6",
+          "#e9effa"
+        ]
+      },
+      "ink-2": {
+        "role": "neutral",
+        "displayName": "次文字墨",
+        "canonical": "#4e5969",
+        "oklch": "oklch(46.1% 0.030 257.7)",
+        "tonalRamp": [
+          "#040b17",
+          "#1b2432",
+          "#364050",
+          "#535e6f",
+          "#758192",
+          "#99a6b8",
+          "#bfccde",
+          "#e5efff"
+        ]
+      },
+      "ink-3": {
+        "role": "neutral",
+        "displayName": "辅助文字墨",
+        "canonical": "#636a76",
+        "oklch": "oklch(52.3% 0.021 261.3)",
+        "tonalRamp": [
+          "#070b14",
+          "#1e242e",
+          "#3a404b",
+          "#575e6a",
+          "#79818d",
+          "#9da5b2",
+          "#c3cbd9",
+          "#e7effd"
+        ],
+        "contrast": {
+          "fill": 4.91,
+          "bg": 5.04,
+          "surface": 5.45,
+          "fill-strong": 4.52
+        }
+      },
+      "ink-4": {
+        "role": "neutral",
+        "displayName": "禁用墨",
+        "canonical": "#86909c",
+        "oklch": "oklch(64.9% 0.021 253.0)",
+        "tonalRamp": [
+          "#050c14",
+          "#1d252e",
+          "#38414b",
+          "#555f6a",
+          "#77818d",
+          "#9ba6b2",
+          "#c1ccd9",
+          "#e5f0fd"
+        ],
+        "contrast": {
+          "fill-strong": 2.69,
+          "note": "仅禁用态与非文字图标"
+        }
+      },
+      "cat-violet": {
+        "role": "category",
+        "displayName": "分类紫",
+        "canonical": "#6b3fd6",
+        "oklch": "oklch(51.1% 0.216 289.9)",
+        "tonalRamp": [
+          "#0e002e",
+          "#280362",
+          "#46119c",
+          "#6334cb",
+          "#835df5",
+          "#a494f7",
+          "#c9c2fe",
+          "#eeecfe"
+        ]
+      },
+      "cat-violet-soft": {
+        "role": "category",
+        "displayName": "分类紫底",
+        "canonical": "#f3edff",
+        "oklch": "oklch(95.6% 0.025 301.1)",
+        "tonalRamp": [
+          "#0d0914",
+          "#26212e",
+          "#423d4b",
+          "#605b6a",
+          "#827d8d",
+          "#a7a1b2",
+          "#cdc7d9",
+          "#f1ebfd"
+        ]
+      },
+      "cat-rose": {
+        "role": "category",
+        "displayName": "分类玫红",
+        "canonical": "#b4236e",
+        "oklch": "oklch(51.9% 0.189 355.0)",
+        "tonalRamp": [
+          "#1f000d",
+          "#480027",
+          "#770044",
+          "#a70f63",
+          "#d04186",
+          "#fb69ab",
+          "#fbb2cd",
+          "#fee8ef"
+        ]
+      },
+      "cat-rose-soft": {
+        "role": "category",
+        "displayName": "分类玫红底",
+        "canonical": "#fdedf5",
+        "oklch": "oklch(96.1% 0.020 345.7)",
+        "tonalRamp": [
+          "#11080d",
+          "#2b2026",
+          "#483c42",
+          "#675960",
+          "#8a7c83",
+          "#afa0a7",
+          "#d5c6cd",
+          "#f9e9f1"
+        ]
+      },
+      "cat-teal": {
+        "role": "category",
+        "displayName": "分类青",
+        "canonical": "#0b7285",
+        "oklch": "oklch(50.9% 0.087 215.1)",
+        "tonalRamp": [
+          "#000e14",
+          "#002932",
+          "#044855",
+          "#156979",
+          "#358da1",
+          "#5db3c7",
+          "#84d9ee",
+          "#d3f6fe"
+        ]
+      },
+      "cat-teal-soft": {
+        "role": "category",
+        "displayName": "分类青底",
+        "canonical": "#e6f6f8",
+        "oklch": "oklch(96.2% 0.017 205.8)",
+        "tonalRamp": [
+          "#040d0f",
+          "#1a2628",
+          "#354244",
+          "#536162",
+          "#758385",
+          "#99a8aa",
+          "#beced0",
+          "#e2f2f4"
+        ]
+      },
+      "cat-indigo": {
+        "role": "category",
+        "displayName": "分类靛",
+        "canonical": "#3f4aa8",
+        "oklch": "oklch(45.4% 0.150 273.8)",
+        "tonalRamp": [
+          "#050033",
+          "#160a6a",
+          "#2b318d",
+          "#4552b0",
+          "#6576d8",
+          "#8a9df9",
+          "#bbc8fa",
+          "#e9eefe"
+        ]
+      },
+      "cat-indigo-soft": {
+        "role": "category",
+        "displayName": "分类靛底",
+        "canonical": "#eef0fa",
+        "oklch": "oklch(95.7% 0.014 277.1)",
+        "tonalRamp": [
+          "#0a0b11",
+          "#22242b",
+          "#3e3f47",
+          "#5b5d65",
+          "#7e8088",
+          "#a2a4ad",
+          "#c8cad4",
+          "#eceef8"
+        ]
+      },
+      "scrim": {
+        "role": "neutral",
+        "displayName": "遮罩",
+        "canonical": "rgba(17, 22, 32, 0.48)"
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display 数字",
+        "purpose": "倒计时分段（60rpx）、大号余量（64rpx），等宽数字。"
+      },
+      "headline": {
+        "displayName": "h1",
+        "purpose": "页面主标题。"
+      },
+      "headline-sm": {
+        "displayName": "h2",
+        "purpose": "区块标题；管理端统计数放大到 48rpx。"
+      },
+      "title": {
+        "displayName": "h3",
+        "purpose": "卡片标题、Sheet 标题、空状态标题。"
+      },
+      "body": {
+        "displayName": "正文",
+        "purpose": "默认正文；长介绍行高 1.75。"
+      },
+      "body-sm": {
+        "displayName": "小正文",
+        "purpose": "横幅、规则、表单标签。"
+      },
+      "label": {
+        "displayName": "caption",
+        "purpose": "时间地点与辅助说明，ink-3。"
+      },
+      "tag": {
+        "displayName": "标签",
+        "purpose": "tag 与同步状态文字。"
+      }
+    },
+    "units": {
+      "base": "rpx",
+      "note": "750rpx = 屏宽；间距 8rpx 网格。sidecar 预览片段按 1rpx ≈ 0.5px 换算。"
+    },
+    "shadows": [
+      {
+        "name": "float",
+        "value": "0 -8rpx 32rpx rgba(29, 33, 41, 0.06)",
+        "purpose": "固定底栏压在滚动内容之上。"
+      },
+      {
+        "name": "sheet",
+        "value": "0 -16rpx 48rpx rgba(29, 33, 41, 0.12)",
+        "purpose": "底部 Sheet。"
+      },
+      {
+        "name": "segment-on",
+        "value": "0 2rpx 8rpx rgba(29, 33, 41, 0.08)",
+        "purpose": "管理端分段控件选中段。"
+      }
+    ],
+    "motion": [
+      {
+        "name": "ease-out",
+        "value": "cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "入场与数值过渡。"
+      },
+      {
+        "name": "t-fast",
+        "value": "150ms",
+        "purpose": "按钮、chip、输入框的颜色与按下缩放（scale 0.985）。"
+      },
+      {
+        "name": "t-base",
+        "value": "220ms",
+        "purpose": "遮罩淡入、余量数字实时高亮。"
+      },
+      {
+        "name": "sheet-slide",
+        "value": "260ms",
+        "purpose": "Sheet 从底部滑入。"
+      },
+      {
+        "name": "meter-fill",
+        "value": "400ms",
+        "purpose": "余量 / 报名率进度条 scaleX 过渡。"
+      },
+      {
+        "name": "success-pop",
+        "value": "420ms",
+        "purpose": "报名成功打勾环一次性弹入。"
+      },
+      {
+        "name": "quota-bump-hold",
+        "value": "700ms",
+        "purpose": "余量变化高亮保持时长。"
+      },
+      {
+        "name": "reduced-motion",
+        "value": "1ms",
+        "purpose": "prefers-reduced-motion: reduce 时所有 transition / animation。"
+      }
+    ],
+    "breakpoints": [],
+    "platformRules": [
+      "小程序不渲染内联 <svg>：图标用 UiIcon + icons.ts（Lucide，URL 编码 SVG 作 CSS mask）。",
+      "组件不能命名为 Icon，会与内置 <icon> 冲突。",
+      "不要依赖 class 透传到自定义组件，外包一层 view。",
+      "scoped 通用类名（如 .success）会与全局 .tag.success 冲突，用具体名字。",
+      "<text> 内不能放自定义组件。",
+      "Sheet footer 里的按钮必须包在 .sheet-actions 中。"
+    ]
+  },
+  "components": [
+    {
+      "name": "主按钮",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "每屏唯一的实心蓝主操作，详情页底栏和 Sheet 底部。",
+      "html": "<button class=\"ds-btn-primary\">确认报名</button>",
+      "css": ".ds-btn-primary{font-family:-apple-system, BlinkMacSystemFont, \"PingFang SC\", \"Helvetica Neue\", \"Microsoft YaHei\", sans-serif;height:44px;padding:0 16px;border:0;border-radius:10px;background:#2a5ee8;color:#fff;font-size:15px;font-weight:600;transition:background-color 150ms ease-out,transform 150ms ease-out;cursor:pointer}.ds-btn-primary:hover{background:#1f4fd1}.ds-btn-primary:active{background:#1f4fd1;transform:scale(.985)}.ds-btn-primary:focus-visible{outline:2px solid #2a5ee8;outline-offset:2px}"
+    },
+    {
+      "name": "浅蓝次按钮",
+      "kind": "button",
+      "refersTo": "button-soft",
+      "description": "与主按钮并排的次要正向操作。",
+      "html": "<button class=\"ds-btn-soft\">查看详情</button>",
+      "css": ".ds-btn-soft{font-family:-apple-system, BlinkMacSystemFont, \"PingFang SC\", \"Helvetica Neue\", \"Microsoft YaHei\", sans-serif;height:44px;padding:0 16px;border:0;border-radius:10px;background:#edf2ff;color:#2a5ee8;font-size:15px;font-weight:500;transition:background-color 150ms ease-out,transform 150ms ease-out;cursor:pointer}.ds-btn-soft:hover,.ds-btn-soft:active{background:#dfe8ff}.ds-btn-soft:active{transform:scale(.985)}.ds-btn-soft:focus-visible{outline:2px solid #2a5ee8;outline-offset:2px}"
+    },
+    {
+      "name": "危险按钮",
+      "kind": "button",
+      "refersTo": "button-danger",
+      "description": "删除、退选等破坏性操作，总是先弹确认。",
+      "html": "<button class=\"ds-btn-danger\">退选</button>",
+      "css": ".ds-btn-danger{font-family:-apple-system, BlinkMacSystemFont, \"PingFang SC\", \"Helvetica Neue\", \"Microsoft YaHei\", sans-serif;height:44px;padding:0 16px;border:0;border-radius:10px;background:#feefee;color:#c8281c;font-size:15px;font-weight:500;transition:background-color 150ms ease-out;cursor:pointer}.ds-btn-danger:hover,.ds-btn-danger:active{background:#fde0de}.ds-btn-danger:focus-visible{outline:2px solid #c8281c;outline-offset:2px}"
+    },
+    {
+      "name": "禁用按钮",
+      "kind": "button",
+      "refersTo": "button-disabled",
+      "description": "所有变体的禁用态统一外观。",
+      "html": "<button class=\"ds-btn-disabled\" disabled>你已加入这个社团</button>",
+      "css": ".ds-btn-disabled{font-family:-apple-system, BlinkMacSystemFont, \"PingFang SC\", \"Helvetica Neue\", \"Microsoft YaHei\", sans-serif;height:48px;padding:0 16px;border:0;border-radius:14px;background:#e8eaee;color:#86909c;font-size:16px;font-weight:600}"
+    },
+    {
+      "name": "搜索输入框",
+      "kind": "input",
+      "refersTo": "input",
+      "description": "灰底输入框，聚焦时变白底蓝边。",
+      "html": "<label class=\"ds-input\"><svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"m21 21-4.34-4.34\"/><circle cx=\"11\" cy=\"11\" r=\"8\"/></svg><input placeholder=\"搜索社团名称或分类\"></label>",
+      "css": ".ds-input{font-family:-apple-system, BlinkMacSystemFont, \"PingFang SC\", \"Helvetica Neue\", \"Microsoft YaHei\", sans-serif;display:flex;align-items:center;gap:8px;height:46px;padding:0 12px;border-radius:10px;background:#f2f3f5;border:1px solid transparent;color:#636a76;transition:border-color 150ms ease-out,background-color 150ms ease-out}.ds-input input{flex:1;min-width:0;border:0;background:transparent;outline:0;font:inherit;font-size:15px;color:#1d2129}.ds-input input::placeholder{color:#636a76}.ds-input:focus-within{background:#fff;border-color:#2a5ee8}"
+    },
+    {
+      "name": "分类 Chip",
+      "kind": "chip",
+      "refersTo": "chip",
+      "description": "横滑分类 Tab 与筛选，选中为浅蓝底蓝字。",
+      "html": "<div class=\"ds-chips\"><button class=\"ds-chip ds-chip-on\">全部</button><button class=\"ds-chip\">摄影</button><button class=\"ds-chip\">篮球</button></div>",
+      "css": ".ds-chips{display:flex;gap:8px;padding:8px;background:#f5f6f8}.ds-chip{font-family:-apple-system, BlinkMacSystemFont, \"PingFang SC\", \"Helvetica Neue\", \"Microsoft YaHei\", sans-serif;height:32px;padding:0 12px;border:0;border-radius:16px;background:#fff;color:#4e5969;font-size:13px;transition:background-color 150ms ease-out,color 150ms ease-out;cursor:pointer}.ds-chip:hover{background:#f2f3f5}.ds-chip-on,.ds-chip-on:hover{background:#edf2ff;color:#2a5ee8;font-weight:500}.ds-chip:focus-visible{outline:2px solid #2a5ee8;outline-offset:2px}"
+    },
+    {
+      "name": "语义标签",
+      "kind": "chip",
+      "refersTo": "tag",
+      "description": "分类、稀缺、状态标签；文字始终写明含义。",
+      "html": "<div class=\"ds-tags\"><span class=\"ds-tag\" style=\"background:#f3edff;color:#6b3fd6\">合唱</span><span class=\"ds-tag ds-tag-hot\">仅剩 3</span><span class=\"ds-tag ds-tag-success\">你符合报名条件</span><span class=\"ds-tag ds-tag-warn\">限指定专业</span></div>",
+      "css": ".ds-tags{display:flex;gap:6px;flex-wrap:wrap}.ds-tag{font-family:-apple-system, BlinkMacSystemFont, \"PingFang SC\", \"Helvetica Neue\", \"Microsoft YaHei\", sans-serif;display:inline-flex;align-items:center;height:22px;padding:0 7px;border-radius:5px;font-size:11px;font-weight:500;background:#f2f3f5;color:#4e5969}.ds-tag-hot{background:#fff1ec;color:#c63d17}.ds-tag-success{background:#e8f6ef;color:#087a54}.ds-tag-warn{background:#fff4e5;color:#9a5200}"
+    },
+    {
+      "name": "社团卡",
+      "kind": "card",
+      "refersTo": "club-card",
+      "description": "首字块（或封面）+ 名称 + 分类/时间地点 + 余量计，无投影。",
+      "html": "<div class=\"ds-club\"><div class=\"ds-club-mark\">摄</div><div class=\"ds-club-body\"><div class=\"ds-club-name\">摄影社</div><div class=\"ds-club-meta\"><span class=\"ds-club-cat\">摄影</span>每周三 16:00–18:00 · 学生活动中心</div><div class=\"ds-quota\"><span class=\"ds-quota-label\">剩余</span><span class=\"ds-quota-val\">3</span><span class=\"ds-quota-unit\">/ 共 40</span><span class=\"ds-quota-tag\">仅剩 3</span></div><div class=\"ds-track\"><div class=\"ds-fill\" style=\"transform:scaleX(.075)\"></div></div></div></div>",
+      "css": ".ds-club{font-family:-apple-system, BlinkMacSystemFont, \"PingFang SC\", \"Helvetica Neue\", \"Microsoft YaHei\", sans-serif;display:flex;gap:12px;padding:14px;border-radius:14px;background:#fff;color:#1d2129;transition:background-color 150ms ease-out}.ds-club:hover,.ds-club:active{background:#f2f3f5}.ds-club-mark{flex-shrink:0;width:64px;height:64px;border-radius:14px;background:#e6f6f8;color:#0b7285;display:flex;align-items:center;justify-content:center;font-size:27px;font-weight:600}.ds-club-body{flex:1;min-width:0}.ds-club-name{font-size:16px;font-weight:600;line-height:1.4}.ds-club-meta{display:flex;align-items:center;gap:6px;margin-top:4px;font-size:12px;color:#636a76;white-space:nowrap;overflow:hidden}.ds-club-cat{height:22px;padding:0 7px;border-radius:5px;background:#e6f6f8;color:#0b7285;font-size:11px;font-weight:500;display:inline-flex;align-items:center}.ds-quota{display:flex;align-items:baseline;margin-top:8px;font-variant-numeric:tabular-nums}.ds-quota-label,.ds-quota-unit{font-size:12px;color:#636a76}.ds-quota-val{margin:0 4px;font-size:15px;font-weight:600;color:#c63d17}.ds-quota-tag{margin-left:auto;height:22px;padding:0 7px;border-radius:5px;background:#fff1ec;color:#c63d17;font-size:11px;font-weight:500;display:inline-flex;align-items:center}.ds-track{margin-top:7px;height:4px;border-radius:2px;background:#e8eaee;overflow:hidden}.ds-fill{height:100%;background:#c63d17;transform-origin:left center;transition:transform 400ms cubic-bezier(.16,1,.3,1)}"
+    },
+    {
+      "name": "活动状态卡（倒计时）",
+      "kind": "custom",
+      "refersTo": "status-hero-live",
+      "description": "首页顶部品牌蓝卡，开放前显示分段倒计时。",
+      "html": "<div class=\"ds-hero\"><span class=\"ds-hero-pill\"><i></i>即将开放</span><div class=\"ds-hero-label\">距离报名开放</div><div class=\"ds-clock\"><span class=\"ds-seg\">02</span><span class=\"ds-sep\">:</span><span class=\"ds-seg\">15</span><span class=\"ds-sep\">:</span><span class=\"ds-seg\">09</span></div></div>",
+      "css": ".ds-hero{font-family:-apple-system, BlinkMacSystemFont, \"PingFang SC\", \"Helvetica Neue\", \"Microsoft YaHei\", sans-serif;padding:16px;border-radius:14px;background:#2a5ee8;color:#fff}.ds-hero-pill{display:inline-flex;align-items:center;gap:5px;height:24px;padding:0 9px;border-radius:12px;background:rgba(255,255,255,.16);font-size:12px;font-weight:500}.ds-hero-pill i{width:6px;height:6px;border-radius:3px;background:#7cf0b8}.ds-hero-label{margin-top:14px;font-size:13px;color:#e3eaff}.ds-clock{display:flex;align-items:center;gap:5px;margin-top:6px}.ds-seg{min-width:48px;height:52px;line-height:52px;padding:0 6px;text-align:center;border-radius:10px;background:#fff;color:#2a5ee8;font-size:30px;font-weight:700;font-variant-numeric:tabular-nums}.ds-sep{font-size:16px;font-weight:600;color:#e3eaff}"
+    },
+    {
+      "name": "状态横幅",
+      "kind": "custom",
+      "refersTo": "",
+      "description": "info/success/warn/danger/pending 五种语气，图标 + 标题 + 正文。",
+      "html": "<div class=\"ds-banner ds-banner-warn\"><svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3\"/><path d=\"M12 9v4\"/><path d=\"M12 17h.01\"/></svg><div>名额可能不是最新，连接恢复后会自动更新；最终以报名结果为准。</div></div>",
+      "css": ".ds-banner{font-family:-apple-system, BlinkMacSystemFont, \"PingFang SC\", \"Helvetica Neue\", \"Microsoft YaHei\", sans-serif;display:flex;align-items:flex-start;gap:8px;padding:12px 14px;border-radius:10px;font-size:13px;line-height:1.55;color:#4e5969}.ds-banner svg{flex-shrink:0;margin-top:2px}.ds-banner-warn{background:#fff4e5}.ds-banner-warn svg{color:#9a5200}"
+    },
+    {
+      "name": "底部 Sheet",
+      "kind": "custom",
+      "refersTo": "sheet",
+      "description": "报名确认等底部弹层，按钮包在 sheet-actions 中等分。",
+      "html": "<div class=\"ds-sheet\"><div class=\"ds-sheet-title\">确认报名</div><p class=\"ds-sheet-text\">每位同学限报 1 个社团，报名后无法再选其他社团。</p><div class=\"ds-sheet-actions\"><button class=\"ds-sa-plain\">再想想</button><button class=\"ds-sa-primary\">确认报名</button></div></div>",
+      "css": ".ds-sheet{font-family:-apple-system, BlinkMacSystemFont, \"PingFang SC\", \"Helvetica Neue\", \"Microsoft YaHei\", sans-serif;padding:16px;border-radius:20px 20px 0 0;background:#fff;box-shadow:0 -8px 24px rgba(29,33,41,.12);color:#1d2129}.ds-sheet-title{font-size:16px;font-weight:600}.ds-sheet-text{margin:8px 0 16px;font-size:14px;line-height:1.6;color:#4e5969}.ds-sheet-actions{display:flex;gap:10px}.ds-sheet-actions button{flex:1;height:44px;border:0;border-radius:10px;font:inherit;font-size:15px;cursor:pointer;transition:background-color 150ms ease-out}.ds-sa-plain{background:#f2f3f5;color:#1d2129;font-weight:500}.ds-sa-plain:hover{background:#e8eaee}.ds-sa-primary{background:#2a5ee8;color:#fff;font-weight:600}.ds-sa-primary:hover{background:#1f4fd1}"
+    }
+  ],
+  "narrative": {
+    "northStar": "清楚的抢报台",
+    "overview": "这是一套行业标准的微信小程序样式：浅灰底配白色圆角卡片，一个明亮的品牌蓝负责所有主操作，系统字体，线性图标。它不追求另类视觉，追求的是三个对标产品各自最好的那一面：飞书 / 腾讯文档的信息层级和管理端的克制，大麦 / 猫眼对倒计时、余量和抢报状态的表达，小红书 / 即刻卡片的年轻感。\n\n界面在高压时刻使用：1500 人同时打开，每一秒名额都可能变化。所以每一屏的视觉重心都放在三件事上：现在能不能报、还剩多少、我报上没有。数字用等宽数字，余量有进度条，状态同时用文字、图标和颜色表达，从不只靠颜色。\n\n已确认拒绝的两种方向：一是白底青绿按钮加文字链接的“表单工具感”；二是黑底霓虹的“秒杀抢购感”。",
+    "keyCharacteristics": [
+      "浅灰底（bg）+ 白卡片（surface），靠色阶分层，几乎不用投影。",
+      "一个品牌蓝，一个稀缺橙红，分类色只表示分类。",
+      "系统字体，数字等宽，字重只用 400 / 500 / 600 / 700。",
+      "所有尺寸用 rpx，间距落在 8rpx 网格上。",
+      "动效 150–260ms 缓出，只动 transform / opacity / 颜色，尊重减少动态效果。",
+      "图标统一为 Lucide 线性图标，通过 CSS mask 渲染。"
+    ],
+    "rules": [
+      {
+        "name": "The One Blue Rule",
+        "body": "所有主操作只用一个品牌蓝。一屏里只有一个实心蓝按钮；其余操作用浅蓝、灰或无底按钮。",
+        "section": "colors"
+      },
+      {
+        "name": "The Scarcity-Only Orange Rule",
+        "body": "橙红只表示“名额紧张”和收藏心形这类“抢”的信号。它不是强调色，也不能用于错误（错误用 danger 红）；倒计时本身用品牌蓝，橙红只在余量紧张时出现。",
+        "section": "colors"
+      },
+      {
+        "name": "The Category-Means-Category Rule",
+        "body": "分类色只表示分类。不能拿分类色表达状态、稀缺或选中。",
+        "section": "colors"
+      },
+      {
+        "name": "The Never-Color-Alone Rule",
+        "body": "每个状态都同时有文字和图标：“仅剩 N”写出数字，“名额已满”写出文字，连接状态有圆点加文字说明。",
+        "section": "colors"
+      },
+      {
+        "name": "The Tabular Numbers Rule",
+        "body": "所有会变化的数字（倒计时、余量、统计）都用等宽数字，跳动时宽度不变。",
+        "section": "typography"
+      },
+      {
+        "name": "The Four Weights Rule",
+        "body": "字重只用 400、500、600、700；700 只留给倒计时和大号余量这类 Display 数字。",
+        "section": "typography"
+      },
+      {
+        "name": "The Flat Card Rule",
+        "body": "卡片静止时不带投影、不带描边，靠白色和灰底之间的色差区分。投影只给固定底栏、Sheet 和选中分段。",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "**Do** 所有颜色都走 `theme.scss` 的 CSS 变量；新增文字色前先在实际底色上验算 WCAG AA（≥4.5:1），并把比值写进本文件。",
+      "**Do** 一屏只放一个品牌蓝实心按钮，主操作放在固定底栏或 Sheet 底部。",
+      "**Do** 数字一律加等宽数字，状态一律“文字 + 图标 + 颜色”三件齐全。",
+      "**Do** 图标只用 `UiIcon` + `icons.ts`（Lucide CSS mask）；新图标从 lucide 图标节点生成 URL 编码 SVG 加进 `icons.ts`。",
+      "**Do** 需要给自定义组件加外边距或布局类时，外面包一层 view，把 class 加在 view 上。",
+      "**Do** Sheet 的 footer 插槽里把按钮包进 `.sheet-actions`。",
+      "**Do** 组件内的 scoped 类名用带前缀或具体的名字（如 `.banner-success`、`.quota-full`），避免和全局 `.tag.success` 这类组合类撞名。",
+      "**Do** 动效只动 transform、opacity 和颜色，时长 150–260ms 缓出；只有进度条（400ms）和报名成功弹入（420ms）例外。",
+      "**Do** 没有封面图时用分类色首字块，保证无图也成立。"
+    ],
+    "donts": [
+      "**Don't** 在小程序模板里写内联 `<svg>`，小程序不渲染。",
+      "**Don't** 把组件命名为 `Icon`（或其他小程序内置组件名），会和内置 `<icon>` 冲突；图标组件叫 `UiIcon`。",
+      "**Don't** 依赖 class 透传到自定义组件根节点，小程序里不可靠。",
+      "**Don't** 在 `<text>` 里放自定义组件；`<text>` 只能包文字和嵌套 `<text>`。",
+      "**Don't** 用橙红表达错误或一般强调，用分类色表达状态，或给普通卡片加投影和描边。",
+      "**Don't** 把 ink-4 用于任何需要阅读的文字，它只给禁用态和非文字图标。",
+      "**Don't** 做装饰性的循环动画；只有加载指示（骨架屏呼吸、pending 旋转）可以循环，并受减少动态效果约束。",
+      "**Don't** 回到白底青绿按钮加文字链接的表单工具感，也不要走黑底霓虹的秒杀风。"
+    ]
+  }
+}
