@@ -3,8 +3,9 @@
     <view class="row between line">
       <view class="figure" :class="state"
         ><template v-if="remaining > 0"
+          ><text class="label">剩余</text
           ><text :class="['num value', { bump }]">{{ remaining }}</text
-          ><text class="unit"> / {{ capacity }} 名额</text></template
+          ><text class="unit num">/ 共 {{ capacity }}</text></template
         ><text v-else class="value full">名额已满</text></view
       ><text v-if="state === 'scarce'" class="tag hot">仅剩 {{ remaining }}</text
       ><slot />
@@ -71,8 +72,13 @@ onUnmounted(() => clearTimeout(timer));
   background: var(--c-primary-soft);
   color: var(--c-primary);
 }
+.label {
+  margin-right: 8rpx;
+  font-size: 24rpx;
+  color: var(--c-ink-3);
+}
 .unit {
-  margin-left: 6rpx;
+  margin-left: 8rpx;
   font-size: 24rpx;
   color: var(--c-ink-3);
 }
@@ -95,7 +101,7 @@ onUnmounted(() => clearTimeout(timer));
   height: 100%;
   width: 100%;
   border-radius: 4rpx;
-  background: var(--c-primary);
+  background: #8faaf3;
   transform-origin: left center;
   transition: transform 400ms var(--ease-out);
 }
@@ -109,7 +115,10 @@ onUnmounted(() => clearTimeout(timer));
 }
 .lg .unit {
   font-size: 28rpx;
-  margin-left: 4rpx;
+}
+.lg .label {
+  font-size: 28rpx;
+  margin-right: 12rpx;
 }
 .lg .value.full {
   font-size: 44rpx;

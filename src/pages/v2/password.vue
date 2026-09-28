@@ -65,9 +65,9 @@
         v-for="c in checks"
         :key="c.label"
         :class="['check row', { ok: c.ok }]"
-        ><UiIcon :name="c.ok ? 'circle-check' : 'circle'" :size="32" /><text>{{
-          c.label
-        }}</text></view
+        ><view class="ico"
+          ><UiIcon :name="c.ok ? 'circle-check' : 'circle'" :size="32" /></view
+        ><text>{{ c.label }}</text></view
       >
     </view>
 
@@ -151,8 +151,14 @@ async function save() {
 .checks {
   margin: 28rpx 4rpx 8rpx;
 }
+.ico {
+  display: flex;
+  align-items: center;
+  height: 40rpx;
+}
 .check {
   gap: 12rpx;
+  line-height: 40rpx;
   font-size: 26rpx;
   color: var(--c-ink-3);
   transition: color var(--t-fast) ease-out;

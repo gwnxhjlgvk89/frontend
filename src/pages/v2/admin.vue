@@ -1,14 +1,12 @@
 <template>
   <view class="page admin">
     <view class="row between top">
-      <view class="row grow">
+      <view class="row grow who">
         <view class="avatar">{{ initial(s.user?.name, "管") }}</view>
-        <view class="grow">
-          <view class="h3 ellipsis">{{ s.user?.name }}</view>
-          <view class="caption">{{
-            s.user?.role === "super_admin" ? "超级管理员" : "管理员"
-          }}</view>
-        </view>
+        <text class="ellipsis name-inline">{{ s.user?.name }}</text>
+        <text class="caption">{{
+          s.user?.role === "super_admin" ? "超级管理员" : "管理员"
+        }}</text>
       </view>
       <button class="btn-sm btn-plain" @tap="logout">
         <UiIcon name="log-out" :size="32" />退出
@@ -40,13 +38,12 @@
       <view class="rate-track"
         ><view class="rate-fill" :style="`transform:scaleX(${Number(rate || 0) / 100})`"
       /></view>
+      <view v-if="s.canSelect && readonlyTab" class="readonly row"
+        ><UiIcon name="lock" :size="28" /><text class="grow"
+          >报名进行中，学生、社团和名额只读；如需调整请先暂停报名</text
+        ></view
+      >
     </view>
-
-    <view v-if="s.canSelect" class="gap"
-      ><StatusBanner tone="warn" title="报名进行中，数据只读"
-        >学生、社团和名额暂时不能修改。如需调整，请超级管理员先暂停报名。</StatusBanner
-      ></view
-    >
     <view v-if="inconsistent" class="gap"
       ><StatusBanner tone="danger" title="名额与报名记录不一致"
         >发布前需要先核对社团名额，系统会阻止带冲突的发布。</StatusBanner
@@ -228,8 +225,10 @@
     <view v-if="tab === 'jobs'">
       <view class="job-actions">
         <view class="card job-card">
-          <view class="job-icon"><UiIcon name="upload" :size="40" /></view>
-          <view class="h3">导入学生名单</view>
+          <view class="row job-head"
+            ><view class="job-icon"><UiIcon name="upload" :size="32" /></view
+            ><text class="h3">导入学生名单</text></view
+          >
           <view class="caption"
             >选择 XLSX 文件，先预览再确认。只新增账号，重复学号会被拒绝。</view
           >
@@ -246,8 +245,10 @@
           </button>
         </view>
         <view class="card job-card">
-          <view class="job-icon"><UiIcon name="download" :size="40" /></view>
-          <view class="h3">导出报名结果</view>
+          <view class="row job-head"
+            ><view class="job-icon"><UiIcon name="download" :size="32" /></view
+            ><text class="h3">导出报名结果</text></view
+          >
           <view class="caption">生成包含学生与所报社团的 Excel，由后台处理。</view>
           <button
             class="btn-soft btn-block"
@@ -400,6 +401,9 @@ function jobTone(state: string) {
     ] || ""
   );
 }
+const readonlyTab = computed(() =>
+  ["students", "clubs", "activity", "jobs"].includes(tab.value),
+);
 const pages = computed(() => Math.max(1, Math.ceil(total.value / pageSize)));
 const rate = computed(() => {
   if (!overview.value.students) return null;
@@ -622,16 +626,36 @@ onUnload(hide);
   padding-top: 24rpx;
 }
 .top {
-  margin-bottom: 24rpx;
+  margin-bottom: 16rpx;
+}
+.who {
+  gap: 12rpx;
+}
+.name-inline {
+  font-size: 28rpx;
+  font-weight: 600;
+  max-width: 50%;
+}
+.readonly {
+  gap: 10rpx;
+  align-items: flex-start;
+  margin-top: 24rpx;
+  padding: 16rpx 20rpx;
+  border-radius: var(--r-sm);
+  background: var(--c-warn-soft);
+  color: var(--c-warn);
+  font-size: 24rpx;
+  line-height: 36rpx;
 }
 .avatar {
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  width: 80rpx;
-  height: 80rpx;
-  border-radius: 40rpx;
+  width: 56rpx;
+  height: 56rpx;
+  font-size: 24rpx;
+  border-radius: 28rpx;
   background: var(--c-ink);
   color: #fff;
   font-weight: 600;
@@ -766,19 +790,23 @@ onUnload(hide);
 .job-card button {
   margin-top: 16rpx;
 }
+.job-head {
+  gap: 16rpx;
+  margin-bottom: 4rpx;
+}
 .job-icon {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 72rpx;
-  height: 72rpx;
-  margin-bottom: 8rpx;
+  width: 56rpx;
+  height: 56rpx;
   border-radius: var(--r-md);
   background: var(--c-primary-soft);
   color: var(--c-primary);
 }
 .template {
-  word-break: break-all;
+  word-break: normal;
+  overflow-wrap: anywhere;
   font-size: 22rpx;
   margin-bottom: 16rpx;
 }

@@ -7,14 +7,10 @@
       mode="aspectFill"
       @error="coverBroken = true"
     />
-    <view
-      v-else
-      class="cover letter"
-      :style="`background:${tone.bg};color:${tone.fg}`"
-      ><text class="cover-char">{{ initial(club.name) }}</text></view
-    >
 
-    <view class="head">
+    <view class="head row">
+      <ClubMark v-if="!club.cover || coverBroken" :club="club" :size="120" />
+      <view class="grow">
       <view class="h1">{{ club.name }}</view>
       <view class="row tags">
         <text class="tag" :style="`background:${tone.bg};color:${tone.fg}`">{{
@@ -25,6 +21,7 @@
             eligible ? "你符合报名条件" : "仅限指定专业"
           }}</text></view
         >
+      </view>
       </view>
     </view>
 
@@ -80,10 +77,9 @@
     <view class="section-head"><text class="h3">报名须知</text></view>
     <view class="card rules">
       <view v-for="rule in rules" :key="rule" class="rule row"
-        ><UiIcon name="info" :size="32" color="var(--c-primary)" /><text
-          class="grow"
-          >{{ rule }}</text
-        ></view
+        ><view class="ico"
+          ><UiIcon name="info" :size="32" color="var(--c-primary)" /></view
+        ><text class="grow">{{ rule }}</text></view
       >
     </view>
 
@@ -136,21 +132,24 @@
       </view>
       <view class="confirm-list">
         <view class="row"
-          ><UiIcon name="check" :size="32" color="var(--c-primary)" /><text
-            >每位同学本届只能报名 1 个社团</text
-          ></view
+          ><view class="ico"
+            ><UiIcon name="check" :size="32" color="var(--c-primary)" /></view
+          ><text>每位同学本届只能报名 1 个社团</text></view
         >
         <view class="row"
-          ><UiIcon
-            :name="s.activity?.allow_cancel ? 'check' : 'triangle-alert'"
-            :size="32"
-            :color="s.activity?.allow_cancel ? 'var(--c-primary)' : 'var(--c-warn)'"
-          /><text>{{ cancelRule }}</text></view
+          ><view class="ico"
+            ><UiIcon
+              :name="s.activity?.allow_cancel ? 'check' : 'triangle-alert'"
+              :size="32"
+              :color="
+                s.activity?.allow_cancel ? 'var(--c-primary)' : 'var(--c-warn)'
+              " /></view
+          ><text>{{ cancelRule }}</text></view
         >
         <view class="row"
-          ><UiIcon name="check" :size="32" color="var(--c-primary)" /><text
-            >名额先到先得，以提交结果为准</text
-          ></view
+          ><view class="ico"
+            ><UiIcon name="check" :size="32" color="var(--c-primary)" /></view
+          ><text>名额先到先得，以提交结果为准</text></view
         >
       </view>
       <template #footer>
@@ -165,24 +164,39 @@
 
     <Sheet :show="succeeded" @close="succeeded = false">
       <view class="success-panel">
-        <view class="check-ring"><UiIcon name="check" :size="72" /></view>
+        <view class="check-ring"><UiIcon name="check" :size="64" /></view>
         <view class="h2">报名成功</view>
         <view class="caption">期待在社团见到你</view>
-        <view class="ticket">
-          <view class="row between"
-            ><text class="caption">社团</text
-            ><text class="ticket-value">{{ s.enrollment?.club_name }}</text></view
-          >
-          <view class="row between"
-            ><text class="caption">报名时间</text
-            ><text class="ticket-value num">{{
-              formatTime(s.enrollment?.created_at)
-            }}</text></view
-          >
-          <view class="row between"
-            ><text class="caption">报名人</text
-            ><text class="ticket-value">{{ s.user?.name }}</text></view
-          >
+        <view class="voucher">
+          <view class="voucher-top row">
+            <ClubMark :club="club" :size="88" />
+            <view class="grow">
+              <view class="h3 ellipsis">{{ s.enrollment?.club_name }}</view>
+              <view class="voucher-status"
+                ><UiIcon name="circle-check" :size="26" /><text
+                  >报名已确认</text
+                ></view
+              >
+            </view>
+          </view>
+          <view class="perforation"
+            ><view class="notch left" /><view class="dash" /><view
+              class="notch right"
+          /></view>
+          <view class="voucher-bottom">
+            <view class="row between"
+              ><text class="caption">报名人</text
+              ><text class="ticket-value"
+                >{{ s.user?.name }} · {{ s.user?.username }}</text
+              ></view
+            >
+            <view class="row between"
+              ><text class="caption">确认时间</text
+              ><text class="ticket-value num">{{
+                formatTime(s.enrollment?.created_at)
+              }}</text></view
+            >
+          </view>
         </view>
       </view>
       <template #footer>
@@ -219,12 +233,7 @@ import Sheet from "@/v2/Sheet.vue";
 import StatusBanner from "@/v2/StatusBanner.vue";
 import UiIcon from "@/v2/UiIcon.vue";
 import { toggleFavorite } from "@/v2/favorites";
-import {
-  categoryTone,
-  eligibleFor,
-  formatTime,
-  initial,
-} from "@/v2/format";
+import { categoryTone, eligibleFor, formatTime } from "@/v2/format";
 const s = useSession(),
   club = ref<Club | null>(null),
   busy = ref(false),
@@ -365,19 +374,11 @@ function openProfile() {
   width: 100%;
   height: 340rpx;
   border-radius: var(--r-lg);
-}
-.letter {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.cover-char {
-  font-size: 140rpx;
-  font-weight: 700;
-  opacity: 0.9;
+  margin-bottom: 32rpx;
 }
 .head {
-  margin: 32rpx 4rpx 28rpx;
+  gap: 24rpx;
+  margin: 8rpx 4rpx 28rpx;
 }
 .tags {
   margin-top: 16rpx;
@@ -421,9 +422,16 @@ function openProfile() {
   line-height: 1.75;
   color: var(--c-ink-2);
 }
+.ico {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  height: 44rpx;
+}
 .rules .rule {
   align-items: flex-start;
   font-size: 26rpx;
+  line-height: 44rpx;
   color: var(--c-ink-2);
 }
 .rule + .rule {
@@ -472,6 +480,7 @@ function openProfile() {
 .confirm-list .row {
   align-items: flex-start;
   gap: 16rpx;
+  line-height: 44rpx;
 }
 .confirm-list .row + .row {
   margin-top: 18rpx;
@@ -505,19 +514,57 @@ function openProfile() {
     opacity: 1;
   }
 }
-.ticket {
+.voucher {
   width: 100%;
   margin-top: 36rpx;
-  padding: 8rpx 28rpx;
-  border-radius: var(--r-md);
+  border-radius: var(--r-lg);
   background: var(--c-fill);
   text-align: left;
+  overflow: hidden;
 }
-.ticket .row {
-  padding: 18rpx 0;
+.voucher-top {
+  gap: 24rpx;
+  padding: 28rpx;
 }
-.ticket .row + .row {
-  border-top: 1rpx dashed var(--c-fill-strong);
+.voucher-status {
+  display: flex;
+  align-items: center;
+  gap: 8rpx;
+  margin-top: 6rpx;
+  font-size: 24rpx;
+  font-weight: 500;
+  color: var(--c-success);
+}
+.perforation {
+  position: relative;
+  height: 32rpx;
+  display: flex;
+  align-items: center;
+}
+.dash {
+  flex: 1;
+  margin: 0 28rpx;
+  border-top: 2rpx dashed var(--c-fill-strong);
+}
+.notch {
+  position: absolute;
+  top: 0;
+  width: 32rpx;
+  height: 32rpx;
+  border-radius: 16rpx;
+  background: var(--c-surface);
+}
+.notch.left {
+  left: -16rpx;
+}
+.notch.right {
+  right: -16rpx;
+}
+.voucher-bottom {
+  padding: 8rpx 28rpx 16rpx;
+}
+.voucher-bottom .row {
+  padding: 12rpx 0;
 }
 .ticket-value {
   font-weight: 500;

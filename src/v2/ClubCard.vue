@@ -22,10 +22,8 @@
           club.category || "社团"
         }}</text>
         <text v-if="!eligible" class="tag warn">限指定专业</text>
-        <text class="caption ellipsis grow">{{
-          club.schedule || "活动时间待公布"
-        }}</text>
       </view>
+      <view class="caption ellipsis where">{{ where }}</view>
       <view class="meter"
         ><QuotaMeter
           :remaining="club.remaining"
@@ -51,6 +49,12 @@ const props = defineProps<{
 }>();
 const eligible = computed(() => eligibleFor(props.club, props.major));
 const tone = computed(() => categoryTone(props.club.category));
+const where = computed(
+  () =>
+    [props.club.schedule || "活动时间待公布", props.club.location]
+      .filter(Boolean)
+      .join(" · "),
+);
 function open() {
   uni.navigateTo({ url: "/pages/v2/detail?id=" + props.club.id });
 }
@@ -81,6 +85,9 @@ function open() {
 }
 .meta {
   gap: 12rpx;
+  margin-top: 8rpx;
+}
+.where {
   margin-top: 8rpx;
 }
 .meter {

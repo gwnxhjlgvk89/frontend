@@ -1,7 +1,7 @@
 <template>
   <Sheet :show="open" :title="title" scroll :locked="busy" @close="close">
     <view v-for="group in groups" :key="group.title" class="group">
-      <view class="group-title caption">{{ group.title }}</view>
+      <view class="group-title">{{ group.title }}</view>
       <view v-for="field in group.fields" :key="field.key" class="field">
         <text class="field-label"
           >{{ field.label
@@ -25,7 +25,7 @@
       </view>
     </view>
     <view class="group">
-      <view class="group-title caption">状态</view>
+      <view class="group-title">状态</view>
       <view v-if="kind === 'student'" class="field">
         <text class="field-label">预报名社团</text>
         <picker
@@ -110,16 +110,16 @@ const groups = computed<{ title: string; fields: Field[] }[]>(() =>
         {
           title: "基本信息",
           fields: [
-            { key: "name", label: "社团名称", required: true },
+            { key: "name", label: "社团名称", hint: "如：摄影社", required: true },
             { key: "category", label: "分类", hint: "如：文艺、体育、学术" },
-            { key: "capacity", label: "总名额", required: true },
+            { key: "capacity", label: "总名额", hint: "如：40", required: true },
           ],
         },
         {
           title: "活动安排",
           fields: [
             { key: "schedule", label: "活动时间", hint: "如：每周三 16:00–18:00" },
-            { key: "location", label: "活动地点" },
+            { key: "location", label: "活动地点", hint: "如：学生活动中心" },
             { key: "description", label: "社团介绍" },
           ],
         },
@@ -139,10 +139,10 @@ const groups = computed<{ title: string; fields: Field[] }[]>(() =>
         {
           title: "学生信息",
           fields: [
-            { key: "username", label: "学号", required: true },
-            { key: "name", label: "姓名", required: true },
-            { key: "major", label: "专业" },
-            { key: "class_name", label: "班级" },
+            { key: "username", label: "学号", hint: "登录账号", required: true },
+            { key: "name", label: "姓名", hint: "与名单一致", required: true },
+            { key: "major", label: "专业", hint: "用于专业限制的核对" },
+            { key: "class_name", label: "班级", hint: "如：计科一班" },
           ],
         },
         {
@@ -213,11 +213,13 @@ async function save() {
 </script>
 <style scoped>
 .group + .group {
-  margin-top: 36rpx;
+  margin-top: 48rpx;
 }
 .group-title {
-  margin-bottom: 16rpx;
-  font-weight: 500;
+  margin-bottom: 20rpx;
+  font-size: 30rpx;
+  font-weight: 600;
+  color: var(--c-ink);
 }
 .required {
   color: var(--c-danger);

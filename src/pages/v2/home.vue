@@ -19,7 +19,7 @@
     </view>
     <view v-else-if="phase === 'upcoming' || phase === 'open'" class="hero live">
       <view class="row between">
-        <text class="hero-name ellipsis">{{ s.activity?.name }}</text>
+        <text class="h2 hero-head ellipsis">{{ s.activity?.name }}</text>
         <text class="hero-pill"
           ><text v-if="phase === 'open'" class="dot" />{{
             phase === "open" ? "报名进行中" : "即将开放"
@@ -42,21 +42,13 @@
         >
       </template>
       <template v-else>
-        <view class="hero-title">先到先得，每人限报 1 个社团</view>
-        <view class="hero-stats">
-          <view
-            ><view class="stat num">{{ totalRemaining }}</view
-            ><view class="stat-label">剩余名额</view></view
-          >
-          <view
-            ><view class="stat num">{{ openClubs }}</view
-            ><view class="stat-label">可报社团</view></view
-          >
-          <view
-            ><view class="stat">{{ formatTime(s.activity?.ends_at) }}</view
-            ><view class="stat-label">报名截止</view></view
-          >
-        </view>
+        <view class="hero-open"
+          >剩余 <text class="hero-num num">{{ totalRemaining }}</text> 个名额</view
+        >
+        <view class="hero-foot"
+          >先到先得，每人限报 1 个社团 ·
+          {{ formatTime(s.activity?.ends_at) }} 截止</view
+        >
       </template>
     </view>
     <view v-else class="hero quiet">
@@ -110,7 +102,7 @@
         <view
           :class="['chip', 'filter', onlyEligible && 'on']"
           @tap="onlyEligible = !onlyEligible"
-          ><UiIcon name="check" :size="28" />只看可报</view
+          ><UiIcon v-if="onlyEligible" name="check" :size="28" />只看可报</view
         >
         <view
           :class="['chip', 'filter', onlyFav && 'on']"
@@ -226,7 +218,6 @@ const left = computed(() =>
 const totalRemaining = computed(() =>
   s.clubs.reduce((sum, c) => sum + Math.max(0, c.remaining), 0),
 );
-const openClubs = computed(() => s.clubs.filter((c) => c.remaining > 0).length);
 const quietText = computed(
   () =>
     ({
@@ -270,10 +261,9 @@ function openProfile() {
   background: var(--c-primary);
   color: #fff;
 }
-.hero-name {
-  font-size: 26rpx;
-  color: var(--c-on-primary-2);
-  max-width: 60%;
+.hero-head {
+  min-width: 0;
+  flex: 1;
 }
 .hero-pill {
   display: inline-flex;
@@ -325,27 +315,16 @@ function openProfile() {
   font-size: 24rpx;
   color: var(--c-on-primary-2);
 }
-.hero-title {
-  margin-top: 20rpx;
-  font-size: 40rpx;
-  font-weight: 600;
-  line-height: 1.35;
-}
-.hero-stats {
-  display: flex;
-  gap: 48rpx;
-  margin-top: 28rpx;
-  padding-top: 24rpx;
-  border-top: 1rpx solid rgba(255, 255, 255, 0.2);
-}
-.stat {
-  font-size: 36rpx;
-  font-weight: 600;
-  line-height: 1.3;
-}
-.stat-label {
-  font-size: 22rpx;
+.hero-open {
+  margin-top: 24rpx;
+  font-size: 30rpx;
   color: var(--c-on-primary-2);
+}
+.hero-num {
+  font-size: 64rpx;
+  font-weight: 700;
+  color: #fff;
+  margin: 0 4rpx;
 }
 .done {
   background: var(--c-surface);
