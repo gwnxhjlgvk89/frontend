@@ -8,7 +8,7 @@
         class="input field"
         v-model="form.password"
         password
-        placeholder="初始密码（留空用姓名拼音）"
+        placeholder="初始密码（留空用姓名原文）"
       />
       <picker
         :range="roles"
