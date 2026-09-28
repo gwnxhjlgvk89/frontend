@@ -1,4 +1,5 @@
 // Design tokens. Contrast checked against WCAG AA (see DESIGN.md).
+@import "./fonts.scss";
 page {
   --c-bg: #f5f6f8;
   --c-surface: #ffffff;
@@ -86,6 +87,7 @@ scroll-view {
   text-overflow: ellipsis;
 }
 .num {
+  font-family: "ClubNum", -apple-system, BlinkMacSystemFont, "PingFang SC", "Helvetica Neue", sans-serif;
   font-variant-numeric: tabular-nums;
 }
 

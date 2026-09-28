@@ -275,9 +275,9 @@ components:
 
 **Display Font:** 系统字体（-apple-system / PingFang SC，回退 Helvetica Neue、Microsoft YaHei）
 **Body Font:** 同上
-**Label/Mono Font:** 不另设等宽字体；数值统一用等宽数字特性（`.num`，tabular-nums）
+**Numeral Font:** Barlow（SIL OFL 1.1，授权见 `docs/licenses/Barlow-OFL.txt`），只用于 `.num`：倒计时、余量、统计、时间数字。子集只含数字、时间 / 分数标点和 a–f（600、700 两个字重，各约 7.5KB），以 base64 woff 内嵌在 `src/v2/fonts.scss`，无网络请求、不需配置合法域名。中文与其他字符按字体栈回退到系统字体。
 
-**Character:** 完全交给系统字体，和微信原生界面浑然一体；层级靠字号与字重拉开，而不是换字体。
+**Character:** 中文完全交给系统字体，和微信原生界面浑然一体；数字用 DIN 系的 Barlow，窄而紧凑，带出抢票倒计时的气质，并让 iOS / 安卓显示一致。2026-09-28 由用户在 Barlow / Manrope / Rubik 对比中选定。
 
 ### Hierarchy
 | 角色 | 字号 | 字重 | 行高 | 用途 |
@@ -294,7 +294,7 @@ components:
 按钮文字 30rpx / 500；主按钮与大按钮 600。输入框文字 30rpx。
 
 ### Named Rules
-**The Tabular Numbers Rule.** 所有会变化的数字（倒计时、余量、统计）都用等宽数字，跳动时宽度不变。
+**The Tabular Numbers Rule.** 所有会变化的数字（倒计时、余量、统计）都用 `.num`：Barlow 等宽数字，跳动时宽度不变。不要为中文引入网络字体——中文字库动辄数 MB，会拖慢 1500 人同时开抢时的首屏。
 
 **The Four Weights Rule.** 字重只用 400、500、600、700；700 只留给倒计时和大号余量这类 Display 数字。
 
