@@ -3,12 +3,6 @@ import { useSession } from "./session";
 
 const inFlight = new Set<number>();
 
-export function haptic(type: "light" | "medium" = "light") {
-  try {
-    uni.vibrateShort({ type, fail() {} } as any);
-  } catch {}
-}
-
 export async function toggleFavorite(clubId: number) {
   if (inFlight.has(clubId)) return;
   const s = useSession();

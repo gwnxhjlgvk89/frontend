@@ -254,7 +254,7 @@ import QuotaMeter from "@/v2/QuotaMeter.vue";
 import Sheet from "@/v2/Sheet.vue";
 import StatusBanner from "@/v2/StatusBanner.vue";
 import UiIcon from "@/v2/UiIcon.vue";
-import { haptic, toggleFavorite } from "@/v2/favorites";
+import { toggleFavorite } from "@/v2/favorites";
 import { categoryTone, eligibleFor, formatTime } from "@/v2/format";
 const s = useSession(),
   club = ref<Club | null>(null),
@@ -390,7 +390,6 @@ async function submit() {
     s.enrollment = result.enrollment;
     key = "";
     succeeded.value = true;
-    haptic("medium");
   } catch (e) {
     if (e instanceof ApiError && (e.status === 0 || e.status >= 500)) {
       uncertain.value = true;
