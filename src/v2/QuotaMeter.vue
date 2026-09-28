@@ -1,5 +1,17 @@
 <template>
-  <view :class="['quota', size, { stale }]">
+  <view v-if="size === 'inline'" :class="['compact', state, { stale }]">
+    <view class="mini-track"
+      ><view class="fill" :class="state" :style="`transform:scaleX(${ratio})`"
+    /></view>
+    <view class="figure"
+      ><template v-if="remaining > 0"
+        ><text class="label">{{ state === "scarce" ? "仅剩" : "剩余" }}</text
+        ><text :class="['num value', { bump }]">{{ remaining }}</text
+        ><text class="unit num">/{{ capacity }}</text></template
+      ><text v-else class="full-text">已满</text></view
+    >
+  </view>
+  <view v-else :class="['quota', size, { stale }]">
     <view class="row between line">
       <view class="figure" :class="state"
         ><template v-if="remaining > 0"
@@ -22,7 +34,7 @@ const props = withDefaults(
   defineProps<{
     remaining: number;
     capacity: number;
-    size?: "sm" | "lg";
+    size?: "sm" | "lg" | "inline";
     stale?: boolean;
   }>(),
   { size: "sm", stale: false },
@@ -131,5 +143,41 @@ onUnmounted(() => clearTimeout(timer));
 .stale .value,
 .stale .fill {
   opacity: 0.45;
+}
+.compact {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+}
+.mini-track {
+  width: 112rpx;
+  height: 8rpx;
+  border-radius: 4rpx;
+  background: var(--c-fill-strong);
+  overflow: hidden;
+}
+.compact .figure {
+  align-items: baseline;
+}
+.compact .label {
+  margin-right: 6rpx;
+  font-size: 22rpx;
+}
+.compact .value {
+  font-size: 30rpx;
+  font-weight: 700;
+  padding: 0 2rpx;
+}
+.compact .unit {
+  margin-left: 2rpx;
+  font-size: 22rpx;
+}
+.compact.scarce .label,
+.compact.scarce .value {
+  color: var(--c-hot);
+}
+.full-text {
+  font-size: 24rpx;
+  color: var(--c-ink-3);
 }
 </style>
