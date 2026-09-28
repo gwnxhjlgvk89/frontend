@@ -44,47 +44,65 @@ export function request<T>(
   const key = `${requestToken}:${path}`;
   if (method === "GET" && pending.has(key))
     return pending.get(key) as Promise<T>;
-  const task = new Promise<T>((resolve, reject) => {
-    uni.request({
-      url: API + path,
-      method,
-      data: data as any,
-      timeout: 10000,
-      header: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${requestToken}`,
-        ...headers,
-      },
-      success(res) {
-        const body = res.data as any;
-        if (res.statusCode >= 200 && res.statusCode < 300) {
-          resolve(body.data as T);
-          return;
-        }
-        const e = new ApiError(
-          res.statusCode,
-          body?.error?.code || "REQUEST_FAILED",
-          body?.error?.message || "请求失败",
-          body?.error?.request_id,
-        );
-        if (
-          res.statusCode === 401 &&
-          requestToken === getToken() &&
-          path !== "/auth/login" &&
-          !invalidating
-        ) {
-          invalidating = true;
-          clearSession();
-          uni.reLaunch({ url: "/pages/v2/login" });
-        }
-        reject(e);
-      },
-      fail() {
-        reject(
-          new ApiError(0, "NETWORK_ERROR", "网络连接中断，请确认操作结果"),
-        );
-      },
+  const attempt = () =>
+    new Promise<T>((resolve, reject) => {
+      uni.request({
+        url: API + path,
+        method,
+        data: data as any,
+        timeout: 10000,
+        header: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${requestToken}`,
+          ...headers,
+        },
+        success(res) {
+          const body = res.data as any;
+          if (res.statusCode >= 200 && res.statusCode < 300) {
+            resolve(body.data as T);
+            return;
+          }
+          const e = new ApiError(
+            res.statusCode,
+            body?.error?.code || "REQUEST_FAILED",
+            body?.error?.message || "请求失败",
+            body?.error?.request_id,
+          );
+          if (
+            res.statusCode === 401 &&
+            requestToken === getToken() &&
+            path !== "/auth/login" &&
+            !invalidating
+          ) {
+            invalidating = true;
+            clearSession();
+            uni.reLaunch({ url: "/pages/v2/login" });
+          }
+          reject(e);
+        },
+        fail() {
+          reject(
+            new ApiError(0, "NETWORK_ERROR", "网络连接中断，请确认操作结果"),
+          );
+        },
+      });
     });
+  const task = attempt().catch(async (error: unknown) => {
+    // Reads can safely recover from one transient connection failure. Keep the
+    // shared pending promise during backoff so page/event callers do not fan out.
+    // Writes (including login and enrollment) must not be replayed here.
+    if (
+      method !== "GET" ||
+      !(error instanceof ApiError) ||
+      error.status !== 0 ||
+      requestToken !== getToken()
+    )
+      throw error;
+    await new Promise<void>((resolve) =>
+      setTimeout(resolve, 500 + Math.random() * 500),
+    );
+    if (requestToken !== getToken()) throw error;
+    return attempt();
   });
   if (method === "GET") {
     pending.set(key, task);
