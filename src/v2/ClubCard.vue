@@ -1,60 +1,89 @@
 <template>
-  <view class="card club-card" @tap="open">
-    <view class="row"
-      ><view class="grow"
-        ><text class="tag gray">{{ club.category || "校园社团" }}</text
-        ><view class="club-name">{{ club.name }}</view></view
-      ><image
-        v-if="club.cover"
-        class="cover"
-        :src="club.cover"
-        mode="aspectFill"
-        lazy-load
-    /></view>
-    <view class="muted">{{ club.schedule || "活动时间待通知" }}</view
-    ><view class="muted">{{ club.location || "活动地点待通知" }}</view>
-    <view class="divider" /><view class="row between"
-      ><text :class="['tag', !eligible && 'warning']">{{
-        eligible ? "符合报名条件" : "限指定专业"
-      }}</text
-      ><text class="quota">{{
-        club.remaining > 0
-          ? "剩余 " + club.remaining + " / " + club.capacity + " 名"
-          : "名额已满"
-      }}</text></view
-    >
+  <view
+    class="card club"
+    hover-class="pressed"
+    :hover-stay-time="80"
+    @tap="open"
+  >
+    <ClubMark :club="club" :size="128" />
+    <view class="grow">
+      <view class="row top">
+        <text class="h3 grow ellipsis">{{ club.name }}</text>
+        <view
+          class="fav"
+          :class="{ on: favorite }"
+          :aria-label="favorite ? '取消收藏' : '收藏'"
+          @tap.stop="toggleFavorite(club.id)"
+          ><UiIcon :name="favorite ? 'heart-fill' : 'heart'" :size="36"
+        /></view>
+      </view>
+      <view class="meta row">
+        <text class="tag" :style="`background:${tone.bg};color:${tone.fg}`">{{
+          club.category || "社团"
+        }}</text>
+        <text v-if="!eligible" class="tag warn">限指定专业</text>
+        <text class="caption ellipsis grow">{{
+          club.schedule || "活动时间待公布"
+        }}</text>
+      </view>
+      <view class="meter"
+        ><QuotaMeter
+          :remaining="club.remaining"
+          :capacity="club.capacity"
+          :stale="stale"
+      /></view>
+    </view>
   </view>
 </template>
 <script setup lang="ts">
 import { computed } from "vue";
+import ClubMark from "./ClubMark.vue";
+import UiIcon from "./UiIcon.vue";
+import QuotaMeter from "./QuotaMeter.vue";
+import { categoryTone, eligibleFor } from "./format";
+import { toggleFavorite } from "./favorites";
 import type { Club } from "./types";
-const props = defineProps<{ club: Club; major?: string }>();
-const eligible = computed(
-  () =>
-    !props.club.allowed_majors.length ||
-    props.club.allowed_majors.includes(props.major || ""),
-);
+const props = defineProps<{
+  club: Club;
+  major?: string;
+  favorite?: boolean;
+  stale?: boolean;
+}>();
+const eligible = computed(() => eligibleFor(props.club, props.major));
+const tone = computed(() => categoryTone(props.club.category));
 function open() {
   uni.navigateTo({ url: "/pages/v2/detail?id=" + props.club.id });
 }
 </script>
 <style scoped>
-.club-name {
-  font-size: 34rpx;
-  font-weight: 650;
-  margin: 14rpx 0;
+.club {
+  display: flex;
+  align-items: flex-start;
+  gap: 24rpx;
+  padding: 28rpx;
+  margin-bottom: 20rpx;
+  transition: background-color var(--t-fast) ease-out;
 }
-.cover {
-  width: 116rpx;
-  height: 116rpx;
-  border-radius: 18rpx;
+.top {
+  gap: 8rpx;
 }
-.quota {
-  font-size: 25rpx;
-  font-weight: 600;
-  color: #087f83;
+.fav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 64rpx;
+  height: 64rpx;
+  margin: -12rpx -16rpx -12rpx 0;
+  color: var(--c-ink-4);
 }
-.club-card {
-  margin-bottom: 22rpx;
+.fav.on {
+  color: var(--c-hot);
+}
+.meta {
+  gap: 12rpx;
+  margin-top: 8rpx;
+}
+.meter {
+  margin-top: 16rpx;
 }
 </style>

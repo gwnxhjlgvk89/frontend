@@ -1,185 +1,328 @@
 <template>
-  <view class="screen"
-    ><view class="row between"
-      ><text class="eyebrow">社团管理工作台</text
-      ><text class="link" @tap="s.logout">退出登录</text></view
-    ><view class="title">把招新安排妥当。</view
-    ><view class="subtitle">{{ s.user?.name }} · {{ s.activityLabel }}</view>
-    <view class="stats"
-      ><view class="card stat"
-        ><view class="stat-num">{{ overview.students ?? "—" }}</view
-        ><text class="muted">学生总数</text></view
-      ><view class="card stat"
-        ><view class="stat-num">{{ overview.enrolled ?? "—" }}</view
-        ><text class="muted">已选社团</text></view
-      ><view class="card stat"
-        ><view class="stat-num">{{ overview.clubs ?? "—" }}</view
-        ><text class="muted">社团数量</text></view
+  <view class="page admin">
+    <view class="row between top">
+      <view class="row grow">
+        <view class="avatar">{{ initial(s.user?.name, "管") }}</view>
+        <view class="grow">
+          <view class="h3 ellipsis">{{ s.user?.name }}</view>
+          <view class="caption">{{
+            s.user?.role === "super_admin" ? "超级管理员" : "管理员"
+          }}</view>
+        </view>
+      </view>
+      <button class="btn-sm btn-plain" @tap="logout">
+        <UiIcon name="log-out" :size="32" />退出
+      </button>
+    </view>
+
+    <view class="card status">
+      <view class="row between">
+        <text class="h3 ellipsis grow">{{ s.activity?.name || "报名活动" }}</text>
+        <text :class="['tag', stateTone]">{{ s.activityLabel }}</text>
+      </view>
+      <view class="caption window num">{{ windowText }}</view>
+      <view class="stats">
+        <view class="stat"
+          ><view class="stat-num num">{{ overview.students ?? "—" }}</view
+          ><view class="caption">学生</view></view
+        >
+        <view class="stat"
+          ><view class="stat-num num"
+            >{{ overview.enrolled ?? "—"
+            }}<text v-if="rate !== null" class="rate">{{ rate }}%</text></view
+          ><view class="caption">已报名</view></view
+        >
+        <view class="stat"
+          ><view class="stat-num num">{{ overview.clubs ?? "—" }}</view
+          ><view class="caption">社团</view></view
+        >
+      </view>
+      <view class="rate-track"
+        ><view class="rate-fill" :style="`transform:scaleX(${(rate || 0) / 100})`"
+      /></view>
+    </view>
+
+    <view v-if="s.canSelect" class="gap"
+      ><StatusBanner tone="warn" title="报名进行中，数据只读"
+        >学生、社团和名额暂时不能修改。如需调整，请超级管理员先暂停报名。</StatusBanner
       ></view
     >
-    <view v-if="s.canSelect" class="card"
-      ><text class="tag warning">报名正在进行</text
-      ><view class="muted"
-        >学生、社团及名额暂时只读。如需调整，请超级管理员先暂停报名。</view
+    <view v-if="inconsistent" class="gap"
+      ><StatusBanner tone="danger" title="名额与报名记录不一致"
+        >发布前需要先核对社团名额，系统会阻止带冲突的发布。</StatusBanner
       ></view
     >
-    <view class="tabs"
-      ><view
-        v-for="t in tabs"
-        :key="t.key"
-        :class="['chip', tab === t.key && 'active']"
-        @tap="changeTab(t.key)"
-        >{{ t.label }}</view
+    <view v-if="error" class="gap"
+      ><StatusBanner tone="danger" title="加载失败"
+        >{{ error }}
+        <template #action
+          ><button class="btn-sm btn-danger" @tap="load">重新加载</button></template
+        ></StatusBanner
       ></view
     >
-    <view v-if="error" class="error" @tap="load">{{ error }} · 点击重试</view>
-    <view v-if="tab === 'students'"
-      ><view class="row"
-        ><input
-          class="input grow"
-          v-model="search"
-          placeholder="搜索学号或姓名"
-          @confirm="searchStudents"
-        /><button class="secondary small" @tap="searchStudents">
-          搜索
-        </button></view
-      ><view class="tabs"
-        ><button
-          class="primary small"
+
+    <view class="tabs-bar">
+      <scroll-view scroll-x :show-scrollbar="false" enhanced class="tabs-scroll">
+        <view class="segmented">
+          <view
+            v-for="t in tabs"
+            :key="t.key"
+            :class="['seg', tab === t.key && 'on']"
+            @tap="changeTab(t.key)"
+            >{{ t.label }}</view
+          >
+        </view>
+      </scroll-view>
+    </view>
+
+    <view v-if="tab === 'students'">
+      <view class="row tools">
+        <view :class="['input-box grow', { focus: searchFocus }]">
+          <UiIcon name="search" :size="36" />
+          <input
+            v-model="search"
+            placeholder="搜索学号或姓名"
+            placeholder-class="placeholder"
+            confirm-type="search"
+            @focus="searchFocus = true"
+            @blur="searchFocus = false"
+            @confirm="searchStudents"
+          />
+          <view
+            v-if="search"
+            class="icon-btn"
+            aria-label="清空搜索"
+            @tap="
+              search = '';
+              searchStudents();
+            "
+            ><UiIcon name="circle-x" :size="36"
+          /></view>
+        </view>
+        <button
+          class="btn-primary add"
           :disabled="s.canSelect"
+          aria-label="新增学生"
           @tap="edit('student', {})"
         >
-          新增学生</button
-        ><button class="secondary small" @tap="loadStudents">刷新</button></view
-      ><view v-for="u in students" :key="u.id" class="card"
-        ><view class="row between"
-          ><view
-            ><view class="student-name">{{ u.name }}</view
-            ><text class="muted"
-              >{{ u.username }} · {{ u.major }} · {{ u.class_name }}</text
-            ></view
-          ><text :class="['tag', !u.club_id && 'gray']">{{
+          <UiIcon name="plus" :size="40" />
+        </button>
+      </view>
+      <view class="chips filter-chips">
+        <view
+          v-for="f in selectedFilters"
+          :key="f.key"
+          :class="['chip', selected === f.key && 'on']"
+          @tap="changeSelected(f.key)"
+          >{{ f.label }}</view
+        >
+      </view>
+      <view v-if="students.length" class="list">
+        <view
+          v-for="u in students"
+          :key="u.id"
+          class="list-row"
+          hover-class="pressed"
+          @tap="studentActions(u)"
+        >
+          <view class="grow">
+            <view class="row name-line"
+              ><text class="name ellipsis">{{ u.name }}</text
+              ><text v-if="!u.active" class="tag">已停用</text></view
+            >
+            <view class="caption ellipsis"
+              >{{ u.username }} · {{ u.major || "未填专业" }} ·
+              {{ u.class_name || "未填班级" }}</view
+            >
+            <view v-if="u.club_name" class="caption club-line ellipsis"
+              >{{ u.source === "reserved" ? "预报名" : "已报名" }}：{{
+                u.club_name
+              }}</view
+            >
+          </view>
+          <text :class="['tag', u.club_id ? 'success' : '']">{{
             u.club_id ? "已报名" : "未报名"
-          }}</text></view
-        ><view v-if="u.club_name" class="muted"
-          >{{ u.source === "reserved" ? "预报名：" : "已选："
-          }}{{ u.club_name }}</view
-        ><view class="tabs" v-if="!s.canSelect"
-          ><button class="secondary small" @tap="edit('student', u)">
-            编辑</button
-          ><button class="danger small" @tap="remove('students', u)">
-            删除
-          </button></view
-        ></view
-      ><view class="row between"
-        ><button
-          class="secondary small"
+          }}</text>
+        </view>
+      </view>
+      <EmptyState
+        v-else-if="loaded"
+        icon="users"
+        title="没有找到学生"
+        :text="search ? '换个学号或姓名试试。' : '可以在“导入导出”里导入名单。'"
+      />
+      <view v-if="total > pageSize" class="row between pager">
+        <button
+          class="btn-sm"
           :disabled="page === 1"
           @tap="
             page--;
             loadStudents();
           "
         >
-          上一页</button
-        ><text class="muted"
-          >{{ page }} / {{ Math.max(1, Math.ceil(total / 30)) }} 页 ·
-          {{ total }} 人</text
-        ><button
-          class="secondary small"
-          :disabled="page * 30 >= total"
+          上一页
+        </button>
+        <text class="caption num"
+          >第 {{ page }} / {{ pages }} 页 · 共 {{ total }} 人</text
+        >
+        <button
+          class="btn-sm"
+          :disabled="page >= pages"
           @tap="
             page++;
             loadStudents();
           "
         >
           下一页
-        </button></view
-      ></view
-    >
-    <view v-if="tab === 'clubs'"
-      ><button class="primary" :disabled="s.canSelect" @tap="edit('club', {})">
-        新增社团</button
-      ><view v-for="c in clubs" :key="c.id" class="card club-row"
-        ><view class="row between"
-          ><view class="student-name">{{ c.name }}</view
-          ><text class="tag"
-            >余 {{ c.remaining }} / {{ c.capacity }}</text
-          ></view
-        ><text class="muted"
-          >{{ c.category }} · {{ c.active ? "展示中" : "已隐藏" }}</text
-        ><view class="tabs" v-if="!s.canSelect"
-          ><button class="secondary small" @tap="edit('club', c)">编辑</button
-          ><button class="danger small" @tap="remove('clubs', c)">
-            删除
-          </button></view
-        ></view
-      ></view
-    >
+        </button>
+      </view>
+      <view v-else-if="total" class="caption count">共 {{ total }} 人</view>
+    </view>
+
+    <view v-if="tab === 'clubs'">
+      <view class="row between tools">
+        <text class="caption">共 {{ clubs.length }} 个社团 · 点击社团可编辑</text>
+        <button
+          class="btn-sm btn-primary"
+          :disabled="s.canSelect"
+          @tap="edit('club', {})"
+        >
+          <UiIcon name="plus" :size="32" />新增社团
+        </button>
+      </view>
+      <view v-if="clubs.length" class="list">
+        <view
+          v-for="c in clubs"
+          :key="c.id"
+          class="list-row club-row"
+          hover-class="pressed"
+          @tap="clubActions(c)"
+        >
+          <ClubMark :club="c" :size="80" />
+          <view class="grow">
+            <view class="row name-line"
+              ><text class="name ellipsis grow">{{ c.name }}</text
+              ><text :class="['tag', c.active ? 'primary' : '']">{{
+                c.active ? "展示中" : "已隐藏"
+              }}</text></view
+            >
+            <view class="meter"
+              ><QuotaMeter :remaining="c.remaining" :capacity="c.capacity"
+            /></view>
+          </view>
+        </view>
+      </view>
+      <EmptyState
+        v-else-if="loaded"
+        icon="layers"
+        title="还没有社团"
+        text="新增社团后，学生端会立即看到。"
+      />
+    </view>
+
     <ActivityEditor
       v-if="tab === 'activity' && s.activity && s.user?.role === 'super_admin'"
       :key="s.activity.version"
       :activity="s.activity"
       @saved="load"
     />
-    <view v-if="tab === 'jobs'"
-      ><view class="card"
-        ><view class="section-title">导入学生名单</view
-        ><text class="muted"
-          >选择
-          XLSX，先检查预览再确认导入。只新增账号，重复账号会被拒绝。报名期间不可执行。</text
-        ><view class="muted template"
-          >表头：username、name、major、class_name、password、reserved_club_id</view
-        ><button
-          class="secondary"
-          :disabled="s.canSelect || busy"
-          :loading="busy"
-          @tap="importFile"
-        >
-          选择文件并预览
-        </button></view
-      ><view class="card"
-        ><view class="section-title">导出报名结果</view
-        ><text class="muted">生成包含学生和社团的 Excel，由后台任务处理。</text
-        ><button
-          class="secondary export"
-          :disabled="s.canSelect || busy"
-          @tap="exportFile"
-        >
-          创建导出任务
-        </button></view
-      ><view v-for="j in jobs" :key="j.id" class="card"
-        ><view class="row between"
-          ><text>任务 {{ j.id.slice(0, 8) }}</text
-          ><text class="tag">{{ jobLabels[j.state] || j.state }}</text></view
-        ><text class="muted">{{
-          j.result?.message || "共 " + (j.result?.rows ?? "—") + " 行"
-        }}</text
-        ><view v-for="(r, i) in j.result?.preview" :key="i" class="muted"
-          >{{ r.username }} · {{ r.name }} · {{ r.major }}</view
-        ><view class="tabs"
-          ><button
-            v-if="j.state === 'preview'"
-            class="primary small"
-            :disabled="s.canSelect"
-            @tap="confirmJob(j)"
+
+    <view v-if="tab === 'jobs'">
+      <view class="job-actions">
+        <view class="card job-card">
+          <view class="job-icon"><UiIcon name="upload" :size="40" /></view>
+          <view class="h3">导入学生名单</view>
+          <view class="caption"
+            >选择 XLSX 文件，先预览再确认。只新增账号，重复学号会被拒绝。</view
           >
-            确认导入</button
-          ><button
-            v-if="['queued', 'running'].includes(j.state)"
-            class="secondary small"
-            @tap="refreshJob(j.id)"
+          <view class="template caption"
+            >表头：username、name、major、class_name、password、reserved_club_id</view
           >
-            刷新进度</button
-          ><button
-            v-if="j.result?.download"
-            class="primary small"
-            @tap="download(j)"
+          <button
+            class="btn-soft btn-block"
+            :disabled="s.canSelect || busy"
+            :loading="busy"
+            @tap="importFile"
           >
-            打开导出文件
-          </button></view
-        ></view
-      ></view
-    >
+            选择文件
+          </button>
+        </view>
+        <view class="card job-card">
+          <view class="job-icon"><UiIcon name="download" :size="40" /></view>
+          <view class="h3">导出报名结果</view>
+          <view class="caption">生成包含学生与所报社团的 Excel，由后台处理。</view>
+          <button
+            class="btn-soft btn-block"
+            :disabled="s.canSelect || busy"
+            @tap="exportFile"
+          >
+            创建导出任务
+          </button>
+        </view>
+      </view>
+      <view v-if="s.canSelect" class="caption note"
+        >报名进行中，导入与导出暂不可用。</view
+      >
+
+      <view class="section-head"><text class="h3">任务记录</text></view>
+      <view v-if="jobs.length" class="list">
+        <view v-for="j in jobs" :key="j.id" class="job">
+          <view class="row between">
+            <view class="row">
+              <UiIcon name="file-spreadsheet" :size="36" color="var(--c-ink-3)" />
+              <text class="num">任务 {{ j.id.slice(0, 8) }}</text>
+            </view>
+            <text :class="['tag', jobTone(j.state)]">{{
+              jobLabels[j.state] || j.state
+            }}</text>
+          </view>
+          <view v-if="['queued', 'running'].includes(j.state)" class="progress"
+            ><view class="progress-bar"
+          /></view>
+          <view class="caption job-msg">{{
+            j.result?.message ||
+            (j.result?.rows !== undefined ? `共 ${j.result.rows} 行` : "等待处理")
+          }}</view>
+          <view v-if="j.result?.preview?.length" class="preview">
+            <view v-for="(r, i) in j.result.preview" :key="i" class="preview-row"
+              ><text class="num">{{ r.username }}</text><text>{{ r.name }}</text
+              ><text class="ellipsis">{{ r.major }}</text></view
+            >
+          </view>
+          <view class="row job-buttons">
+            <button
+              v-if="j.state === 'preview'"
+              class="btn-sm btn-primary"
+              :disabled="s.canSelect"
+              @tap="confirmJob(j)"
+            >
+              确认导入
+            </button>
+            <button
+              v-if="['queued', 'running'].includes(j.state)"
+              class="btn-sm"
+              @tap="refreshJob(j.id)"
+            >
+              <UiIcon name="refresh-cw" :size="28" />刷新进度
+            </button>
+            <button
+              v-if="j.result?.download"
+              class="btn-sm btn-soft"
+              @tap="download(j)"
+            >
+              <UiIcon name="download" :size="28" />打开文件
+            </button>
+          </view>
+        </view>
+      </view>
+      <EmptyState
+        v-else
+        icon="file-spreadsheet"
+        title="暂无任务"
+        text="导入或导出后，进度会显示在这里。"
+      />
+    </view>
+
     <Administrators
       v-if="tab === 'administrators' && s.user?.role === 'super_admin'"
     />
@@ -205,6 +348,12 @@ import type { Club, Job } from "@/v2/types";
 import AdminEditor from "@/v2/AdminEditor.vue";
 import ActivityEditor from "@/v2/ActivityEditor.vue";
 import Administrators from "@/v2/Administrators.vue";
+import ClubMark from "@/v2/ClubMark.vue";
+import EmptyState from "@/v2/EmptyState.vue";
+import QuotaMeter from "@/v2/QuotaMeter.vue";
+import StatusBanner from "@/v2/StatusBanner.vue";
+import UiIcon from "@/v2/UiIcon.vue";
+import { formatTime, initial } from "@/v2/format";
 const s = useSession(),
   overview = ref<any>({}),
   tab = ref("students"),
@@ -212,16 +361,20 @@ const s = useSession(),
   clubs = ref<Club[]>([]),
   total = ref(0),
   page = ref(1),
+  pageSize = 30,
   search = ref(""),
+  searchFocus = ref(false),
+  selected = ref(""),
   error = ref(""),
   busy = ref(false),
+  loaded = ref(false),
   jobs = ref<Job[]>([]),
   editing = ref<{ kind: "club" | "student"; item: any } | null>(null);
 let jobTimer: ReturnType<typeof setTimeout> | undefined;
 let visible = true;
 const tabs = computed(() => [
   { key: "students", label: "学生名单" },
-  { key: "clubs", label: "社团管理" },
+  { key: "clubs", label: "社团" },
   ...(s.user?.role === "super_admin"
     ? [
         { key: "activity", label: "活动设置" },
@@ -230,6 +383,11 @@ const tabs = computed(() => [
     : []),
   { key: "jobs", label: "导入导出" },
 ]);
+const selectedFilters = [
+  { key: "", label: "全部" },
+  { key: "yes", label: "已报名" },
+  { key: "no", label: "未报名" },
+];
 const jobLabels: Record<string, string> = {
   preview: "待确认",
   queued: "排队中",
@@ -237,10 +395,38 @@ const jobLabels: Record<string, string> = {
   done: "已完成",
   failed: "失败",
 };
+function jobTone(state: string) {
+  return (
+    { preview: "warn", queued: "primary", running: "primary", done: "success", failed: "danger" }[
+      state
+    ] || ""
+  );
+}
+const pages = computed(() => Math.max(1, Math.ceil(total.value / pageSize)));
+const rate = computed(() =>
+  overview.value.students
+    ? Math.round((overview.value.enrolled / overview.value.students) * 100)
+    : null,
+);
+const inconsistent = computed(() => {
+  const v = overview.value.inconsistencies;
+  return Array.isArray(v) ? v.length > 0 : !!v;
+});
+const stateTones: Record<string, string> = {
+  报名进行中: "success",
+  即将开放: "primary",
+  报名已暂停: "warn",
+};
+const stateTone = computed(() => stateTones[s.activityLabel] || "");
+const windowText = computed(() => {
+  const a = s.activity;
+  if (!a?.starts_at) return "尚未设置报名时间";
+  return `${formatTime(a.starts_at)} – ${formatTime(a.ends_at)}`;
+});
 async function loadStudents() {
   try {
     const d = await request<{ items: any[]; total: number }>(
-      `/admin/students?page=${page.value}&search=${encodeURIComponent(search.value)}`,
+      `/admin/students?page=${page.value}&search=${encodeURIComponent(search.value)}${selected.value ? "&selected=" + selected.value : ""}`,
     );
     students.value = d.items;
     total.value = d.total;
@@ -265,11 +451,17 @@ async function load() {
     if (tab.value === "students") await loadStudents();
   } catch (e) {
     error.value = (e as Error).message;
+  } finally {
+    loaded.value = true;
   }
 }
 function searchStudents() {
   page.value = 1;
   loadStudents();
+}
+function changeSelected(key: string) {
+  selected.value = key;
+  searchStudents();
 }
 function changeTab(t: string) {
   tab.value = t;
@@ -279,10 +471,28 @@ function changeTab(t: string) {
 function edit(kind: "club" | "student", item: any) {
   editing.value = { kind, item };
 }
+function rowActions(kind: "club" | "student", item: any) {
+  if (s.canSelect) {
+    uni.showToast({ title: "报名进行中，暂不能修改", icon: "none" });
+    return;
+  }
+  uni.showActionSheet({
+    itemList: ["编辑资料", "删除"],
+    itemColor: "#1d2129",
+    success: (r) => {
+      if (r.tapIndex === 0) edit(kind, item);
+      if (r.tapIndex === 1) remove(kind === "club" ? "clubs" : "students", item);
+    },
+  });
+}
+const studentActions = (u: any) => rowActions("student", u);
+const clubActions = (c: Club) => rowActions("club", c);
 function remove(kind: string, item: any) {
   uni.showModal({
-    title: "确认删除？",
-    content: `删除 ${item.name}。已有报名的社团不能直接删除。`,
+    title: `删除${kind === "clubs" ? "社团" : "学生"}？`,
+    content: `将删除「${item.name}」，此操作不能撤销。已有报名的社团不能直接删除。`,
+    confirmText: "删除",
+    confirmColor: "#c8281c",
     success: async (r) => {
       if (r.confirm) {
         try {
@@ -292,6 +502,17 @@ function remove(kind: string, item: any) {
           notifyError(e);
         }
       }
+    },
+  });
+}
+function logout() {
+  uni.showModal({
+    title: "退出登录？",
+    content: "退出后需要重新输入账号和密码。",
+    confirmText: "退出",
+    confirmColor: "#c8281c",
+    success: (r) => {
+      if (r.confirm) s.logout();
     },
   });
 }
@@ -314,14 +535,22 @@ function importFile() {
     },
   });
 }
-async function confirmJob(j: Job) {
-  try {
-    await request(`/admin/jobs/${j.id}/confirm`, "POST");
-    await refreshJob(j.id);
-    scheduleJobs();
-  } catch (e) {
-    notifyError(e);
-  }
+function confirmJob(j: Job) {
+  uni.showModal({
+    title: "确认导入名单？",
+    content: `${j.result?.rows !== undefined ? `将新增 ${j.result.rows} 个学生账号。` : ""}导入后学生可以用学号和姓名登录。`,
+    confirmText: "确认导入",
+    success: async (r) => {
+      if (!r.confirm) return;
+      try {
+        await request(`/admin/jobs/${j.id}/confirm`, "POST");
+        await refreshJob(j.id);
+        scheduleJobs();
+      } catch (e) {
+        notifyError(e);
+      }
+    },
+  });
 }
 async function exportFile() {
   try {
@@ -391,33 +620,222 @@ onHide(hide);
 onUnload(hide);
 </script>
 <style scoped>
+.admin {
+  padding-top: 24rpx;
+}
+.top {
+  margin-bottom: 24rpx;
+}
+.avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: 40rpx;
+  background: var(--c-ink);
+  color: #fff;
+  font-weight: 600;
+}
+.window {
+  margin-top: 4rpx;
+}
 .stats {
   display: flex;
-  gap: 16rpx;
-  margin-top: 30rpx;
+  margin-top: 28rpx;
 }
 .stat {
   flex: 1;
-  text-align: center;
-  padding: 24rpx 10rpx;
+}
+.stat + .stat {
+  padding-left: 28rpx;
+  border-left: 1rpx solid var(--c-line);
 }
 .stat-num {
-  font-size: 45rpx;
-  color: #087f83;
-  font-weight: 700;
+  font-size: 48rpx;
+  font-weight: 600;
+  line-height: 1.2;
 }
-.student-name {
+.rate {
+  margin-left: 8rpx;
+  font-size: 24rpx;
+  font-weight: 500;
+  color: var(--c-primary);
+}
+.rate-track {
+  height: 8rpx;
+  margin-top: 24rpx;
+  border-radius: 4rpx;
+  background: var(--c-fill-strong);
+  overflow: hidden;
+}
+.rate-fill {
+  height: 100%;
+  background: var(--c-primary);
+  transform-origin: left center;
+  transition: transform 400ms var(--ease-out);
+}
+.gap {
+  margin-top: 24rpx;
+}
+.tabs-bar {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  margin: 24rpx -32rpx 0;
+  padding: 16rpx 32rpx;
+  background: var(--c-bg);
+}
+.tabs-scroll {
+  width: 100%;
+  white-space: nowrap;
+}
+.segmented {
+  display: inline-flex;
+  padding: 6rpx;
+  border-radius: var(--r-md);
+  background: var(--c-fill-strong);
+}
+.seg {
+  flex-shrink: 0;
+  height: 64rpx;
+  line-height: 64rpx;
+  padding: 0 28rpx;
+  border-radius: 14rpx;
+  font-size: 26rpx;
+  color: var(--c-ink-2);
+  transition: background-color var(--t-fast) ease-out, color var(--t-fast) ease-out;
+}
+.seg.on {
+  background: var(--c-surface);
+  color: var(--c-ink);
+  font-weight: 600;
+  box-shadow: 0 2rpx 8rpx rgba(29, 33, 41, 0.08);
+}
+.tools {
+  margin: 8rpx 0 20rpx;
+}
+.tools .input-box {
+  background: var(--c-surface);
+}
+.add {
+  width: 92rpx;
+  height: 92rpx;
+  padding: 0;
+  border-radius: var(--r-md);
+}
+.filter-chips {
+  margin-bottom: 20rpx;
+}
+.filter-chips .chip {
+  height: 56rpx;
+  font-size: 24rpx;
+}
+.name-line {
+  gap: 12rpx;
+}
+.name {
   font-size: 30rpx;
-  font-weight: 650;
+  font-weight: 500;
+}
+.club-line {
+  color: var(--c-ink-2);
 }
 .club-row {
+  align-items: flex-start;
+}
+.meter {
+  margin-top: 12rpx;
+}
+.pager {
+  margin-top: 24rpx;
+}
+.count {
+  text-align: center;
+  margin-top: 24rpx;
+}
+.job-actions {
+  margin-top: 8rpx;
+}
+.job-card {
+  display: flex;
+  flex-direction: column;
+  gap: 8rpx;
+}
+.job-card + .job-card {
   margin-top: 20rpx;
 }
-.template {
-  display: block;
-  margin: 24rpx 0;
+.job-card button {
+  margin-top: 16rpx;
 }
-.export {
-  margin-top: 22rpx;
+.job-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 72rpx;
+  height: 72rpx;
+  margin-bottom: 8rpx;
+  border-radius: var(--r-md);
+  background: var(--c-primary-soft);
+  color: var(--c-primary);
+}
+.template {
+  word-break: break-all;
+  font-size: 22rpx;
+  margin-bottom: 16rpx;
+}
+.note {
+  margin-top: 16rpx;
+}
+.job {
+  padding: 28rpx 32rpx;
+}
+.job + .job {
+  border-top: 1rpx solid var(--c-line);
+}
+.job-msg {
+  margin-top: 8rpx;
+}
+.progress {
+  height: 6rpx;
+  margin-top: 16rpx;
+  border-radius: 3rpx;
+  background: var(--c-fill-strong);
+  overflow: hidden;
+}
+.progress-bar {
+  width: 40%;
+  height: 100%;
+  background: var(--c-primary);
+  animation: indeterminate 1.2s ease-in-out infinite;
+}
+@keyframes indeterminate {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(250%);
+  }
+}
+.preview {
+  margin-top: 16rpx;
+  padding: 8rpx 20rpx;
+  border-radius: var(--r-sm);
+  background: var(--c-fill);
+  font-size: 24rpx;
+}
+.preview-row {
+  display: grid;
+  grid-template-columns: 2fr 1.4fr 2fr;
+  gap: 12rpx;
+  padding: 8rpx 0;
+  color: var(--c-ink-2);
+}
+.job-buttons {
+  margin-top: 16rpx;
+}
+.job-buttons:empty {
+  display: none;
 }
 </style>

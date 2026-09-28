@@ -1,62 +1,82 @@
 <template>
   <view>
-    <view class="card">
-      <view class="section-title">新增管理员</view>
-      <input class="input" v-model="form.username" placeholder="管理员账号" />
-      <input class="input field" v-model="form.name" placeholder="姓名" />
-      <input
-        class="input field"
-        v-model="form.password"
-        password
-        placeholder="初始密码（留空用姓名原文）"
-      />
-      <picker
-        :range="roles"
-        @change="
-          form.role =
-            Number($event.detail.value) === 1 ? 'super_admin' : 'admin'
-        "
-        ><view class="input field"
-          >{{
-            form.role === "super_admin" ? "超级管理员" : "普通管理员"
-          }}
-          ▾</view
-        ></picker
+    <view class="list">
+      <view
+        v-for="a in accounts"
+        :key="a.id"
+        class="list-row"
+        hover-class="pressed"
+        @tap="actions(a)"
       >
-      <button class="primary field" :disabled="busy" @tap="create">
+        <view :class="['mark', { off: !a.active }]">{{ initial(a.name, "管") }}</view>
+        <view class="grow">
+          <view class="row name-line"
+            ><text class="name ellipsis">{{ a.name }}</text
+            ><text :class="['tag', a.role === 'super_admin' ? 'primary' : '']">{{
+              a.role === "super_admin" ? "超级管理员" : "管理员"
+            }}</text></view
+          >
+          <view class="caption">{{ a.username }}{{ a.active ? "" : " · 已停用" }}</view>
+        </view>
+        <UiIcon name="chevron-right" :size="32" color="var(--c-ink-4)" />
+      </view>
+      <view v-if="!accounts.length" class="list-row caption">暂无管理员</view>
+    </view>
+
+    <view class="section-head"><text class="h3">新增管理员</text></view>
+    <view class="card">
+      <view class="field">
+        <text class="field-label">账号<text class="required"> *</text></text>
+        <view class="input-box"
+          ><input
+            v-model="form.username"
+            placeholder="登录用的账号"
+            placeholder-class="placeholder"
+        /></view>
+      </view>
+      <view class="field">
+        <text class="field-label">姓名<text class="required"> *</text></text>
+        <view class="input-box"
+          ><input v-model="form.name" placeholder="真实姓名" placeholder-class="placeholder"
+        /></view>
+      </view>
+      <view class="field">
+        <text class="field-label">初始密码</text>
+        <view class="input-box"
+          ><input
+            v-model="form.password"
+            password
+            placeholder="留空则使用姓名"
+            placeholder-class="placeholder"
+        /></view>
+      </view>
+      <view class="field">
+        <text class="field-label">角色</text>
+        <picker
+          :range="roles"
+          :value="form.role === 'super_admin' ? 1 : 0"
+          @change="
+            form.role =
+              Number($event.detail.value) === 1 ? 'super_admin' : 'admin'
+          "
+          ><view class="input-box picker"
+            ><text class="grow">{{
+              form.role === "super_admin" ? "超级管理员" : "普通管理员"
+            }}</text
+            ><UiIcon name="chevron-right" :size="32" color="var(--c-ink-4)"
+          /></view>
+        </picker>
+      </view>
+      <button
+        class="btn-primary btn-block create"
+        :disabled="busy || !form.username.trim() || !form.name.trim()"
+        :loading="busy"
+        @tap="create"
+      >
         创建管理员
       </button>
-      <text class="muted"
-        >新账号首次登录需改密。普通管理员可管理名单与社团，活动发布、角色变更仅超级管理员可操作。</text
-      >
-    </view>
-    <view class="card" v-for="a in accounts" :key="a.id">
-      <view class="row between"
-        ><text>{{ a.name }} · {{ a.username }}</text
-        ><text class="tag">{{ a.active ? "已启用" : "已停用" }}</text></view
-      >
-      <view class="muted">{{
-        a.role === "super_admin" ? "超级管理员" : "普通管理员"
-      }}</view>
-      <view class="tabs"
-        ><button
-          class="secondary small"
-          :disabled="busy"
-          @tap="
-            change(a, {
-              role: a.role === 'admin' ? 'super_admin' : 'admin',
-              active: a.active,
-            })
-          "
-        >
-          调整角色</button
-        ><button
-          class="secondary small"
-          :disabled="busy"
-          @tap="change(a, { role: a.role, active: !a.active })"
-        >
-          {{ a.active ? "停用" : "启用" }}
-        </button></view
+      <view class="caption foot"
+        >新账号首次登录需改密。普通管理员可以管理名单和社团；发布活动、调整角色只有超级管理员可以操作。</view
       >
     </view>
   </view>
@@ -65,6 +85,8 @@
 import { onMounted, ref } from "vue";
 import { notifyError, request } from "./api";
 import type { User } from "./types";
+import UiIcon from "./UiIcon.vue";
+import { initial } from "./format";
 const accounts = ref<User[]>([]),
   busy = ref(false),
   roles = ["普通管理员", "超级管理员"];
@@ -84,12 +106,29 @@ async function create() {
       password: form.value.password || null,
     });
     form.value = { username: "", name: "", password: "", role: "admin" };
+    uni.showToast({ title: "已创建" });
     await load();
   } catch (e) {
     notifyError(e);
   } finally {
     busy.value = false;
   }
+}
+function actions(a: User) {
+  const toRole = a.role === "admin" ? "super_admin" : "admin";
+  uni.showActionSheet({
+    itemList: [
+      toRole === "super_admin" ? "设为超级管理员" : "设为普通管理员",
+      a.active ? "停用账号" : "启用账号",
+    ],
+    success: (r) =>
+      change(
+        a,
+        r.tapIndex === 0
+          ? { role: toRole, active: a.active }
+          : { role: a.role, active: !a.active },
+      ),
+  });
 }
 function change(a: User, body: { role: string; active: boolean }) {
   uni.showModal({
@@ -112,7 +151,40 @@ function change(a: User, body: { role: string; active: boolean }) {
 onMounted(load);
 </script>
 <style scoped>
-.field {
-  margin-top: 20rpx;
+.mark {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 72rpx;
+  height: 72rpx;
+  border-radius: 36rpx;
+  background: var(--c-primary-soft);
+  color: var(--c-primary);
+  font-weight: 600;
+}
+.mark.off {
+  background: var(--c-fill);
+  color: var(--c-ink-3);
+}
+.name-line {
+  gap: 12rpx;
+}
+.name {
+  font-size: 30rpx;
+  font-weight: 500;
+}
+.required {
+  color: var(--c-danger);
+}
+.picker {
+  font-size: 30rpx;
+  color: var(--c-ink);
+}
+.create {
+  margin-top: 36rpx;
+}
+.foot {
+  margin-top: 16rpx;
 }
 </style>
