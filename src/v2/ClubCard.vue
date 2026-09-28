@@ -11,6 +11,8 @@
         <text class="name grow ellipsis">{{ club.name }}</text>
         <view
           class="fav"
+          hover-class="tapped"
+          hover-stop-propagation
           :aria-label="favorite ? '取消收藏' : '收藏'"
           @tap.stop="toggleFavorite(club.id)"
           ><view :class="['heart', { on: favorite }]"

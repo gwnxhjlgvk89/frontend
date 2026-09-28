@@ -7,6 +7,10 @@ colors:
   primary-soft: "#edf2ff"
   on-primary-2: "#e3eaff"
   quota-fill: "#8faaf3"
+  quota-fill-end: "#ab9bf0"
+  brand-2: "#6a4bdb"
+  brand-2-ring: "rgba(106, 75, 219, 0.14)"
+  wash: "#e9efff"
   hot: "#c63d17"
   hot-soft: "#fff1ec"
   success: "#087a54"
@@ -34,6 +38,11 @@ colors:
   cat-indigo: "#3f4aa8"
   cat-indigo-soft: "#eef0fa"
 typography:
+  numeral:
+    fontFamily: "ClubNum, -apple-system, BlinkMacSystemFont, \"PingFang SC\", \"Helvetica Neue\", sans-serif"
+    fontSize: "30rpx"
+    fontWeight: 700
+    fontFeature: "tnum"
   display:
     fontFamily: "-apple-system, BlinkMacSystemFont, \"PingFang SC\", \"Helvetica Neue\", \"Microsoft YaHei\", sans-serif"
     fontSize: "64rpx"
@@ -401,11 +410,15 @@ Lucide 线性图标，2px 描边，以 URL 编码的 SVG 字符串存在 `icons.
 | 进度条 | 400ms | 余量 / 报名率条的 scaleX |
 | 成功弹入 | 420ms | 报名成功打勾环，一次性 |
 | 纸屑迸发 | 900ms | 报名成功时 14 片彩色纸屑从打勾环向外飞散后消失，一次性 |
-| 卡片入场 | 460ms，每张错开 45ms | 首页社团卡依次上浮淡入（.enter） |
+| 卡片入场 | 460ms，每张错开 45ms | 首页社团卡依次上浮淡入（.enter），只在首次加载时播放；之后搜索、筛选、加载更多都立即显示 |
+| 按压 | 150ms | 卡片、列表行缩放 0.985；chip、筛选、收藏、分段等小控件用 `hover-class="tapped"`（0.96 缩放 + 72% 不透明度） |
+| 数字翻动 / 滚落 | 360ms / 420ms | 倒计时与顶部剩余名额逐位翻动；卡片、详情、管理端余量数字变化时从上方滚落并短暂高亮 |
 | 倒计时翻动 | 360ms | 数字变化时该段从上方轻落 |
 | 心形弹跳 | 380ms | 收藏点亮时 0.6 → 1.18 → 1 |
 
 所有动效都是一次性的，没有装饰性的循环；在系统“减少动态效果”下统一降为 1ms。
+
+**交互流畅度约定：** 详情页先用列表里已有的社团数据立即渲染，接口只补充介绍（介绍区显示骨架）；收藏先更新界面、失败再回滚；收藏点亮与报名成功时给一次轻触感反馈（vibrateShort）；切换分类或筛选时，若已滚过列表顶部，平滑滚回列表开头。
 
 `prefers-reduced-motion: reduce` 时全局把 transition 和 animation 压到 1ms。
 

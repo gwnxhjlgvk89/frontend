@@ -76,9 +76,15 @@
     </view>
 
     <view class="section-head"><text class="h3">社团介绍</text></view>
-    <view class="card description">{{
+    <view v-if="detailLoaded" class="card description">{{
       club.description || "社团介绍正在完善，可以先收藏，稍后再来看看。"
     }}</view>
+    <view v-else-if="message" class="card description"
+      >介绍暂时加载失败，<text class="retry" @tap="loadClub">点此重试</text></view
+    >
+    <view v-else class="card" aria-hidden="true"
+      ><view class="sk-line" /><view class="sk-line short"
+    /></view>
 
     <view class="section-head"><text class="h3">报名须知</text></view>
     <view class="card rules">
@@ -112,7 +118,7 @@
       <view
         class="fav"
         :class="{ on: isFavorite }"
-        hover-class="pressed"
+        hover-class="tapped"
         @tap="toggleFavorite(id)"
         ><view :class="['heart', { on: isFavorite }]"
           ><UiIcon :name="isFavorite ? 'heart-fill' : 'heart'" :size="44" /></view
@@ -248,7 +254,7 @@ import QuotaMeter from "@/v2/QuotaMeter.vue";
 import Sheet from "@/v2/Sheet.vue";
 import StatusBanner from "@/v2/StatusBanner.vue";
 import UiIcon from "@/v2/UiIcon.vue";
-import { toggleFavorite } from "@/v2/favorites";
+import { haptic, toggleFavorite } from "@/v2/favorites";
 import { categoryTone, eligibleFor, formatTime } from "@/v2/format";
 const s = useSession(),
   club = ref<Club | null>(null),
@@ -256,6 +262,7 @@ const s = useSession(),
   uncertain = ref(false),
   confirming = ref(false),
   succeeded = ref(false),
+  detailLoaded = ref(false),
   coverBroken = ref(false),
   message = ref(""),
   messageTone = ref<"info" | "danger" | "success">("info");
@@ -315,14 +322,24 @@ const rules = computed(() => [
     : "本次活动不开放自主退选，请确认后再提交。",
   "名额实时变化，最终以提交成功的结果为准。",
 ]);
+function tintNav(category: string) {
+  uni.setNavigationBarColor({
+    frontColor: "#000000",
+    backgroundColor: categoryTone(category).bg,
+  });
+}
 async function loadClub() {
   message.value = "";
+  // Render at once from the list snapshot; the request only adds the description.
+  const cached = s.clubs.find((c) => c.id === id.value);
+  if (cached && !club.value) {
+    club.value = { ...cached };
+    tintNav(cached.category);
+  }
   try {
     club.value = await request<Club>("/clubs/" + id.value);
-    uni.setNavigationBarColor({
-      frontColor: "#000000",
-      backgroundColor: categoryTone(club.value.category).bg,
-    });
+    detailLoaded.value = true;
+    tintNav(club.value.category);
   } catch (e) {
     message.value = (e as Error).message;
   }
@@ -373,6 +390,7 @@ async function submit() {
     s.enrollment = result.enrollment;
     key = "";
     succeeded.value = true;
+    haptic("medium");
   } catch (e) {
     if (e instanceof ApiError && (e.status === 0 || e.status >= 500)) {
       uncertain.value = true;
@@ -642,6 +660,26 @@ function openProfile() {
 .ticket-value {
   font-weight: 500;
   color: var(--c-ink);
+}
+.sk-line {
+  height: 28rpx;
+  border-radius: 8rpx;
+  background: var(--c-fill);
+  animation: breathe 1.4s ease-in-out infinite;
+}
+.sk-line + .sk-line {
+  margin-top: 20rpx;
+}
+.sk-line.short {
+  width: 60%;
+}
+@keyframes breathe {
+  50% {
+    opacity: 0.5;
+  }
+}
+.retry {
+  color: var(--c-primary);
 }
 .loading-cover {
   height: 340rpx;

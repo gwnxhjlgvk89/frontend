@@ -64,6 +64,7 @@
           v-for="t in tabs"
           :key="t.key"
           :class="['seg', tab === t.key && 'on']"
+          hover-class="tapped"
           @tap="changeTab(t.key)"
           >{{ t.label }}</view
         >

@@ -407,7 +407,12 @@ button[disabled].btn-danger {
   font-size: 26rpx;
   color: var(--c-ink-2);
   background: var(--c-surface);
-  transition: background-color var(--t-fast) ease-out, color var(--t-fast) ease-out;
+  transition: background-color var(--t-fast) ease-out, color var(--t-fast) ease-out,
+    transform var(--t-fast) ease-out, opacity var(--t-fast) ease-out;
+}
+.tapped {
+  opacity: 0.72;
+  transform: scale(0.96);
 }
 .chip.on {
   background: var(--c-primary-soft);

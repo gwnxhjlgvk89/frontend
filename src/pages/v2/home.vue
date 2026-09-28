@@ -101,6 +101,7 @@
             v-for="item in categories"
             :key="item"
             :class="['chip', category === item && 'on']"
+            hover-class="tapped"
             @tap="category = item"
             >{{ item }}</view
           >
@@ -108,15 +109,18 @@
       </scroll-view>
     </view>
 
+    <view id="list-top" />
     <view class="row between list-head">
       <view class="row filters">
         <view
           :class="['chip', 'filter', onlyEligible && 'on']"
+          hover-class="tapped"
           @tap="onlyEligible = !onlyEligible"
           ><UiIcon v-if="onlyEligible" name="check" :size="28" />只看可报</view
         >
         <view
           :class="['chip', 'filter', onlyFav && 'on']"
+          hover-class="tapped"
           @tap="onlyFav = !onlyFav"
           ><UiIcon :name="onlyFav ? 'heart-fill' : 'heart'" :size="28" />我的收藏</view
         >
@@ -149,8 +153,8 @@
       <view
         v-for="(c, i) in visible"
         :key="c.id"
-        class="enter"
-        :style="`animation-delay:${(i % 12) * 45}ms`"
+        :class="{ enter: intro }"
+        :style="intro ? `animation-delay:${(i % 12) * 45}ms` : ''"
         ><ClubCard
           :club="c"
           :major="s.user?.major"
@@ -194,7 +198,8 @@ const s = useSession(),
   onlyFav = ref(false),
   limit = ref(12),
   error = ref(""),
-  hasLoaded = ref(false);
+  hasLoaded = ref(false),
+  intro = ref(true);
 const categories = computed(() => [
   "全部",
   ...new Set(s.clubs.map((c) => c.category).filter(Boolean)),
@@ -213,7 +218,28 @@ const filtered = computed(() => {
   );
 });
 const visible = computed(() => filtered.value.slice(0, limit.value));
-watch([keyword, category, onlyEligible, onlyFav], () => (limit.value = 12));
+watch([keyword, category, onlyEligible, onlyFav], () => {
+  limit.value = 12;
+  intro.value = false;
+  keepListInView();
+});
+// After a filter change, bring the list start back under the sticky toolbar,
+// but only when the user has already scrolled past it.
+function keepListInView() {
+  uni
+    .createSelectorQuery()
+    .select("#list-top")
+    .boundingClientRect((rect: any) => {
+      const toolbar = uni.upx2px(220);
+      if (rect && rect.top < toolbar)
+        uni.pageScrollTo({
+          selector: "#list-top",
+          offsetTop: -toolbar,
+          duration: 200,
+        });
+    })
+    .exec();
+}
 onReachBottom(() => {
   if (limit.value < filtered.value.length) limit.value += 12;
 });
@@ -251,6 +277,8 @@ async function load() {
     error.value = e instanceof Error ? e.message : "请检查网络后重试";
   } finally {
     hasLoaded.value = true;
+    // Entrance motion is for the first paint only; later updates stay instant.
+    setTimeout(() => (intro.value = false), 900);
   }
 }
 onShow(load);
