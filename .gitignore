@@ -22,3 +22,8 @@ dist
 .local/
 .env.*
 !.env.example
+
+# impeccable local state
+.impeccable/questions/
+.impeccable/mocks/
+.impeccable/review/
