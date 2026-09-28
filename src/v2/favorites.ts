@@ -20,7 +20,6 @@ export async function toggleFavorite(clubId: number) {
   inFlight.add(clubId);
   // Update the heart immediately; roll back if the request fails.
   set(!was);
-  if (!was) haptic();
   try {
     await request("/favorites/" + clubId, was ? "DELETE" : "PUT");
   } catch (e) {
