@@ -5,7 +5,20 @@
       ><view class="title">找到你的热爱，<br />从这里开始。</view
       ><view class="subtitle">社团填报助手 · 让校园生活多一种可能</view></view
     >
-    <view class="card login-card"
+    <view
+      v-if="restoring || (getToken() && restoreError)"
+      class="card login-card"
+    >
+      <view class="section-title">{{
+        restoring ? "正在恢复登录" : "暂时无法连接"
+      }}</view>
+      <view class="muted">{{
+        restoring ? "正在验证上次的登录状态，请稍候。" : restoreError
+      }}</view>
+      <button v-if="!restoring" class="primary" @tap="restore">重试连接</button>
+      <button :disabled="restoring" @tap="switchAccount">使用其他账号</button>
+    </view>
+    <view v-else class="card login-card"
       ><view class="section-title">欢迎回来</view
       ><view class="muted">使用学校提供的账号登录</view><view class="divider" />
       <view class="field"
@@ -42,7 +55,7 @@
         ><text>记住账号</text></view
       > </view
     ><view class="login-foot"
-      >账号或初始密码有疑问？请联系本校社团负责老师。<br />登录后请及时修改初始密码。</view
+      >初始密码为姓名小写全拼，ü 使用 v。<br />多音字或账号有疑问，请联系老师；首次登录需修改密码。</view
     >
   </view>
 </template>
@@ -50,13 +63,15 @@
 import { ref } from "vue";
 import { onShow } from "@dcloudio/uni-app";
 import { useSession } from "@/v2/session";
-import { getToken } from "@/v2/api";
+import { clearSession, getToken } from "@/v2/api";
 const s = useSession(),
   username = ref(uni.getStorageSync("v2_username") || ""),
   password = ref(""),
   remember = ref(true),
   busy = ref(false),
-  error = ref("");
+  error = ref(""),
+  restoring = ref(!!getToken()),
+  restoreError = ref("");
 function go() {
   uni.reLaunch({
     url: s.user?.must_change_password
@@ -66,14 +81,31 @@ function go() {
         : "/pages/v2/home",
   });
 }
-onShow(async () => {
-  uni.removeStorageSync("password");
-  if (getToken()) {
-    try {
-      await s.refresh();
-      go();
-    } catch {}
+async function restore() {
+  if (!getToken()) {
+    restoring.value = false;
+    return;
   }
+  restoring.value = true;
+  restoreError.value = "";
+  try {
+    await s.resume();
+    if (s.user && getToken()) go();
+  } catch (e) {
+    if (getToken())
+      restoreError.value = e instanceof Error ? e.message : "请检查网络后重试";
+  } finally {
+    restoring.value = false;
+  }
+}
+function switchAccount() {
+  clearSession();
+  restoreError.value = "";
+  password.value = "";
+}
+onShow(() => {
+  uni.removeStorageSync("password");
+  void restore();
 });
 async function submit() {
   if (busy.value) return;

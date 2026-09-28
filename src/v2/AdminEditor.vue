@@ -92,7 +92,7 @@ const fields = computed(() =>
           key: "password",
           label: props.item?.id
             ? "重置密码（留空不改）"
-            : "初始密码（至少10位）",
+            : "初始密码（留空用姓名拼音）",
         },
       ],
 );

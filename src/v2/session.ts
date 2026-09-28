@@ -275,9 +275,11 @@ export const useSession = defineStore("v2-session", () => {
       "POST",
       { username, password },
     );
+    reset();
     setToken(data.token);
     user.value = data.user;
-    await resume();
+    // Authentication is complete. The destination page loads its own snapshot;
+    // a network failure there must not ask the user to submit their password again.
   }
   uni.$on("v2-session-clear", reset);
   return {

@@ -28,6 +28,43 @@ const bootstrap = (version = 2) => ({
   quotas: [{ club_id: 1, remaining: 10, version }],
   server_time: new Date().toISOString(),
 });
+
+it("finishes authentication without waiting for homepage or WebSocket requests", async () => {
+  const s = useSession();
+  mock.request.mockImplementation((path: string) => {
+    if (path === "/auth/login")
+      return Promise.resolve({ token: "new-session", user: bootstrap().user });
+    return Promise.reject(new Error("Homepage unavailable"));
+  });
+  await s.login("synthetic", "SyntheticPass2026!");
+  expect(mock.token).toBe("new-session");
+  expect(s.user?.id).toBe(1);
+  expect(mock.request).toHaveBeenCalledTimes(1);
+  expect(uni.connectSocket).not.toHaveBeenCalled();
+  expect(vi.getTimerCount()).toBe(0);
+});
+
+it("restores an existing token without submitting a password and retains it on network failure", async () => {
+  const s = useSession();
+  mock.request.mockRejectedValue(new Error("Network unavailable"));
+  await expect(s.resume()).rejects.toThrow("Network unavailable");
+  expect(mock.token).toBe("account-a");
+  expect(mock.request.mock.calls.some((x) => x[0] === "/auth/login")).toBe(
+    false,
+  );
+  mock.request.mockImplementation((path: string) =>
+    Promise.resolve(
+      path === "/bootstrap" ? bootstrap() : { ticket: "synthetic-ticket" },
+    ),
+  );
+  await s.resume();
+  expect(s.user?.id).toBe(1);
+  expect(mock.request.mock.calls.some((x) => x[0] === "/auth/login")).toBe(
+    false,
+  );
+  s.suspend();
+  expect(vi.getTimerCount()).toBe(0);
+});
 let socket: any;
 beforeEach(() => {
   setActivePinia(createPinia());

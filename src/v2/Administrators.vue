@@ -8,7 +8,7 @@
         class="input field"
         v-model="form.password"
         password
-        placeholder="初始密码（至少10位）"
+        placeholder="初始密码（留空用姓名拼音）"
       />
       <picker
         :range="roles"
@@ -79,7 +79,10 @@ async function load() {
 async function create() {
   busy.value = true;
   try {
-    await request("/admin/administrators", "POST", form.value);
+    await request("/admin/administrators", "POST", {
+      ...form.value,
+      password: form.value.password || null,
+    });
     form.value = { username: "", name: "", password: "", role: "admin" };
     await load();
   } catch (e) {
