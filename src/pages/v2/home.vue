@@ -47,9 +47,15 @@
         >
       </template>
       <template v-else>
-        <view class="hero-open"
-          >剩余 <text class="hero-num num">{{ totalRemaining }}</text> 个名额</view
-        >
+        <view class="hero-label">剩余名额</view>
+        <view class="clock num" role="status" :aria-label="`剩余 ${totalRemaining} 个名额`">
+          <text
+            v-for="(d, i) in remainingDigits"
+            :key="remainingDigits.length - i + '-' + d"
+            class="seg digit"
+            >{{ d }}</text
+          ><text class="sep unit">个</text>
+        </view>
         <view class="hero-foot"
           >先到先得，每人限报 1 个社团 ·
           {{ formatTime(s.activity?.ends_at) }} 截止</view
@@ -226,6 +232,8 @@ const left = computed(() =>
 const totalRemaining = computed(() =>
   s.clubs.reduce((sum, c) => sum + Math.max(0, c.remaining), 0),
 );
+// One tile per digit, keyed by place value so only changed digits flip.
+const remainingDigits = computed(() => String(totalRemaining.value).split(""));
 const quietText = computed(
   () =>
     ({
@@ -371,16 +379,13 @@ function openProfile() {
   font-size: 24rpx;
   color: var(--c-on-primary-2);
 }
-.hero-open {
-  margin-top: 24rpx;
-  font-size: 30rpx;
-  color: var(--c-on-primary-2);
+.digit {
+  min-width: 72rpx;
+  padding: 0 8rpx;
 }
-.hero-num {
-  font-size: 64rpx;
-  font-weight: 700;
-  color: #fff;
-  margin: 0 4rpx;
+.unit {
+  margin-left: 6rpx;
+  font-size: 28rpx;
 }
 .done {
   background: linear-gradient(120deg, #ffffff 40%, var(--c-success-soft) 100%);

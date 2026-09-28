@@ -6,7 +6,9 @@
     <view class="figure"
       ><template v-if="remaining > 0"
         ><text class="label">{{ state === "scarce" ? "仅剩" : "剩余" }}</text
-        ><text :class="['num value', { bump }]">{{ remaining }}</text
+        ><text :key="remaining" :class="['num value', { bump }]">{{
+          remaining
+        }}</text
         ><text class="unit num">/{{ capacity }}</text></template
       ><text v-else class="full-text">已满</text></view
     >
@@ -16,7 +18,9 @@
       <view class="figure" :class="state"
         ><template v-if="remaining > 0"
           ><text class="label">剩余</text
-          ><text :class="['num value', { bump }]">{{ remaining }}</text
+          ><text :key="remaining" :class="['num value', { bump }]">{{
+            remaining
+          }}</text
           ><text class="unit num">/ 共 {{ capacity }}</text></template
         ><text v-else class="value full">名额已满</text></view
       ><text v-if="state === 'scarce'" class="tag hot">仅剩 {{ remaining }}</text
@@ -83,6 +87,16 @@ onUnmounted(() => clearTimeout(timer));
 .value.bump {
   background: var(--c-primary-soft);
   color: var(--c-primary);
+  animation: roll 420ms var(--ease-out);
+}
+.value {
+  display: inline-block;
+}
+@keyframes roll {
+  from {
+    opacity: 0;
+    transform: translateY(-70%);
+  }
 }
 .label {
   margin-right: 8rpx;
