@@ -11,10 +11,9 @@
     v-else
     class="mark"
     :style="`${box};background:radial-gradient(circle at 28% 22%, rgba(255,255,255,0.75) 0%, rgba(255,255,255,0) 58%), ${tone.bg};color:${tone.fg};font-size:${Math.round(size * 0.42)}rpx`"
-    ><UiIcon
-      v-if="icon"
-      :name="icon"
-      :size="Math.round(size * 0.46)" /><text v-else>{{
+    ><view v-if="icon" class="glyph"
+      ><UiIcon :name="icon" :size="Math.round(size * 0.46)" /></view
+    ><text v-else>{{
       initial(club.name)
     }}</text></view
   >
@@ -36,6 +35,12 @@ const box = computed(
 );
 </script>
 <style scoped>
+.glyph {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 0;
+}
 .mark {
   flex-shrink: 0;
   display: flex;

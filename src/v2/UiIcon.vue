@@ -15,7 +15,7 @@ const style = computed(() => {
 </script>
 <style scoped>
 .icon {
-  display: inline-block;
+  display: block;
   flex-shrink: 0;
   -webkit-mask-size: 100% 100%;
   mask-size: 100% 100%;
