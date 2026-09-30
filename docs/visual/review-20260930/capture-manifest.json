@@ -1,0 +1,61 @@
+{
+  "date": "2026-09-30",
+  "source_commit": "0853e29dc615bdd1b9afb539476af0d5cfc96f84",
+  "origin": "https://wjy-1214.cloud",
+  "database": "club_v2_review",
+  "capture": "WeChat developer tools simulator via official screenshot API; UI operated through cua_repl",
+  "synthetic_only": true,
+  "account": "review02",
+  "temporary_enrollment_cancelled": true,
+  "session_logged_out": true,
+  "other_accounts_unchanged": true,
+  "test_notes_chars": 135,
+  "screenshots": [
+    {
+      "file": "01-login.png",
+      "width": 640,
+      "height": 1386,
+      "bytes": 105610,
+      "sha256": "dec3e3f8179790693fd84e14963292a1f4c36cf8790655d43ce1eb09d7fe68b7"
+    },
+    {
+      "file": "02-home.png",
+      "width": 640,
+      "height": 1386,
+      "bytes": 225815,
+      "sha256": "05452e0734ddeccb7e715fe80d961bb3e04b6f1cadba68e645edfeeb9471b9b1"
+    },
+    {
+      "file": "03-club-detail.png",
+      "width": 640,
+      "height": 1386,
+      "bytes": 151238,
+      "sha256": "538522fa8f63beb2a1f317370bff7668ae30ce73a076b1f0503bbbf431e28af6"
+    },
+    {
+      "file": "04-enrollment-confirm.png",
+      "width": 640,
+      "height": 1386,
+      "bytes": 140779,
+      "sha256": "a711d03bfe4f63ce4e8e6574a3c8dd359f64866f4018a711f0875e662974bb45"
+    },
+    {
+      "file": "05-enrollment-success.png",
+      "width": 640,
+      "height": 1386,
+      "bytes": 128050,
+      "sha256": "654baf75c13b4e89722958198b9ad41f767dbb76023351f7df993642d792d7d1"
+    },
+    {
+      "file": "06-my-enrollment.png",
+      "width": 640,
+      "height": 1386,
+      "bytes": 120237,
+      "sha256": "c36afb12232a27802d96e066650a6a1739b7dd1b750b09da13cab3d70c9c9288"
+    }
+  ],
+  "review_page_not_automated": "Browser site-safety policy blocked access; guide follows user-supplied screenshot",
+  "no_frontend_code_changes": true,
+  "review_submitted": false,
+  "real_device_acceptance": false
+}
