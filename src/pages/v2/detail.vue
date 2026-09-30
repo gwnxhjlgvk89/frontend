@@ -380,13 +380,28 @@ async function submit() {
   busy.value = true;
   message.value = "";
   key ||= requestKey();
-  try {
-    const result = await request<{ enrollment: Enrollment }>(
+  const post = () =>
+    request<{ enrollment: Enrollment }>(
       "/enrollment",
       "POST",
       { club_id: id.value },
       { "Idempotency-Key": key },
     );
+  try {
+    let result;
+    try {
+      result = await post();
+    } catch (e) {
+      // Tapped a moment before the server's opening time (phone clock drift):
+      // correct the clock, wait out the reported gap, and submit once more
+      // with the same key.
+      if (!(e instanceof ApiError && e.code === "NOT_OPEN")) throw e;
+      const opensAt = Date.parse(s.activity?.starts_at || "");
+      if (opensAt) s.alignClock(opensAt - e.retryAfterMs);
+      const wait = Math.min(e.retryAfterMs, 3000) + 50 + Math.random() * 150;
+      await new Promise((resolve) => setTimeout(resolve, wait));
+      result = await post();
+    }
     s.enrollment = result.enrollment;
     key = "";
     succeeded.value = true;

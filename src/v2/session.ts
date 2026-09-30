@@ -105,6 +105,11 @@ export const useSession = defineStore("v2-session", () => {
     refreshTask = task;
     return task;
   }
+  // The server reported its own time (e.g. "opens in N ms"); trust it over
+  // the bootstrap estimate so the countdown and button follow the server.
+  function alignClock(serverNow: number) {
+    offset.value += serverNow - now.value;
+  }
   async function refreshEnrollment() {
     const startedToken = getToken();
     const mine = await request<Enrollment | null>("/enrollment");
@@ -297,6 +302,7 @@ export const useSession = defineStore("v2-session", () => {
     activityLabel,
     refresh,
     refreshEnrollment,
+    alignClock,
     resume,
     suspend,
     logout,

@@ -9,6 +9,7 @@ export class ApiError extends Error {
     public code: string,
     message: string,
     public requestId = "",
+    public retryAfterMs = 0,
   ) {
     super(message);
   }
@@ -67,6 +68,7 @@ export function request<T>(
             body?.error?.code || "REQUEST_FAILED",
             body?.error?.message || "请求失败",
             body?.error?.request_id,
+            body?.error?.retry_after_ms || 0,
           );
           if (
             res.statusCode === 401 &&

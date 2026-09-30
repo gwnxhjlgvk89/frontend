@@ -92,3 +92,18 @@ it("does not retry HTTP failures", async () => {
   await vi.advanceTimersByTimeAsync(2000);
   expect(uni.request).toHaveBeenCalledTimes(1);
 });
+
+it("carries the server's opening countdown on NOT_OPEN", async () => {
+  const result = request("/enrollment", "POST", { club_id: 1 });
+  sent.success({
+    statusCode: 409,
+    data: {
+      error: { code: "NOT_OPEN", message: "报名还没开始", retry_after_ms: 180 },
+    },
+  });
+  await expect(result).rejects.toMatchObject({
+    code: "NOT_OPEN",
+    retryAfterMs: 180,
+  });
+  expect(uni.request).toHaveBeenCalledTimes(1);
+});
