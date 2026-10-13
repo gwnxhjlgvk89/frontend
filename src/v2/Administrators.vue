@@ -45,10 +45,11 @@
         <view class="input-box"
           ><input
             v-model="form.password"
-            password
             placeholder="留空则使用姓名"
             placeholder-class="placeholder"
         /></view>
+        <!-- Plain text on purpose: password-type inputs block Chinese input. -->
+        <text class="field-hint">明文显示，可输入中文；对方首次登录需修改密码。</text>
       </view>
       <view class="field">
         <text class="field-label">角色</text>

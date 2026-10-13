@@ -1,8 +1,8 @@
 {
   "name": "GG1214社团填报助手",
   "appid": "",
-  "versionName": "2.0.0",
-  "versionCode": "200",
+  "versionName": "2.0.1",
+  "versionCode": "201",
   "mp-weixin": {
     "appid": "wxeaf7dc6dbf9cef6b",
     "setting": {

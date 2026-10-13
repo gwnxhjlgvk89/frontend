@@ -18,7 +18,6 @@
           ><input
             v-model="form[field.key]"
             :type="field.key === 'capacity' ? 'number' : 'text'"
-            :password="field.key === 'password'"
             :placeholder="field.hint || ''"
             placeholder-class="placeholder"
         /></view>
@@ -151,7 +150,10 @@ const groups = computed<{ title: string; fields: Field[] }[]>(() =>
             {
               key: "password",
               label: props.item?.id ? "重置密码" : "初始密码",
-              hint: props.item?.id ? "留空则不修改" : "留空则使用姓名",
+              // Plain text on purpose: password-type inputs block Chinese input.
+              hint: props.item?.id
+                ? "留空则不修改（明文显示，可输入中文）"
+                : "留空则使用姓名（明文显示，可输入中文）",
             },
           ],
         },

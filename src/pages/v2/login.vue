@@ -70,6 +70,13 @@
             ><UiIcon :name="showPassword ? 'eye-off' : 'eye'" :size="36"
           /></view>
         </view>
+        <!-- A password-type input forces an ASCII-only system keyboard, but
+             initial passwords are Chinese names, so it starts as plain text. -->
+        <text class="field-hint">{{
+          showPassword
+            ? "密码以明文显示，可直接输入中文姓名；输入时请注意遮挡屏幕。"
+            : "已隐藏：此时只能输入英文和数字，输入中文请点右侧眼睛显示。"
+        }}</text>
         <text v-if="error" class="error-text">{{ error }}</text>
       </view>
       <view class="row between remember">
@@ -107,7 +114,7 @@ import UiIcon from "@/v2/UiIcon.vue";
 const s = useSession(),
   username = ref(uni.getStorageSync("v2_username") || ""),
   password = ref(""),
-  showPassword = ref(false),
+  showPassword = ref(true),
   focused = ref(""),
   remember = ref(true),
   busy = ref(false),

@@ -1,11 +1,13 @@
 <template>
   <view class="page password">
     <view class="h1">设置新密码</view>
-    <view class="caption intro">{{
-      forced
-        ? "首次登录需要把初始密码（姓名）换成只有你知道的密码，保护你的报名结果。"
-        : "修改后，其他设备上的登录会失效。"
-    }}</view>
+    <view class="caption intro"
+      >{{
+        forced
+          ? "首次登录需要把初始密码（姓名）换成只有你知道的密码，保护你的报名结果。"
+          : "修改后，其他设备上的登录会失效。"
+      }}密码以明文显示，方便输入中文，请注意遮挡屏幕。</view
+    >
 
     <view class="field">
       <text class="field-label">{{ forced ? "初始密码" : "原密码" }}</text>
@@ -21,6 +23,7 @@
           @blur="focused = ''"
         />
       </view>
+      <text v-if="forced" class="field-hint">即你的姓名，可直接输入中文。</text>
     </view>
     <view class="field">
       <text class="field-label">新密码</text>
@@ -42,6 +45,9 @@
           ><UiIcon :name="visible ? 'eye-off' : 'eye'" :size="36"
         /></view>
       </view>
+      <text v-if="!visible" class="field-hint"
+        >已隐藏：此时只能输入英文和数字，输入中文请点右侧眼睛显示。</text
+      >
     </view>
     <view class="field">
       <text class="field-label">确认新密码</text>
@@ -95,7 +101,9 @@ const s = useSession(),
   oldPassword = ref(""),
   newPassword = ref(""),
   confirm = ref(""),
-  visible = ref(false),
+  // Plain text by default: a password-type input forces an ASCII-only system
+  // keyboard, and the initial password is the student's Chinese name.
+  visible = ref(true),
   focused = ref(""),
   error = ref(""),
   busy = ref(false);
