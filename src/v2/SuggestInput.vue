@@ -7,10 +7,12 @@
         placeholder-class="placeholder"
         maxlength="64"
         @input="input"
-        @focus="focus"
-        @blur="blur"
+        @focus="focused = true"
+        @blur="focused = false"
     /></view>
-    <view v-if="focused && matches.length" class="list">
+    <!-- Not tied to focus: on phones the keyboard covers the list, and closing the
+         keyboard blurs the input, so the list must stay until a value is picked. -->
+    <view v-if="matches.length" class="list">
       <view
         v-for="o in matches"
         :key="o.name"
@@ -36,23 +38,13 @@ const props = defineProps<{
   }>(),
   emit = defineEmits(["update:modelValue"]);
 const focused = ref(false);
-let timer: ReturnType<typeof setTimeout> | undefined;
 const matches = computed(() => matchOptions(props.options, props.modelValue));
 function input(e: any) {
   emit("update:modelValue", e.detail.value);
 }
-function focus() {
-  clearTimeout(timer);
-  focused.value = true;
-}
-function blur() {
-  // The input blurs before a tap on a suggestion lands; keep the list briefly.
-  timer = setTimeout(() => (focused.value = false), 200);
-}
+// Picking fills an exact existing value, which empties the suggestions.
 function pick(name: string) {
-  clearTimeout(timer);
   emit("update:modelValue", name);
-  focused.value = false;
 }
 </script>
 <style scoped>
