@@ -64,3 +64,11 @@ export interface Job {
     download?: string;
   };
 }
+export interface LabelOption {
+  name: string;
+  count: number;
+}
+export interface AdminOptions {
+  majors: LabelOption[];
+  classes: LabelOption[];
+}

@@ -124,7 +124,8 @@
           <view class="grow">
             <view class="row name-line"
               ><text class="name ellipsis">{{ u.name }}</text
-              ><text v-if="!u.active" class="tag">已停用</text></view
+              ><text v-if="!u.active" class="tag">已停用</text
+              ><text v-if="u.major_exempt" class="tag warn">特批</text></view
             >
             <view class="caption ellipsis"
               >{{ u.username }} · {{ u.major || "未填专业" }} ·

@@ -61,3 +61,21 @@ export function splitDuration(ms: number) {
     seconds: pad(sec % 60),
   };
 }
+// Same rule as the backend's normalize_label: majors and classes are compared
+// verbatim, so drop all whitespace and use full-width parentheses.
+export function normalizeLabel(value?: string) {
+  return (value || "")
+    .replace(/\s+/g, "")
+    .replace(/\(/g, "（")
+    .replace(/\)/g, "）");
+}
+// Existing values containing the typed text, most common first; nothing once it matches exactly.
+export function matchOptions<T extends { name: string }>(
+  options: T[],
+  query: string,
+  limit = 6,
+) {
+  const q = normalizeLabel(query);
+  if (!q || options.some((o) => o.name === q)) return [];
+  return options.filter((o) => o.name.includes(q)).slice(0, limit);
+}

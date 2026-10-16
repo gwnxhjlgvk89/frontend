@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onShow, onHide, onLaunch } from "@dcloudio/uni-app";
+import { onShow, onHide, onLaunch, onPageNotFound } from "@dcloudio/uni-app";
 import { useSession } from "./v2/session";
 import { getToken } from "./v2/api";
 onLaunch(() => {
@@ -23,6 +23,9 @@ onShow(() => {
       .catch(() => {});
 });
 onHide(() => useSession().suspend());
+// Old links (official-account menu, articles, shared cards) still point at v1
+// paths such as pages/login/login; send them to the entry page instead of a blank one.
+onPageNotFound(() => uni.reLaunch({ url: "/pages/v2/login" }));
 </script>
 <style lang="scss">
 @import "./v2/theme.scss";
